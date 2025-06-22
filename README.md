@@ -1,5 +1,20 @@
 # pdf2htmlEX Homebrew Formula for macOS
 
+## TL;DR - Quick Install
+
+```bash
+# Install pdf2htmlEX on macOS (Intel or Apple Silicon)
+brew install --build-from-source https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb
+
+# Basic usage
+pdf2htmlEX input.pdf output.html
+
+# Advanced usage with options
+pdf2htmlEX --zoom 1.5 --embed-css 1 --split-pages 1 input.pdf
+```
+
+**Note:** Installation will take 10-15 minutes as it builds from source with specific dependency versions.
+
 ## Project Overview
 
 This repository hosts a modern, maintained Homebrew formula for [pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX) that enables macOS users to install and use this powerful PDF-to-HTML conversion tool. The official Homebrew formula was removed in 2018 due to build failures, leaving macOS users without a straightforward installation path.
