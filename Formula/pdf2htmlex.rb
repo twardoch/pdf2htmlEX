@@ -6,7 +6,7 @@ class Pdf2htmlex < Formula
   homepage "https://github.com/pdf2htmlEX/pdf2htmlEX"
   url "https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz"
   version "0.18.8.rc1"
-  sha256 "###SHA256_SUM_PDF2HTMLEX###" # Placeholder, replace with actual checksum
+  sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
   license "GPL-3.0-or-later"
   revision 1 # Increment if resources or build logic changes without a version bump
 
@@ -32,12 +32,12 @@ class Pdf2htmlex < Formula
 
   resource "poppler" do
     url "https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
-    sha256 "###SHA256_SUM_POPPLER###" # Placeholder
+    sha256 "c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08"
   end
 
   resource "fontforge" do
     url "https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz"
-    sha256 "###SHA256_SUM_FONTFORGE###" # Placeholder
+    sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
   end
 
   def install

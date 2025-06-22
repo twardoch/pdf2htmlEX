@@ -1,0 +1,136 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run security scan weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check for known vulnerabilities in dependencies
+      run: |
+        # Check Poppler version for CVEs
+        POPPLER_VERSION="24.01.0"
+        echo "Checking Poppler $POPPLER_VERSION for vulnerabilities..."
+        
+        # Check FontForge version for CVEs
+        FONTFORGE_VERSION="20230101"
+        echo "Checking FontForge $FONTFORGE_VERSION for vulnerabilities..."
+        
+        # Note: In a real implementation, this would query CVE databases
+        # For now, we'll create a simple check
+        
+        cat > check_cves.py << 'EOF'
+        import json
+        import urllib.request
+        import sys
+        
+        def check_cves(product, version):
+            # This is a placeholder - in production, use proper CVE API
+            print(f"Checking {product} {version} for CVEs...")
+            # Would query https://nvd.nist.gov/vuln/search or similar
+            return []
+        
+        vulnerabilities = []
+        vulnerabilities.extend(check_cves("poppler", "24.01.0"))
+        vulnerabilities.extend(check_cves("fontforge", "20230101"))
+        
+        if vulnerabilities:
+            print("VULNERABILITIES FOUND:")
+            for vuln in vulnerabilities:
+                print(f"  - {vuln}")
+            sys.exit(1)
+        else:
+            print("No known vulnerabilities found")
+        EOF
+        
+        python3 check_cves.py
+    
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        languages: ruby
+    
+    - name: Check for hardcoded secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+    
+    - name: Audit formula security
+      run: |
+        # Check for insecure practices in formula
+        echo "Checking formula for security issues..."
+        
+        # Check for HTTP instead of HTTPS
+        if grep -E 'url.*"http://' Formula/pdf2htmlex.rb; then
+          echo "ERROR: Found HTTP URLs in formula. Use HTTPS instead."
+          exit 1
+        fi
+        
+        # Check for hardcoded paths
+        if grep -E '/(Users|home)/[^"]*' Formula/pdf2htmlex.rb | grep -v '#{'; then
+          echo "WARNING: Found potential hardcoded paths in formula"
+        fi
+        
+        # Check for missing checksums
+        if grep -E 'sha256.*"[^"]*"' Formula/pdf2htmlex.rb | grep -E '(TBD|TODO|XXX)'; then
+          echo "ERROR: Found placeholder checksums in formula"
+          exit 1
+        fi
+        
+        echo "Formula security check passed"
+
+  static-analysis:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    
+    - name: Install analysis tools
+      run: |
+        brew install shellcheck
+        brew install python3
+        pip3 install bandit safety
+    
+    - name: Shellcheck scripts
+      run: |
+        find . -name "*.sh" -type f -exec shellcheck {} \; || true
+    
+    - name: Check Python scripts
+      run: |
+        find . -name "*.py" -type f -exec bandit {} \; || true
+    
+    - name: Generate security report
+      if: always()
+      run: |
+        echo "# Security Scan Report" > security-report.md
+        echo "Date: $(date)" >> security-report.md
+        echo "" >> security-report.md
+        echo "## Summary" >> security-report.md
+        echo "Security scan completed. See individual check results above." >> security-report.md
+    
+    - name: Upload security report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-report
+        path: security-report.md

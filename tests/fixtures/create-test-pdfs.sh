@@ -1,0 +1,41 @@
+#!/bin/bash
+# create-test-pdfs.sh - Create test PDF files for pdf2htmlEX testing
+
+set -euo pipefail
+
+# Create simple PDF
+cat > simple.pdf << 'EOF'
+%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
+4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+5 0 obj<</Length 87>>stream
+BT
+/F1 24 Tf
+100 700 Td
+(Simple PDF Test) Tj
+0 -30 Td
+/F1 16 Tf
+(This is a test document) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000009 00000 n
+0000000052 00000 n
+0000000101 00000 n
+0000000229 00000 n
+0000000299 00000 n
+trailer<</Size 6/Root 1 0 R>>
+startxref
+441
+%%EOF
+EOF
+
+echo "Created simple.pdf"
+
+# Note: More complex PDFs would require proper PDF generation tools
+# This script provides a starting point for test fixtures

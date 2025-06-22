@@ -1,0 +1,85 @@
+name: Test Formula
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-12, macos-13, macos-14]
+        architecture: [x86_64, arm64]
+        exclude:
+          # macOS 12 doesn't support arm64 runners
+          - os: macos-12
+            architecture: arm64
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    
+    - name: Cache Homebrew downloads
+      uses: actions/cache@v3
+      with:
+        path: ~/Library/Caches/Homebrew/downloads
+        key: ${{ runner.os }}-${{ matrix.architecture }}-homebrew-${{ hashFiles('Formula/pdf2htmlex.rb') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.architecture }}-homebrew-
+    
+    - name: Install build dependencies
+      run: |
+        brew install cmake ninja pkg-config
+        brew install cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz
+        brew install openjdk
+    
+    - name: Audit formula
+      run: brew audit --strict Formula/pdf2htmlex.rb
+    
+    - name: Install formula
+      run: |
+        if [ "${{ matrix.architecture }}" = "arm64" ] && [ "${{ runner.arch }}" = "X64" ]; then
+          echo "Skipping arm64 build on x86_64 runner"
+          exit 0
+        fi
+        brew install --build-from-source --verbose Formula/pdf2htmlex.rb
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+    
+    - name: Test formula
+      run: |
+        if [ "${{ matrix.architecture }}" = "arm64" ] && [ "${{ runner.arch }}" = "X64" ]; then
+          echo "Skipping arm64 test on x86_64 runner"
+          exit 0
+        fi
+        brew test --verbose pdf2htmlex
+    
+    - name: Verify universal binary
+      if: matrix.architecture == 'arm64' || (matrix.architecture == 'x86_64' && runner.arch == 'X64')
+      run: |
+        if [ -f "$(brew --prefix)/bin/pdf2htmlEX" ]; then
+          file $(brew --prefix)/bin/pdf2htmlEX
+          lipo -info $(brew --prefix)/bin/pdf2htmlEX
+        fi
+    
+    - name: Run integration tests
+      if: matrix.architecture == 'arm64' || (matrix.architecture == 'x86_64' && runner.arch == 'X64')
+      run: |
+        if [ -f "scripts/test-formula.sh" ]; then
+          bash scripts/test-formula.sh
+        fi
+    
+    - name: Upload logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-logs-${{ matrix.os }}-${{ matrix.architecture }}
+        path: ~/Library/Logs/Homebrew/pdf2htmlex/

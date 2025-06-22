@@ -1,0 +1,151 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Get version
+      id: get_version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ inputs.version }}"
+        else
+          VERSION=${GITHUB_REF#refs/tags/}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        if [ -f "CHANGELOG.md" ]; then
+          # Extract latest version changes
+          CHANGES=$(awk '/^## \[/ {if (p) exit; p=1; next} p' CHANGELOG.md)
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "changes=No changelog available" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_version.outputs.version }}
+        release_name: Release ${{ steps.get_version.outputs.version }}
+        body: |
+          ## Changes in this release
+          
+          ${{ steps.changelog.outputs.changes }}
+          
+          ## Installation
+          
+          ```bash
+          brew tap twardoch/pdf2htmlex
+          brew install pdf2htmlex
+          ```
+          
+          Or install directly from this repository:
+          ```bash
+          brew install --build-from-source https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb
+          ```
+        draft: false
+        prerelease: false
+
+  build-bottles:
+    needs: create-release
+    strategy:
+      matrix:
+        os: [macos-12, macos-13, macos-14]
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ needs.create-release.outputs.version }}
+    
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    
+    - name: Install dependencies
+      run: |
+        brew install cmake ninja pkg-config
+        brew install cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz
+        brew install openjdk
+    
+    - name: Build bottle
+      id: build
+      run: |
+        brew install --build-bottle Formula/pdf2htmlex.rb
+        brew bottle --json --no-rebuild pdf2htmlex
+        
+        # Get bottle filename
+        BOTTLE_FILE=$(ls *.bottle.* | head -1)
+        echo "bottle_file=$BOTTLE_FILE" >> $GITHUB_OUTPUT
+        
+        # Extract bottle info
+        BOTTLE_JSON=$(brew bottle --json --no-rebuild pdf2htmlex | jq -r '.[].bottle.tags')
+        echo "bottle_json=$BOTTLE_JSON" >> $GITHUB_OUTPUT
+    
+    - name: Upload bottle
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ${{ steps.build.outputs.bottle_file }}
+        asset_name: ${{ steps.build.outputs.bottle_file }}
+        asset_content_type: application/gzip
+    
+    - name: Output bottle SHA
+      run: |
+        echo "Bottle SHA for ${{ matrix.os }}:"
+        shasum -a 256 ${{ steps.build.outputs.bottle_file }}
+
+  update-formula:
+    needs: [create-release, build-bottles]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: main
+    
+    - name: Update formula with bottle SHAs
+      run: |
+        echo "::notice::Bottle SHAs need to be manually added to the formula"
+        echo "Please update Formula/pdf2htmlex.rb with the bottle block"
+    
+    - name: Create PR for bottle updates
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: "Update bottle SHAs for ${{ needs.create-release.outputs.version }}"
+        body: |
+          This PR updates the bottle SHAs for release ${{ needs.create-release.outputs.version }}.
+          
+          Please manually update the bottle block in Formula/pdf2htmlex.rb with the SHAs from the release artifacts.
+        branch: update-bottles-${{ needs.create-release.outputs.version }}
+        commit-message: "Update bottle SHAs for ${{ needs.create-release.outputs.version }}"

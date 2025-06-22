@@ -38,6 +38,11 @@ Temporary Items
 .project
 .classpath
 .settings/
+.cursor/
+.cursorindexingignore
+.cursorrules
+.giga/
+.specstory/
 
 # Common build and binary directories
 bin/
@@ -114,3 +119,21 @@ yarn-error.log
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Homebrew specific
+*.bottle.*
+*.tar.gz
+*.tar.xz
+Formula/*.backup.*
+
+# Test artifacts
+test.pdf
+test.html
+test-*.html
+test-*.pdf
+tests/fixtures/*.pdf
+coverage/
+.coverage
+
+# Build staging
+staging/
