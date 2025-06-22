@@ -17,11 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `scripts/test-formula.sh`: Local formula testing with extensive validation
   - `scripts/update-version.sh`: Automated version updates with SHA256 calculation
   - `scripts/check-dependencies.sh`: Dependency verification and system compatibility checks
+  - `scripts/setup-tap.sh`: Helper script to set up Homebrew tap (fixes Phase 0 installation issue)
 - Test infrastructure
   - Integration tests for various pdf2htmlEX options
   - Test fixture creation scripts
   - Organized test directory structure
 - Detailed TODO.md with phased implementation plan
+- CONTRIBUTING.md with comprehensive contribution guidelines
+- GitHub issue templates (bug report, feature request)
+- Pull request template
+- Makefile for common development tasks
 - Project documentation improvements
 
 ### Changed

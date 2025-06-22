@@ -1,47 +1,59 @@
 # pdf2htmlEX Project Refactoring TODO
 
-This document outlines the comprehensive plan to refactor, restructure, and improve the pdf2htmlEX Homebrew formula project.
+## Phase 0: Fix this problem ✓ COMPLETED
+
+~~README.md now suggests doing this but this doesn't work:~~
+
+**RESOLVED:** Updated README.md with three working installation methods:
+1. Clone repository and install locally (recommended)
+2. Create a local tap using the new `scripts/setup-tap.sh` helper
+3. Download formula and install from local file
+
+The error was due to Homebrew's security policy preventing installation from arbitrary URLs. All three methods now work around this limitation.
+
+
 
 ## Phase 1: Repository Restructuring (Immediate)
 
-### 1.1 Directory Structure Reorganization
-- [ ] Create proper directory structure:
+### 1.1 Directory Structure Reorganization ✓ COMPLETED
+- [x] Create proper directory structure:
   ```
   pdf2htmlEX/
   ├── .github/
-  │   ├── workflows/        # CI/CD pipelines
-  │   ├── ISSUE_TEMPLATE/   # Issue templates
-  │   └── pull_request_template.md
+  │   ├── workflows/        # CI/CD pipelines ✓
+  │   ├── ISSUE_TEMPLATE/   # Issue templates ✓
+  │   └── pull_request_template.md ✓
   ├── Formula/
-  │   └── pdf2htmlex.rb     # Move from root
-  ├── scripts/              # Development and utility scripts
-  │   ├── update-version.sh
-  │   ├── test-formula.sh
-  │   ├── build-bottle.sh
-  │   └── check-dependencies.sh
+  │   └── pdf2htmlex.rb     # Move from root ✓
+  ├── scripts/              # Development and utility scripts ✓
+  │   ├── update-version.sh ✓
+  │   ├── test-formula.sh ✓
+  │   ├── setup-tap.sh     # Added for Phase 0 fix ✓
+  │   └── check-dependencies.sh ✓
   ├── tests/
-  │   ├── fixtures/         # Test PDFs
-  │   ├── integration/      # Full conversion tests
-  │   └── unit/            # Component tests
-  ├── patches/             # macOS-specific patches
-  ├── docs/
-  │   ├── troubleshooting.md
-  │   ├── architecture.md
-  │   └── security.md
-  └── config/              # Build configurations
+  │   ├── fixtures/         # Test PDFs ✓
+  │   ├── integration/      # Full conversion tests ✓
+  │   └── unit/            # Component tests ✓
+  ├── patches/             # macOS-specific patches ✓
+  ├── docs/                ✓
+  │   └── refactoring-summary.md ✓
+  └── config/              # Build configurations ✓
   ```
 
-### 1.2 Move and Update Files
-- [ ] Move `pdf2htmlex.rb` to `Formula/pdf2htmlex.rb`
-- [ ] Update file paths in documentation
-- [ ] Verify formula still works after move
+### 1.2 Move and Update Files ✓ COMPLETED
+- [x] Move `pdf2htmlex.rb` to `Formula/pdf2htmlex.rb` ✓
+- [x] Update file paths in documentation ✓
+- [x] Verify formula still works after move ✓
 
 ## Phase 2: Formula Improvements
 
-### 2.1 Fix Placeholder Values
-- [ ] Calculate and add real SHA256 checksums for pdf2htmlEX source
-- [ ] Verify all resource checksums are correct
-- [ ] Add version constants at top of formula
+### 2.1 Fix Placeholder Values ✓ COMPLETED
+- [x] Calculate and add real SHA256 checksums for pdf2htmlEX source ✓
+- [x] Verify all resource checksums are correct ✓
+- [x] Add version constants at top of formula ✓
+  - pdf2htmlEX: `a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641`
+  - Poppler: `c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08`
+  - FontForge: `ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1`
 
 ### 2.2 Build Process Enhancements
 - [ ] Add proper error handling with descriptive messages
@@ -58,11 +70,11 @@ This document outlines the comprehensive plan to refactor, restructure, and impr
 
 ## Phase 3: CI/CD Implementation
 
-### 3.1 GitHub Actions Workflows
-- [ ] Create `.github/workflows/test.yml` for PR testing
-- [ ] Create `.github/workflows/release.yml` for releases
-- [ ] Create `.github/workflows/bottle.yml` for bottle building
-- [ ] Create `.github/workflows/security.yml` for vulnerability scanning
+### 3.1 GitHub Actions Workflows ✓ COMPLETED
+- [x] Create `.github/workflows/test.yml` for PR testing ✓
+- [x] Create `.github/workflows/release.yml` for releases ✓
+- [ ] Create `.github/workflows/bottle.yml` for bottle building (merged into release.yml)
+- [x] Create `.github/workflows/security.yml` for vulnerability scanning ✓
 
 ### 3.2 Testing Matrix
 - [ ] Test on multiple macOS versions (12, 13, 14)
@@ -78,16 +90,17 @@ This document outlines the comprehensive plan to refactor, restructure, and impr
 
 ## Phase 4: Development Infrastructure
 
-### 4.1 Helper Scripts
-- [ ] `scripts/test-formula.sh` - Local testing helper
-- [ ] `scripts/update-version.sh` - Version bump automation
+### 4.1 Helper Scripts (Partially Complete)
+- [x] `scripts/test-formula.sh` - Local testing helper ✓
+- [x] `scripts/update-version.sh` - Version bump automation ✓
 - [ ] `scripts/build-bottle.sh` - Local bottle building
-- [ ] `scripts/check-dependencies.sh` - Dependency verification
+- [x] `scripts/check-dependencies.sh` - Dependency verification ✓
+- [x] `scripts/setup-tap.sh` - Tap setup helper (added for Phase 0) ✓
 - [ ] `scripts/benchmark.sh` - Performance testing
 
-### 4.2 Development Tools
+### 4.2 Development Tools (Partially Complete)
 - [ ] Add `.editorconfig` for consistent formatting
-- [ ] Create `Makefile` for common tasks
+- [x] Create `Makefile` for common tasks ✓
 - [ ] Add pre-commit hooks for validation
 - [ ] Create development container configuration
 
@@ -130,11 +143,12 @@ This document outlines the comprehensive plan to refactor, restructure, and impr
 - [ ] Add formula development guide
 - [ ] Create debugging guide
 
-### 6.3 Project Documentation
-- [ ] Add CONTRIBUTING.md
+### 6.3 Project Documentation (Partially Complete)
+- [x] Add CONTRIBUTING.md ✓
 - [ ] Create SECURITY.md
 - [ ] Add CODE_OF_CONDUCT.md
-- [ ] Create CHANGELOG.md
+- [x] Create CHANGELOG.md ✓
+- [x] Update README.md with installation instructions ✓
 - [ ] Update README.md with badges
 
 ## Phase 7: Security Hardening
@@ -167,16 +181,16 @@ This document outlines the comprehensive plan to refactor, restructure, and impr
 
 ## Phase 9: Community Features
 
-### 9.1 Issue Management
-- [ ] Create issue templates for bugs
-- [ ] Create feature request template
+### 9.1 Issue Management (Partially Complete)
+- [x] Create issue templates for bugs ✓
+- [x] Create feature request template ✓
 - [ ] Add security issue template
 - [ ] Set up issue labels and automation
 
-### 9.2 Contribution Support
-- [ ] Create PR template
-- [ ] Add contributor guidelines
-- [ ] Set up automated PR checks
+### 9.2 Contribution Support (Partially Complete)
+- [x] Create PR template ✓
+- [x] Add contributor guidelines (in CONTRIBUTING.md) ✓
+- [x] Set up automated PR checks (via GitHub Actions) ✓
 - [ ] Create contributor recognition
 
 ## Phase 10: Release Management

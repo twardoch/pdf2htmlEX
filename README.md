@@ -2,15 +2,45 @@
 
 ## TL;DR - Quick Install
 
+### Option 1: Clone and Install Locally (Recommended)
 ```bash
-# Install pdf2htmlEX on macOS (Intel or Apple Silicon)
-brew install --build-from-source https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb
+# Clone the repository
+git clone https://github.com/twardoch/pdf2htmlEX.git
+cd pdf2htmlEX
+
+# Install from local formula
+brew install --build-from-source Formula/pdf2htmlex.rb
 
 # Basic usage
 pdf2htmlEX input.pdf output.html
 
 # Advanced usage with options
 pdf2htmlEX --zoom 1.5 --embed-css 1 --split-pages 1 input.pdf
+```
+
+### Option 2: Create a Local Tap
+```bash
+# Create a local tap
+brew tap-new $USER/pdf2htmlex
+cd $(brew --repository)/Library/Taps/$USER/homebrew-pdf2htmlex
+
+# Download the formula
+curl -L https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb \
+  -o Formula/pdf2htmlex.rb
+
+# Install from your tap
+brew install $USER/pdf2htmlex/pdf2htmlex
+```
+
+### Option 3: Direct Formula Download
+```bash
+# Download the formula to a local directory
+mkdir -p /tmp/pdf2htmlex
+curl -L https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb \
+  -o /tmp/pdf2htmlex/pdf2htmlex.rb
+
+# Install from the local file
+brew install --build-from-source /tmp/pdf2htmlex/pdf2htmlex.rb
 ```
 
 **Note:** Installation will take 10-15 minutes as it builds from source with specific dependency versions.
