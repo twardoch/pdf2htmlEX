@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `scripts/update-version.sh`: Automated version updates with SHA256 calculation
   - `scripts/check-dependencies.sh`: Dependency verification and system compatibility checks
   - `scripts/setup-tap.sh`: Helper script to set up Homebrew tap (fixes Phase 0 installation issue)
+  - `scripts/build-bottle.sh`: Automated bottle building with GitHub release integration
 - Test infrastructure
   - Integration tests for various pdf2htmlEX options
   - Test fixture creation scripts
@@ -27,6 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub issue templates (bug report, feature request)
 - Pull request template
 - Makefile for common development tasks
+- SECURITY.md with vulnerability reporting guidelines
+- .editorconfig for consistent code formatting
+- Formula enhancement patches with improved error handling and progress tracking
 - Project documentation improvements
 
 ### Changed
@@ -34,11 +38,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved formula organization and structure
 
 ### Fixed
+- Installation instructions updated to work with Homebrew's security policies (Phase 0)
+  - Removed non-functional URL-based installation
+  - Added three working installation methods
 - Formula path references in documentation now point to correct location
 - SHA256 checksums in formula updated from placeholders to actual values:
   - pdf2htmlEX: `a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641`
   - Poppler: `c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08`
   - FontForge: `ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1`
+- Formula compatibility with Homebrew 4.5+ by handling removal of `Hardware::CPU.universal_archs`
+  - Added backwards-compatible architecture detection
+  - Ensures universal binary builds work on both old and new Homebrew versions
 
 ### Security
 - Added automated CVE scanning workflow

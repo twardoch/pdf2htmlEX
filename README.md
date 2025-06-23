@@ -1,5 +1,11 @@
 # pdf2htmlEX Homebrew Formula for macOS
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![macOS](https://img.shields.io/badge/macOS-11%2B-green.svg)](https://www.apple.com/macos/)
+[![Homebrew](https://img.shields.io/badge/Homebrew-4.0%2B-orange.svg)](https://brew.sh)
+[![pdf2htmlEX](https://img.shields.io/badge/pdf2htmlEX-0.18.8.rc1-red.svg)](https://github.com/pdf2htmlEX/pdf2htmlEX)
+[![CI Status](https://img.shields.io/badge/CI-Ready-brightgreen.svg)](.github/workflows/test.yml)
+
 ## TL;DR - Quick Install
 
 ### Option 1: Clone and Install Locally (Recommended)
