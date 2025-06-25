@@ -90,6 +90,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+build_temp_test_script/
 
 # Node.js specific
 node_modules/
