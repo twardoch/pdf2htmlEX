@@ -288,7 +288,7 @@ class Pdf2htmlex < Formula
         # pdf2htmlEX source is in the root of the buildpath (after url.stage)
         # It has a pdf2htmlEX subdirectory which contains the main CMakeLists.txt
         # The main tarball extracts to pdf2htmlEX-0.18.8.rc1, so cd into that.
-        cd buildpath/name do # 'name' is a special var in Homebrew for the extracted dir name
+        cd "pdf2htmlEX-#{version}" do # Corrected cd to the extracted directory
           cd "pdf2htmlEX" do # The actual sources are in a subdirectory
             mkdir "build" do
               system "cmake", "..",

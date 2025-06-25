@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - .editorconfig for consistent code formatting
 - Formula enhancement patches with improved error handling and progress tracking
 - Project documentation improvements
++ **MVP v1.0 Streamlining specific changes:**
++   - Created `ROADMAP.md` to house future plans, moving content from `README.md`.
++   - Streamlined `README.md` to focus on MVP installation and usage.
++   - Renamed `build_prototype.sh` to `scripts/test-build.sh` and updated its content for clarity.
++   - Deleted obsolete `reference/reference.md` and `CLAUDE.md`.
++   - Archived old docs (`docs/progress-report.md`, `docs/refactoring-summary.md`) and issue logs (`issues/issue103.txt`).
++   - Removed empty directories: `reference/`, `patches/`, `issues/`, `docs/`.
++   - Verified and corrected `cd` path in `Formula/pdf2htmlex.rb` for source extraction.
 
 ### Changed
 - Moved `pdf2htmlex.rb` formula from root to `Formula/` directory (standard Homebrew structure)
