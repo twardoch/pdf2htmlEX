@@ -8,12 +8,15 @@ class Pdf2htmlex < Formula
   version "0.18.8.rc1"
   sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
   license "GPL-3.0-or-later"
-  revision 18
+  revision 17
+
+  # Universal build supported
+  # We will build from source, bottles can be added later
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "openjdk" => :build
+  depends_on "openjdk" => :build # For YUI Compressor and Closure Compiler
 
   depends_on "cairo"
   depends_on "fontconfig"
@@ -38,10 +41,19 @@ class Pdf2htmlex < Formula
   end
 
   def install
+    ohai "pdf2htmlEX Build Process Starting"
+    
     staging_prefix = buildpath/"staging"
     ENV.cxx11
-    archs = "x86_64;arm64"
 
+    # Remove march flags that can cause issues.
+    ENV.remove "HOMEBREW_CFLAGS", / ?-march=\S*/
+    ENV.remove "HOMEBREW_CXXFLAGS", / ?-march=\S*/
+
+    archs = "x86_64;arm64"
+    ohai "Building for architectures: #{archs.gsub(";", ", ")}"
+
+    # Centralized CMAKE_PREFIX_PATH for all Homebrew deps
     cmake_prefix_paths = [
       Formula["cairo"].opt_prefix,
       Formula["fontconfig"].opt_prefix,
@@ -56,7 +68,10 @@ class Pdf2htmlex < Formula
       Formula["harfbuzz"].opt_prefix,
     ].join(";")
 
+    # Stage 1: Build Poppler
+    ohai "Building Poppler 0.82.0..."
     resource("poppler").stage do
+      # Patch poppler glib before building to fix build with newer glib
       inreplace "glib/poppler-private.h",
                 "static volatile gsize g_define_type_id__volatile = 0;",
                 "static gsize g_define_type_id__volatile = 0;"
@@ -87,7 +102,10 @@ class Pdf2htmlex < Formula
         system "ninja", "install"
       end
     end
+    ohai "✓ Poppler built successfully"
 
+    # Stage 2: Build FontForge
+    ohai "Building FontForge 20190801..."
     resource("fontforge").stage do
       mkdir "build" do
         system "cmake", "..",
@@ -106,24 +124,61 @@ class Pdf2htmlex < Formula
         system "cp", "lib/libfontforge.a", "#{staging_prefix}/lib/"
       end
     end
+    ohai "✓ FontForge built successfully"
 
+    # Stage 3: Build pdf2htmlEX
+    ohai "Building pdf2htmlEX #{version}..."
     ENV.prepend_path "PKG_CONFIG_PATH", "#{staging_prefix}/lib/pkgconfig"
     ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
 
-    mkdir "build" do
-      system "cmake", "..",
-             "-G", "Ninja",
-             "-DCMAKE_BUILD_TYPE=Release",
-             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-             "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-             "-DCMAKE_PREFIX_PATH=#{staging_prefix}",
-             "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
-             "-DTEST_MODE=OFF"
-      system "ninja", "install"
+    # The actual source is in a subdirectory
+    cd "pdf2htmlEX" do
+        mkdir "build" do
+          system "cmake", "..",
+                 "-G", "Ninja",
+                 "-DCMAKE_BUILD_TYPE=Release",
+                 "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+                 "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+                 "-DCMAKE_PREFIX_PATH=#{staging_prefix}",
+                 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                 "-DTEST_MODE=OFF"
+          system "ninja", "install"
+        end
     end
+    ohai "✓ pdf2htmlEX built successfully"
+
+    # Final validation
+    ohai "Running post-build validation..."
+    system bin/"pdf2htmlEX", "--version"
+    ohai "✓ Build completed successfully!"
   end
 
   test do
-    system bin/"pdf2htmlEX", "--version"
+    (testpath/"test.pdf").write <<~EOS
+      %PDF-1.4
+      1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+      2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+      3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
+      4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+      5 0 obj<</Length 100>>stream
+      BT /F1 24 Tf 100 700 Td (pdf2htmlEX test) Tj ET
+      endstream
+      endobj
+      xref
+      0 6
+      0000000000 65535 f
+      0000000009 00000 n
+      0000000052 00000 n
+      0000000101 00000 n
+      0000000191 00000 n
+      0000000242 00000 n
+      trailer<</Size 6/Root 1 0 R>>
+      startxref
+      357
+      %%EOF
+    EOS
+    system bin/"pdf2htmlEX", testpath/"test.pdf"
+    assert_predicate testpath/"test.html", :exist?, "test.html should be created"
+    assert_match "pdf2htmlEX test", (testpath/"test.html").read, "Output HTML should contain text from PDF"
   end
 end
