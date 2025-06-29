@@ -8,7 +8,7 @@ class Pdf2htmlex < Formula
   version "0.18.8.rc1"
   sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
   license "GPL-3.0-or-later"
-  revision 14
+  revision 17
 
   # Universal build supported
   # We will build from source, bottles can be added later
@@ -107,30 +107,21 @@ class Pdf2htmlex < Formula
     # Stage 2: Build FontForge
     ohai "Building FontForge 20190801..."
     resource("fontforge").stage do
-      cd "fontforge-20190801" do
-        (buildpath/"disable-gettext.patch").write <<~EOS
-          --- a/po/CMakeLists.txt
-          +++ b/po/CMakeLists.txt
-          @@ -0,0 +1,1 @@
-          +return()
-        EOS
-        system "patch", "-p1", "-i", buildpath/"disable-gettext.patch"
-
-        mkdir "build" do
-          system "cmake", "..",
-                 "-G", "Ninja",
-                 "-DCMAKE_BUILD_TYPE=Release",
-                 "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
-                 "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-                 "-DCMAKE_PREFIX_PATH=#{staging_prefix};#{cmake_prefix_paths}",
-                 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
-                 "-DENABLE_GUI=OFF",
-                 "-DENABLE_PYTHON_SCRIPTING=OFF",
-                 "-DENABLE_PYTHON_EXTENSION=OFF",
-                 "-DBUILD_SHARED_LIBS=OFF"
-          system "ninja", "install"
-          system "cp", "lib/libfontforge.a", "#{staging_prefix}/lib/"
-        end
+      mkdir "build" do
+        system "cmake", "..",
+               "-G", "Ninja",
+               "-DCMAKE_BUILD_TYPE=Release",
+               "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
+               "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+               "-DCMAKE_PREFIX_PATH=#{staging_prefix};#{cmake_prefix_paths}",
+               "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+               "-DENABLE_GUI=OFF",
+               "-DENABLE_PYTHON_SCRIPTING=OFF",
+               "-DENABLE_PYTHON_EXTENSION=OFF",
+               "-DENABLE_NLS=OFF",
+               "-DBUILD_SHARED_LIBS=OFF"
+        system "ninja", "install"
+        system "cp", "lib/libfontforge.a", "#{staging_prefix}/lib/"
       end
     end
     ohai "✓ FontForge built successfully"
