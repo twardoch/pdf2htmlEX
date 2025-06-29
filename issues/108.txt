@@ -1,0 +1,5 @@
+==> pdf2htmlEX Homebrew Formula Build - Strategy 1: In-Source Poppler Build
+    This build uses an optimized approach that builds Poppler within the
+    pdf2htmlEX source tree structure to resolve linking dependencies.
+
+==> Building pdf2htmlEX from source (this may take several minutes)...
