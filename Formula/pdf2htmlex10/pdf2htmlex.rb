@@ -8,7 +8,7 @@ class Pdf2htmlex < Formula
   version "0.18.8.rc1"
   sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
   license "GPL-3.0-or-later"
-  revision 10 # Increment if resources or build logic changes without a version bump
+  revision 14
 
   # Universal build supported
   # We will build from source, bottles can be added later
@@ -31,13 +31,13 @@ class Pdf2htmlex < Formula
   depends_on "harfbuzz"
 
   resource "poppler" do
-    url "https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
-    sha256 "c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08"
+    url "https://poppler.freedesktop.org/poppler-0.82.0.tar.xz"
+    sha256 "234f8e573ea57fb6a008e7c1e56bfae1af5d1adf0e65f47555e1ae103874e4df"
   end
 
   resource "fontforge" do
-    url "https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz"
-    sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
+    url "https://github.com/fontforge/fontforge/releases/download/20190801/fontforge-20190801.tar.gz"
+    sha256 "d92075ca783c97dc68433b1ed629b9054a4b4c74ac64c54ced7f691540f70852"
   end
 
   def install
@@ -69,9 +69,13 @@ class Pdf2htmlex < Formula
     ].join(";")
 
     # Stage 1: Build Poppler
-    ohai "Building Poppler 24.01.0..."
+    ohai "Building Poppler 0.82.0..."
     resource("poppler").stage do
-      File.write("poppler/DCTStream.cc", "// This file is intentionally left blank to avoid compilation errors\n")
+      # Patch poppler glib before building to fix build with newer glib
+      inreplace "glib/poppler-private.h",
+                "static volatile gsize g_define_type_id__volatile = 0;",
+                "static gsize g_define_type_id__volatile = 0;"
+
       mkdir "build" do
         system "cmake", "..",
                "-G", "Ninja",
@@ -79,59 +83,54 @@ class Pdf2htmlex < Formula
                "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
                "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
                "-DCMAKE_PREFIX_PATH=#{cmake_prefix_paths}",
-               "-DBUILD_SHARED_LIBS=OFF",
-               "-DENABLE_UNSTABLE_API_ABI_HEADERS=OFF",
-               "-DENABLE_SPLASH=ON",
-               "-DENABLE_GLIB=ON",
-               "-DENABLE_UTILS=OFF",
-               "-DENABLE_CPP=OFF",
-               "-DENABLE_QT5=OFF",
-               "-DENABLE_QT6=OFF",
-               "-DENABLE_GOBJECT_INTROSPECTION=OFF",
+               "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
                "-DBUILD_GTK_TESTS=OFF",
-               "-DBUILD_QT5_TESTS=OFF",
-               "-DBUILD_QT6_TESTS=OFF",
-               "-DBUILD_CPP_TESTS=OFF",
-               "-DENABLE_LIBTIFF=OFF",
-               "-DWITH_TIFF=OFF",
-               "-DENABLE_DCTDECODER=none",
-               "-DBUILD_MANUAL_TESTS=OFF"
+               "-DENABLE_CMS=none",
+               "-DENABLE_GLIB=ON",
+               "-DENABLE_QT5=OFF",
+               "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
+               "-DWITH_GObject=ON",
+               "-DENABLE_GOBJECT_INTROSPECTION=ON",
+               "-DFONT_CONFIGURATION=fontconfig",
+               "-DBUILD_SHARED_LIBS=OFF",
+               "-DENABLE_CPP=OFF",
+               "-DENABLE_UTILS=OFF",
+               "-DENABLE_LIBOPENJPEG=none",
+               "-DENABLE_SPLASH=ON",
+               "-DENABLE_DCTDECODER=libjpeg",
+               "-DRUN_GPERF_IF_PRESENT=OFF"
         system "ninja", "install"
       end
     end
     ohai "✓ Poppler built successfully"
 
     # Stage 2: Build FontForge
-    ohai "Building FontForge 20230101..."
+    ohai "Building FontForge 20190801..."
     resource("fontforge").stage do
-      # Use the simple patch from formula 04
-      (buildpath/"disable-gettext.patch").write <<~EOS
-        --- a/po/CMakeLists.txt
-        +++ b/po/CMakeLists.txt
-        @@ -0,0 +1,1 @@
-        +return()
-      EOS
-      system "patch", "-p1", "-i", buildpath/"disable-gettext.patch"
+      cd "fontforge-20190801" do
+        (buildpath/"disable-gettext.patch").write <<~EOS
+          --- a/po/CMakeLists.txt
+          +++ b/po/CMakeLists.txt
+          @@ -0,0 +1,1 @@
+          +return()
+        EOS
+        system "patch", "-p1", "-i", buildpath/"disable-gettext.patch"
 
-      mkdir "build" do
-        fontforge_cmake_prefix_path = "#{staging_prefix};#{cmake_prefix_paths}"
-        
-        system "cmake", "..",
-           "-G", "Ninja",
-           "-DCMAKE_BUILD_TYPE=Release",
-           "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
-           "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-           "-DCMAKE_PREFIX_PATH=#{fontforge_cmake_prefix_path}",
-           "-DBUILD_SHARED_LIBS=OFF",
-           "-DENABLE_GUI=OFF",
-           "-DENABLE_NATIVE_SCRIPTING=ON",
-           "-DENABLE_PYTHON_SCRIPTING=OFF",
-           "-DENABLE_PYTHON_EXTENSION=OFF",
-           "-DENABLE_NLS=OFF"
-        system "ninja", "install"
-        
-        # Manually copy static library
-        system "cp", "lib/libfontforge.a", "#{staging_prefix}/lib/"
+        mkdir "build" do
+          system "cmake", "..",
+                 "-G", "Ninja",
+                 "-DCMAKE_BUILD_TYPE=Release",
+                 "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
+                 "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+                 "-DCMAKE_PREFIX_PATH=#{staging_prefix};#{cmake_prefix_paths}",
+                 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                 "-DENABLE_GUI=OFF",
+                 "-DENABLE_PYTHON_SCRIPTING=OFF",
+                 "-DENABLE_PYTHON_EXTENSION=OFF",
+                 "-DBUILD_SHARED_LIBS=OFF"
+          system "ninja", "install"
+          system "cp", "lib/libfontforge.a", "#{staging_prefix}/lib/"
+        end
       end
     end
     ohai "✓ FontForge built successfully"
@@ -139,7 +138,6 @@ class Pdf2htmlex < Formula
     # Stage 3: Build pdf2htmlEX
     ohai "Building pdf2htmlEX #{version}..."
     ENV.prepend_path "PKG_CONFIG_PATH", "#{staging_prefix}/lib/pkgconfig"
-    pdf2htmlex_cmake_prefix_path = "#{staging_prefix};#{cmake_prefix_paths}"
     ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
 
     # The actual source is in a subdirectory
@@ -150,9 +148,9 @@ class Pdf2htmlex < Formula
                  "-DCMAKE_BUILD_TYPE=Release",
                  "-DCMAKE_INSTALL_PREFIX=#{prefix}",
                  "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-                 "-DCMAKE_PREFIX_PATH=#{pdf2htmlex_cmake_prefix_path}",
-                 "-DENABLE_TESTS=OFF",
-                 "-DBUILD_TESTING=OFF"
+                 "-DCMAKE_PREFIX_PATH=#{staging_prefix}",
+                 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                 "-DTEST_MODE=OFF"
           system "ninja", "install"
         end
     end
