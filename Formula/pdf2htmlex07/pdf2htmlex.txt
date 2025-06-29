@@ -358,4 +358,11 @@ CMake Warning:
 [34m==>[0m [1m✓ Poppler 24.01.0 built successfully (37.2s)[0m
 [34m==>[0m [1m✓ Poppler build validated[0m
 [34m==>[0m [1mBuilding FontForge 20230101...[0m
-/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz --directory /private/tmp/homebrew-unpack-20250629-10262-j
+/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz --directory /private/tmp/homebrew-unpack-20250629-10262-j8kmio
+mv /private/tmp/homebrew-unpack-20250629-10262-j8kmio/fontforge-20230101 /private/tmp/pdf2htmlex--fontforge-20250629-10262-eb6j6p/fontforge-20230101
+[34m==>[0m [1mpatch -p1 -i /private/tmp/pdf2htmlex-20250629-10262-ja8gt6/pdf2htmlEX-0.18.8.rc1/patches/disable-gettext.patch[0m
+^C
+--------------------------------
+Build completed for pdf2htmlex7 at Mon Jun 30 00:49:34 CEST 2025
+--------------------------------
+--------------------------------

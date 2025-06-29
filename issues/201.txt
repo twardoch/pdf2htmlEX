@@ -1,0 +1,16 @@
+Note: The source code of fontforge is in './archive/fontforge/' and the source code of pdf2htmlEX is in './archive/pdf2htmlEX/' and you should analyze it carefully and thoroughly. 
+
+## Task
+
+Read all the brew formulae and their installation outputs from './Formula/' 
+
+Read the analyses from './reports/' 
+
+Intensely use all research and thinking tools available to you
+
+Write a new formula into './Formula/pdf2htmlex10' folder, and test it with
+
+```
+brew install --formula --build-from-source --verbose "/Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/Formula/pdf2htmlex11/pdf2htmlex.rb"
+```
+

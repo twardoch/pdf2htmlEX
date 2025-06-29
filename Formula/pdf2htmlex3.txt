@@ -1,7 +1,0 @@
-==> ✓ Build completed successfully!
-==> ✓ Build completed successfully!
-Error: pdf2htmlex: wrong number of arguments (given 0, expected 2..3)
---------------------------------
-Build completed for pdf2htmlex3 at Sun Jun 29 19:40:31 CEST 2025
---------------------------------
---------------------------------

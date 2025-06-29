@@ -9,7 +9,7 @@ for subdir in pdf2htmlex*/; do
         if [ -f "$formula_path" ]; then
             # Extract subdirectory name without trailing slash
             variant_name=$(basename "$subdir")
-            output_file="${variant_name}.txt"
+            output_file="$subdir/${variant_name}.txt"
 
             echo "Trying formula variant: $variant_name"
             echo "Formula path: $formula_path"
