@@ -151,48 +151,48 @@ class Pdf2htmlex < Formula
       build_with_progress("Poppler 24.01.0") do
         resource("poppler").stage do
           mkdir "build" do
-        system "cmake", "..",
-               "-G", "Ninja",
-               "-DCMAKE_BUILD_TYPE=Release",
-               "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
-               "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-               "-DCMAKE_PREFIX_PATH=#{ENV["CMAKE_PREFIX_PATH"]}",
-               "-DCMAKE_FIND_FRAMEWORK=NEVER",
-               "-DCMAKE_FIND_APPBUNDLE=NEVER",
-               "-DENABLE_UNSTABLE_API_ABI_HEADERS=OFF",
-               "-DBUILD_GTK_TESTS=OFF",
-               "-DBUILD_QT5_TESTS=OFF",
-               "-DBUILD_QT6_TESTS=OFF",
-               "-DBUILD_CPP_TESTS=OFF",
-               "-DBUILD_MANUAL_TESTS=OFF",
-               "-DENABLE_BOOST=OFF",
-               "-DENABLE_SPLASH=ON",
-               "-DENABLE_UTILS=OFF",
-               "-DENABLE_CPP=OFF",
-               "-DENABLE_GLIB=ON",
-               "-DENABLE_GOBJECT_INTROSPECTION=OFF",
-               "-DENABLE_GTK_DOC=OFF",
-               "-DENABLE_QT5=OFF",
-               "-DENABLE_QT6=OFF",
-               "-DENABLE_LIBOPENJPEG=none",
-               "-DENABLE_DCTDECODER=libjpeg",
-               "-DENABLE_CMS=none",
-               "-DENABLE_LCMS=OFF",
-               "-DENABLE_LIBCURL=OFF",
-               "-DENABLE_LIBTIFF=OFF",
-               "-DWITH_TIFF=OFF",
-               "-DWITH_NSS3=OFF",
-               "-DENABLE_NSS3=OFF",
-               "-DENABLE_GPGME=OFF",
-               "-DENABLE_ZLIB=ON",
-               "-DENABLE_ZLIB_UNCOMPRESS=OFF",
-               "-DUSE_FLOAT=OFF",
-               "-DBUILD_SHARED_LIBS=OFF",
-               "-DRUN_GPERF_IF_PRESENT=OFF",
-               "-DEXTRA_WARN=OFF",
-               "-DWITH_JPEG=ON",
-               "-DWITH_PNG=ON",
-               "-DWITH_Cairo=ON"
+            system "cmake", "..",
+                   "-G", "Ninja",
+                   "-DCMAKE_BUILD_TYPE=Release",
+                   "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
+                   "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+                   "-DCMAKE_PREFIX_PATH=#{ENV["CMAKE_PREFIX_PATH"]}",
+                   "-DCMAKE_FIND_FRAMEWORK=NEVER",
+                   "-DCMAKE_FIND_APPBUNDLE=NEVER",
+                   "-DENABLE_UNSTABLE_API_ABI_HEADERS=OFF",
+                   "-DBUILD_GTK_TESTS=OFF",
+                   "-DBUILD_QT5_TESTS=OFF",
+                   "-DBUILD_QT6_TESTS=OFF",
+                   "-DBUILD_CPP_TESTS=OFF",
+                   "-DBUILD_MANUAL_TESTS=OFF",
+                   "-DENABLE_BOOST=OFF",
+                   "-DENABLE_SPLASH=ON",
+                   "-DENABLE_UTILS=OFF",
+                   "-DENABLE_CPP=OFF",
+                   "-DENABLE_GLIB=ON",
+                   "-DENABLE_GOBJECT_INTROSPECTION=OFF",
+                   "-DENABLE_GTK_DOC=OFF",
+                   "-DENABLE_QT5=OFF",
+                   "-DENABLE_QT6=OFF",
+                   "-DENABLE_LIBOPENJPEG=none",
+                   "-DENABLE_DCTDECODER=libjpeg",
+                   "-DENABLE_CMS=none",
+                   "-DENABLE_LCMS=OFF",
+                   "-DENABLE_LIBCURL=OFF",
+                   "-DENABLE_LIBTIFF=OFF",
+                   "-DWITH_TIFF=OFF",
+                   "-DWITH_NSS3=OFF",
+                   "-DENABLE_NSS3=OFF",
+                   "-DENABLE_GPGME=OFF",
+                   "-DENABLE_ZLIB=ON",
+                   "-DENABLE_ZLIB_UNCOMPRESS=OFF",
+                   "-DUSE_FLOAT=OFF",
+                   "-DBUILD_SHARED_LIBS=OFF",
+                   "-DRUN_GPERF_IF_PRESENT=OFF",
+                   "-DEXTRA_WARN=OFF",
+                   "-DWITH_JPEG=ON",
+                   "-DWITH_PNG=ON",
+                   "-DWITH_Cairo=ON"
             system "ninja", "install"
           end
         end
@@ -215,9 +215,10 @@ class Pdf2htmlex < Formula
             ENV.delete("LC_MESSAGES")
             ENV["LC_ALL"] = "C"
             
-            # Create patch to disable message compilation
-            mkdir_p "patches"
-            (buildpath/"patches/disable-gettext.patch").write <<~EOS
+            # Create and apply patch to disable message compilation before configuring the build.
+            # We use an absolute path for the patch file to avoid issues with the -d option.
+            patch_file = Pathname.pwd/"disable-gettext.patch"
+            patch_file.write <<~EOS
               diff --git a/po/CMakeLists.txt b/po/CMakeLists.txt
               index d5bcb789d..b695a5a09 100644
               --- a/po/CMakeLists.txt
@@ -228,9 +229,7 @@ class Pdf2htmlex < Formula
                
                if (GETTEXT_FOUND)
             EOS
-
-            # Apply the patch
-            system "patch", "-p1", "-i", buildpath/"patches/disable-gettext.patch"
+            system "patch", "-d", "..", "-p1", "-i", patch_file.to_s
             
             system "cmake", "..",
                "-G", "Ninja",

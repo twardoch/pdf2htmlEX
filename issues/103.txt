@@ -1,0 +1,35 @@
+Error: Failed to load cask: Formula/pdf2htmlex.rb
+Cask 'pdf2htmlex' is unreadable: wrong constant name #<Class:0x00000001237a9d00>
+Warning: Treating Formula/pdf2htmlex.rb as a formula.
+==> Fetching pdf2htmlex
+==> Downloading https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz
+==> Downloading https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz
+==> Downloading https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz
+==> pdf2htmlEX Build Process Starting
+==> Building for architectures: x86_64
+==> Building Poppler 24.01.0...
+==> cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-25075-8m0n7p/pdf2htmlEX-0.18.8.rc1/staging -DCM
+==> ninja install
+==> ✓ Poppler 24.01.0 built successfully (37.3s)
+==> ✓ Poppler build validated
+==> Building FontForge 20230101...
+==> patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patc
+Last 15 lines from /Users/adam/Library/Logs/Homebrew/pdf2htmlex/03.patch:
+2025-06-29 12:37:56 +0000
+
+patch
+-d
+..
+-p1
+-i
+/private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patch
+
+patching file 'po/CMakeLists.txt'
+1 out of 1 hunks failed--saving rejects to 'po/CMakeLists.txt.rej'
+Error: ✗ Failed to build FontForge 20230101: Failed executing: patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patch
+Error: Build failed: FontForge 20230101 build failed
+Error: An exception occurred within a child process:
+  RuntimeError: FontForge 20230101 build failed

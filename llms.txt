@@ -1,4 +1,4 @@
-This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
 
 <file_summary>
 This section contains a summary of this file.
@@ -32,6 +32,7 @@ The content is organized as follows:
 <notes>
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: .giga, .cursorrules, .cursor, *.md, archive
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
@@ -40,790 +41,1193 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
-reference/
-  reference.md
+.github/
+  ISSUE_TEMPLATE/
+    bug_report.md
+    feature_request.md
+  workflows/
+    release.yml
+    security.yml
+    test.yml
+  pull_request_template.md
+Formula/
+  pdf2htmlex.rb
+issues/
+  102.txt
+  103.txt
+scripts/
+  build-bottle.sh
+  check-dependencies.sh
+  setup-tap.sh
+  test-build.sh
+  test-formula.sh
+  update-version.sh
+tests/
+  fixtures/
+    create-test-pdfs.sh
+    README.md
+  integration/
+    test_conversions.sh
+.editorconfig
 .gitignore
-build_prototype.sh
-pdf2htmlex.rb
+build.sh
+Makefile
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
 
-<file path="reference/reference.md">
-<clitools>
-Jules
--------- Python --------
-✅ python3: Python 3.12.11
-✅ python: Python 3.12.11
-✅ pip: pip 25.1.1 from /home/jules/.pyenv/versions/3.12.11/lib/python3.12/site-packages/pip (python 3.12)
-✅ pipx: 1.4.3
-✅ poetry: Poetry (version 2.1.3)
-✅ uv: uv 0.7.13
-✅ black: black, 25.1.0 (compiled: yes)
-✅ mypy: mypy 1.16.1 (compiled: yes)
-✅ pytest: pytest 8.4.0
-✅ ruff: ruff 0.12.0
-✅ pyenv: available
-  system
-  3.10.18
-  3.12.11 (set by /home/jules/.pyenv/version)
-
--------- NodeJS --------
-✅ node: v22.16.0 *
-  v18.20.8 *
-  v20.19.2 *
-  → v22.16.0 *
-  system *
-✅ nvm: available
-✅ npm: 11.4.2
-✅ yarn: 1.22.22
-✅ pnpm: 10.12.1
-✅ eslint: v9.29.0
-✅ prettier: 3.5.3
-✅ chromedriver: ChromeDriver 137.0.7151.70
-  (dfa4dc56b2ahb56eb2a14cad006ea5e68c60d5de-refs/branch-heads/7151@{#1875})
-
--------- Java --------
-✅ java: openjdk version "21.0.7" 2025-04-15
-  OpenJDK Runtime Environment (build 21.0.7+6-Ubuntu-0ubuntu124.04)
-  OpenJDK 64-Bit Server VM (build 21.0.7+6-Ubuntu-0ubuntu124.04, mixed mode, sharing)
-✅ maven: Apache Maven 3.9.10 (5f519b97e9448438d878815739f519b2eade0a91d)
-✅ gradle: Gradle 8.8
-
--------- Go --------
-✅ go: go version go1.24.3 linux/amd64
-
--------- Rust --------
-✅ rustc: rustc 1.87.0 (17067e9ac 2025-05-09)
-✅ cargo: cargo 1.87.0 (99624be96 2025-05-06)
-
--------- C/C++ Compilers --------
-✅ clang: Ubuntu clang version 18.1.3 (1ubuntu1)
-✅ gcc: gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-✅ cmake: cmake version 3.28.3
-✅ ninja: 1.11.1
-✅ conan: Conan version 2.17.0
-
--------- Docker --------
-✅ docker: Docker version 28.2.2, build e6534b4
-✅ docker: Docker Compose version v2.36.2
-
--------- Other Utilities --------
-✅ awk: GNU Awk 5.2.1, API 3.2, PMA Avon 8-g1, (GNU MPFR 4.2.1, GNU MP 6.3.0)
-✅ curl: curl 8.5.0 (x86_64-pc-linux-gnu) libcurl/8.5.0 OpenSSL/3.0.13 zlib/1.3 brotli/1.1.0 zstd/1.5.5 libidn2/2.3.7 libpsl/0.21.2 (+libidn2/2.3.7) libssh/0.10.6/openssl/zlib nghttp2/1.59.0 librtmp/2.3 OpenLDAP/2.6.7
-✅ git: git version 2.49.0
-✅ grep: grep (GNU grep) 3.11
-✅ gzip: gzip 1.12
-✅ jq: jq-1.7
-✅ make: GNU Make 4.3
-✅ rg: ripgrep 14.1.0
-✅ sed: sed (GNU sed) 4.9
-✅ tar: tar (GNU tar) 1.35
-✅ tmux: tmux 3.4
-✅ yq: yq 0.0.0
-</clitools>
-
-
-<tree>
-pdf2htmlEX/
-├── archive
-│   ├── build_for_ppa.py
-│   ├── createDebianPackage
-│   └── debian
-│       ├── changelog
-│       ├── compat
-│       ├── control
-│       ├── copyright
-│       ├── dirs
-│       ├── pdf2htmlex.NEWS
-│       ├── pdf2htmlex.README
-│       ├── pdf2htmlex.TODO
-│       ├── rules
-│       └── source
-│           └── format
-├── AUTHORS
-├── buildScripts
-│   ├── buildFontforge
-│   ├── buildInstallLocallyAlpine
-│   ├── buildInstallLocallyApt
-│   ├── buildInstallLocallyDnf
-│   ├── buildPdf2htmlEX
-│   ├── buildPoppler
-│   ├── createAlpineTarFile
-│   ├── createAppImage
-│   ├── createContainerAlpineImageFromTarFile
-│   ├── createContainerUbuntuImageFromDeb
-│   ├── createDebianPackage
-│   ├── createImagesAlpine
-│   ├── createImagesApt
-│   ├── getBuildToolsAlpine
-│   ├── getBuildToolsApt
-│   ├── getBuildToolsDnf
-│   ├── getDevLibrariesAlpine
-│   ├── getDevLibrariesApt
-│   ├── getDevLibrariesDnf
-│   ├── getFontforge
-│   ├── getPoppler
-│   ├── installPdf2htmlEX
-│   ├── listFilesByChangeTime
-│   ├── PKGBUILD
-│   ├── Readme.md
-│   ├── reportEnvs
-│   ├── runTests
-│   ├── travisLinuxDoItAll
-│   ├── uploadContainerImage
-│   ├── uploadGitHubRelease
-│   ├── uploadGitHubReleaseDSL
-│   ├── uploadGitHubReleaseMessage
-│   ├── uploadImages
-│   └── versionEnvs
-├── ChangeLog
-├── CONTRIBUTING.md
-├── INSTALL
-├── LICENSE
-├── LICENSE_GPLv3
-├── patches
-│   ├── fontforge-20170731-fixGDraw.patch
-│   └── fontforge-20170731-fixGitVersion.patch
-├── pdf2htmlEX
-│   ├── 3rdparty
-│   │   ├── closure-compiler
-│   │   │   ├── compiler.jar
-│   │   │   ├── COPYING
-│   │   │   └── README
-│   │   ├── PDF.js
-│   │   │   ├── build.sh
-│   │   │   ├── compatibility.js
-│   │   │   ├── compatibility.min.js
-│   │   │   └── LICENSE
-│   │   └── yuicompressor
-│   │       ├── LICENSE.TXT
-│   │       └── yuicompressor-2.4.8.jar
-│   ├── CMakeLists.txt
-│   ├── logo
-│   │   ├── design.svg
-│   │   ├── LICENSE
-│   │   ├── LICENSE_CC-BY-3.0
-│   │   ├── notes.txt
-│   │   ├── pdf2htmlEX-256x256.png
-│   │   ├── pdf2htmlEX-64x64.png
-│   │   ├── pdf2htmlEX.svg
-│   │   └── update_png.sh
-│   ├── pdf2htmlEX.1.in
-│   ├── share
-│   │   ├── base.css.in
-│   │   ├── build_css.sh
-│   │   ├── build_js.sh
-│   │   ├── fancy.css.in
-│   │   ├── LICENSE
-│   │   ├── manifest
-│   │   ├── pdf2htmlEX-64x64.png
-│   │   └── pdf2htmlEX.js.in
-│   ├── src
-│   │   ├── ArgParser.cc
-│   │   ├── ArgParser.h
-│   │   ├── BackgroundRenderer
-│   │   │   ├── BackgroundRenderer.cc
-│   │   │   ├── BackgroundRenderer.h
-│   │   │   ├── CairoBackgroundRenderer.cc
-│   │   │   ├── CairoBackgroundRenderer.h
-│   │   │   ├── SplashBackgroundRenderer.cc
-│   │   │   └── SplashBackgroundRenderer.h
-│   │   ├── Base64Stream.cc
-│   │   ├── Base64Stream.h
-│   │   ├── Color.cc
-│   │   ├── Color.h
-│   │   ├── CoveredTextDetector.cc
-│   │   ├── CoveredTextDetector.h
-│   │   ├── css_class_names.cmakelists.txt
-│   │   ├── DrawingTracer.cc
-│   │   ├── DrawingTracer.h
-│   │   ├── HTMLRenderer
-│   │   │   ├── draw.cc
-│   │   │   ├── font.cc
-│   │   │   ├── form.cc
-│   │   │   ├── general.cc
-│   │   │   ├── HTMLRenderer.h
-│   │   │   ├── image.cc
-│   │   │   ├── link.cc
-│   │   │   ├── outline.cc
-│   │   │   ├── state.cc
-│   │   │   └── text.cc
-│   │   ├── HTMLState.h
-│   │   ├── HTMLTextLine.cc
-│   │   ├── HTMLTextLine.h
-│   │   ├── HTMLTextPage.cc
-│   │   ├── HTMLTextPage.h
-│   │   ├── Param.h
-│   │   ├── pdf2htmlEX-config.h.in
-│   │   ├── pdf2htmlEX.cc
-│   │   ├── Preprocessor.cc
-│   │   ├── Preprocessor.h
-│   │   ├── StateManager.h
-│   │   ├── StringFormatter.cc
-│   │   ├── StringFormatter.h
-│   │   ├── TmpFiles.cc
-│   │   ├── TmpFiles.h
-│   │   └── util
-│   │       ├── const.cc
-│   │       ├── const.h
-│   │       ├── css_const.h.in
-│   │       ├── encoding.cc
-│   │       ├── encoding.h
-│   │       ├── ffw.c
-│   │       ├── ffw.h
-│   │       ├── math.cc
-│   │       ├── math.h
-│   │       ├── mingw.cc
-│   │       ├── mingw.h
-│   │       ├── misc.cc
-│   │       ├── misc.h
-│   │       ├── namespace.h
-│   │       ├── path.cc
-│   │       ├── path.h
-│   │       ├── SignalHandler.cc
-│   │       ├── SignalHandler.h
-│   │       ├── unicode.cc
-│   │       └── unicode.h
-│   └── test
-│       ├── browser_tests
-│       │   ├── basic_text
-│       │   │   └── basic_text.html
-│       │   ├── basic_text.pdf
-│       │   ├── basic_text.tex
-│       │   ├── fontfile3_opentype
-│       │   │   └── fontfile3_opentype.html
-│       │   ├── fontfile3_opentype.pdf
-│       │   ├── geneve_1564
-│       │   │   └── geneve_1564.html
-│       │   ├── geneve_1564.pdf
-│       │   ├── invalid_unicode_issue477
-│       │   │   └── invalid_unicode_issue477.html
-│       │   ├── invalid_unicode_issue477.pdf
-│       │   ├── svg_background_with_page_rotation_issue402
-│       │   │   └── svg_background_with_page_rotation_issue402.html
-│       │   ├── svg_background_with_page_rotation_issue402.pdf
-│       │   ├── test_fail
-│       │   │   └── THIS_FOLDER_SHOULD_BE_EMPTY
-│       │   ├── test_fail.pdf
-│       │   ├── test_fail.tex
-│       │   ├── text_visibility
-│       │   │   └── text_visibility.html
-│       │   ├── text_visibility.pdf
-│       │   ├── with_form
-│       │   │   └── with_form.html
-│       │   └── with_form.pdf
-│       ├── browser_tests.py
-│       ├── compareTestImages
-│       ├── fancy.min.css
-│       ├── installAutomaticTestSoftwareApt
-│       ├── installAutomaticTestSoftwareDnf
-│       ├── installManualTestSoftware
-│       ├── old
-│       │   ├── convert_to_woff.fontforge
-│       │   └── test.py
-│       ├── produceHtmlForBrowserTests
-│       ├── README.md
-│       ├── regenerateTest
-│       ├── runLocalBrowserTests
-│       ├── runLocalTestsPython
-│       ├── runLocalTestsShell
-│       ├── test_local_browser.py
-│       ├── test_output
-│       │   ├── 1-page.pdf
-│       │   ├── 2-pages.pdf
-│       │   ├── 3-pages.pdf
-│       │   └── issue501
-│       ├── test_output.py
-│       ├── test_remote_browser.py
-│       ├── test.py.in
-│       └── testOutput
-├── PopplerReleases.md
-├── README.md
-└── TODO
-
-29 directories, 187 files
-</tree>
-
-<ref>
-
-# Building pdf2htmlEX
-
-Because of its intimate use of *specific* versions of both 
-[Poppler](https://poppler.freedesktop.org/) and 
-[FontForge](https://fontforge.org/en-US/),
-cleanly building `pdf2htmlEX` is rather more complex than 
-normal. 
-
-The (shell) scripts in the [`buildScripts` directory](https://github.com/pdf2htmlEX/pdf2htmlEX/tree/master/buildScripts) help automate this mutli-stage process. 
-
-For all but the most experienced programmers, we *strongly* encourage you 
-to use these scripts to build `pdf2htmlEX`. 
-
-### [∞](#downloading-precompiled-versions) Downloading precompiled versions
-
-For most users, you *probably really want to simply* download one of the 
-[precompiled versions of 
-`pdf2htmlEX`](https://github.com/pdf2htmlEX/pdf2htmlEX/releases): 
-
-- As a [Debian archive](Download-Debian-Archive)
-- As an [Alpine tar archive](Download-Alpine-Tar-Archive)
-- As an [AppImage](Download-AppImage)
-- As a [Docker image](Download-Docker-Image)
-
-# Environment
-
-pdf2htmlEX can be built in any Unix-like environment:
-* **GNU/Linux:**
-  `pdf2htmlEX` is currently built and released inside Ubuntu
-  (Bionic, Eoan, and Focal), Alpine 3.12 docker containers,
-  as well as Ubuntu-Bionic on Travis, so `pdf2htmlEX` is
-  *known* to build on any Debian based distribution.
-
-  The current `buildScripts` assume the use of either `apt` 
-  (Debian) or `apk` (Alpine) for (automatic) installation of
-  all required dependencies. These scripts should be easily 
-  modified for other distributions.
-* **macOS**:
-  While it should in principle be possible to build on macOS,
-  unfortunately we currently have no access to a development/testing
-  environment with which to ensure the `buildScripts` are
-  adequately tuned to build on macOS.
-
-  **NOTE** that the existing [`homebrew`](https://brew.sh/)
-  [build script](https://github.com/Homebrew/homebrew-core/blob/master/Formula/pdf2htmlex.rb)
-  is *not* up to date and will fail.
-
-  *Offers of help and/or temporary access to development/testing
-  machines would be greatly appreciated.*
-
-* **Windows 10 with the [Windows Subsystem
-  for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)**:
-
-  The Debian(Apt) versions of our build scripts should build `pdf2htmlEX` (untested).
-
-  The AppImage or Debian archive binary release objects *are* reputed to work.
-
-* **Android**: Have a look at [Vilius Sutkus](https://github.com/ViliusSutkus89)'s [pdf2htmlEX-Android](https://github.com/ViliusSutkus89/pdf2htmlEX-Android).
-
-# Building yourself
-
-To build `pdf2htmlEX` on a Debian/Apt related machine, inside the root 
-directory of a fresh clone of the 
-[pdf2htmlEX/pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX) 
-repository, type: 
-
-```
-    ./buildScripts/buildInstallLocallyApt
-```
-
-This will automatically install all required development tools and 
-libraries, and then proceed to download and statically compile the 
-required versions of both Poppler and FontForge before compiling and 
-installing `pdf2htmlEX` into `/usr/local/bin`. 
-
-**NOTE:** at the moment this will **only** work on machines with a 
-[Debian](https://www.debian.org/) based distribution. such as 
-[Ubuntu](https://ubuntu.com/), [Linux Mint](https://linuxmint.com/), etc. 
-
-**NOTE:** there is currently an *experimental* build script, 
-`./buildScripts/buildInstallLocallyAlpine`, for builds in Alpine 
-environments. 
-
-## [∞](#dependencies) Dependencies
-
-The definitive list of build dependencies can be found in the following scripts:
-
-1. [getBuildToolsAlpine](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsAlpine) for Alpine Linux
-2. [getBuildToolsApt](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsApt) for Debian based systems
-3. [getDevLibrariesAlpine](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsAlpine) for Alpine Linux
-4. [getDevLibrariesApt](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsApt) for Debian based systems
-
-## [∞](#build-options) Build options
-
-To build `pdf2htmlEX` you require static versions of the Poppler and FontForge libraries in specific 'well-known' locations.
-
-An automatic build uses `cmake` to build all of Poppler, FontForge and `pdf2htmlEX`.
-
-The definitive list of cmake build options can be found in the following scripts:
-
-1. [buildFontforge](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/buildFontforge)
-2. [buildPdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/buildPdf2htmlEX)
-3. [buildPoppler](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/buildPoppler)
-
-# Why such a complex build system?
-
-## [∞](#the-problem) The problem
-
-To provide its full functionality, the `pdf2htmlEX` sources make direct 
-use of source code and unexposed methods from both the Poppler and 
-FontForge projects. Unfortunately the source code in the Poppler and 
-FontForge projects that the `pdf2htmlEX` uses changes regularly.
-
-This means that the `pdf2htmlEX` souce code *must* be updated regularly to 
-match *specific releases* of both Poppler and FontForge. 
-
-Unfortunately, the installed versions of both Poppler and FontForge in 
-most Linux distributions, lag the official releases of both of these 
-projects. Even worse few distributions install the same versions.
-
-This means that it is nearly impossible for the `pdf2htmlEX` code to 
-'predict' which version of Poppler or FontForge will be installed on a 
-given user's machine. 
-
-## [∞](#our-solution) Our solution
-
-While we *could* keep multiple versions of the `pdf2htmlEX` source code, 
-each version matched to a particular distribution's installed versions of 
-Poppler and FontForge, this would be a logistic and testing 'nightmare'. 
-
-Instead, when building `pdf2htmlEX`, we download specific versions of both 
-the Poppler and FontForge sources (usually the most recent), and then 
-compile *static* versions of the Poppler and FontForge libraries which are 
-then *statically* linked into the `pdf2htmlEX` binary. 
-
-This means that the `pdf2htmlEX` binary is completely independent of any 
-locally installed versions of either Poppler or FontForge.
-
-However, to get the matched versions of Poppler and FontForge and then 
-compile them statically, *our* build process becomes much more complex 
-than a "simple", `configure, make, make install` cycle. 
-
-Hence there are a large number of shell scripts in the [`buildScripts`
-directory](https://github.com/pdf2htmlEX/pdf2htmlEX/tree/master/buildScripts)
-each of which automates one 'simple' step in the overall build process. 
-
-## [∞](#) 
-</ref>
-
-1. **Explore the project** – analyse the `buildScripts` directory to extract the exact Poppler & FontForge versions and build flags that `pdf2htmlEX` expects.
-
-2. **Map every Linux‑centric step to macOS/Homebrew equivalents** – work out which bits can reuse existing Homebrew formulae (`poppler`, `fontforge`, etc.) and where private “resource” blocks are required.
-
-3. **Prototype a clean, reproducible universal build** – script two native builds (arm64 and x86_64) under Homebrew and merge them with `lipo`, or use CMake’s `CMAKE_OSX_ARCHITECTURES="x86_64;arm64"` where feasible.
-
-4. **Author a modern Formula (`pdf2htmlex.rb`) inside a new tap** created with `brew tap‑new`, add an automated test block, then run `brew audit --strict --new-formula` until it is clean.
-5. **Bottle and publish** – use `brew install --build-bottle`, `brew bottle`, commit bottles, and set up a GitHub Actions workflow that pushes updates whenever the upstream tag or Poppler/FontForge revisions change.
-
-The detailed play‑book follows.
-
----
-
-## [∞](#1set-up-the-local-research-environment) 1 – Set up the local research environment
-
-### [∞](#11-spawn-fresh-macos-runners) 1.1 Spawn fresh macOS runners
-
-- Use `brew doctor && brew update --force --quiet` to ensure the host is pristine.
-- Install Rosetta 2 on Apple Silicon if you plan to run Intel‐only tools during the analysis phase. ([formulae.brew.sh][1])
-
-### [∞](#12-fetch-sources-and-history) 1.2 Fetch sources and history
-
-```bash
-git clone https://github.com/pdf2htmlEX/pdf2htmlEX
-cd pdf2htmlEX
-git submodule update --init --recursive
-```
-
-- Keep the clone handy so the assistant can run static analysis tools (`clang‑tidy`, `ruff`, `mypy`, etc.).
-
-### [∞](#13-inventory-all-build-helpers) 1.3 Inventory all build helpers
-
-Run a Python one‑liner that walks `buildScripts/` and prints every `build*`, `get*` and `create*` script; this seeds a to‑do list for porting.
-
-```python
-import pathlib, re, itertools, textwrap, shutil
-...
-```
-
-Use **Python 3.12**, `rich` for pretty tables, and `ruff` → `black` for autofixing generated helper scripts, matching Adam’s coding standards.
-
----
-
-## [∞](#2reverseengineer-the-exact-dependency-stack) 2 – Reverse‑engineer the exact dependency stack
-
-### [∞](#21-parse-buildscripts-for-hardcoded-versions) 2.1 Parse buildScripts for hard‑coded versions
-
-- `buildPoppler`, `buildFontforge`, `versionEnvs` hold authoritative `POPPLER_VERSION` and `FONTFORGE_VERSION` variables.
-- Capture them into a JSON manifest so later steps can compare with the latest Homebrew core versions (`poppler` is updated almost weekly ([formulae.brew.sh][2]), `fontforge` monthly ([formulae.brew.sh][3])).
-
-### [∞](#22-decide-system-formula-vs-vendored-resource) 2.2 Decide: system formula vs vendored resource
-
-- If upstream’s required Poppler/FontForge tags **match** Homebrew, reuse the core formulae and declare them as `depends_on "poppler"` / `depends_on "fontforge"`.
-- If they differ, create **resource** blocks that fetch and build the frozen revisions exactly as the Linux scripts do. The old, removed formula (see 2018 commit 995cc7e ([trac.macports.org][4])) is a useful template for embedding those resources.
-
-### [∞](#23-identify-auxiliary-runtime-deps) 2.3 Identify auxiliary runtime deps
-
-Look through `getBuildToolsApt` and map each Debian package to its Homebrew analogue (e.g. `pkg-config`, `glib`, `cairo`, `libpng`, `jpeg`, etc.).
-
----
-
-## [∞](#3craft-a-universal-build-that-works-on-both-cpus) 3 – Craft a universal build that works on both CPUs
-
-### [∞](#31-straightforward-route-single-cmake-pass) 3.1 Straightforward route: single CMake pass
-
-- Invoke CMake with
-
-  ```bash
-  cmake -B build -G Ninja \
-        -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
-        -DENABLE_UNIVERSAL_BINARY=ON
-  ```
-
-  This matches Apple’s guidance on Universal 2 binaries ([developer.apple.com][5]).
-
-- If CMake chokes on dual‑arch static libs (common with Poppler), fall back to **two separate builds** and stitch the resulting binaries with `lipo -create` ([github.com][6]).
-
-### [∞](#32-stresstest) 3.2 Stress‑test
-
-- Run `pdf2htmlEX --version` and convert a small PDF on both host architectures under Rosetta to verify the binary really is fat.
-- Optional: push sample PDFs through the upstream Python test‑suite in `test/runLocalTestsPython`.
-
----
-
-## [∞](#4write-the-homebrew-formula-skeleton) 4 – Write the Homebrew formula skeleton
-
-### [∞](#41-bootstrap-a-tap) 4.1 Bootstrap a tap
-
-```bash
-brew tap-new yourname/pdf2htmlex
-cd $(brew --repository yourname/pdf2htmlex)
-```
-
-Template files are generated for you ([docs.brew.sh][7]).
-
-### [∞](#42-use-brew-create---tap-yournamepdf2htmlex-tarball-to-generate-formulapdf2htmlexrb-then-handedit) 4.2 Use `brew create --tap yourname/pdf2htmlex <tarball>` to generate `Formula/pdf2htmlex.rb`, then hand‑edit:
-
-- **desc**, **homepage**, **url**, **sha256** → pull from the latest GitHub release ([github.com][8]).
-- **license** `"GPL-3.0-or-later"` (see upstream `LICENSE_GPLv3`).
-- **depends_on** system libraries or resource blocks from § 2.
-- **def install**
-
-  ```ruby
-  system "cmake", "-S", ".", "-B", "build",
-         *std_cmake_args, "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.join(";")}"
-  system "cmake", "--build", "build"
-  bin.install "build/pdf2htmlEX"
-  ```
-
-- Add `test do` that converts a one‑page PDF and checks the HTML contains the word “pdf2htmlEX”.
-
-### [∞](#43-lint--audit) 4.3 Lint & audit
-
-Run
-
-```bash
-brew audit --strict --new-formula Formula/pdf2htmlex.rb
-brew install --build-from-source pdf2htmlex
-```
-
-until both succeed without warnings ([docs.brew.sh][9]).
-
----
-
-## [∞](#5bottle-and-distribute) 5 – Bottle and distribute
-
-### [∞](#51-build-bottles) 5.1 Build bottles
-
-```bash
-brew install --build-bottle pdf2htmlex
-brew bottle pdf2htmlex
-```
-
-This emits `.tar.gz` bottles for each arch that Homebrew will later pour.
-
-### [∞](#52-commit-bottles--update-formula) 5.2 Commit bottles & update formula
-
-Follow the canonical bottle‑commit flow: add the `sha256 cellar:` lines to `pdf2htmlex.rb`, push, and tag a release on your tap.
-
-### [∞](#53-continuous-delivery) 5.3 Continuous delivery
-
-Create a **GitHub Actions** workflow (`macos‑latest`, `runs-on: macos-14`) that:
-
-1. Checks out both `pdf2htmlEX` and the tap.
-2. Re‑evaluates § 2 for new Poppler/FontForge tags weekly.
-3. Re‑builds, bottles, and opens a PR against the tap if anything changed.
-4. Runs `brew test-bot` to ensure arm64 & x86_64 stay green.
-
----
-
-## [∞](#6validation-matrix) 6 – Validation matrix
-
-| Step                      | Intel host | Apple Silicon host | CI (GitHub) |
-| ------------------------- | ---------- | ------------------ | ----------- |
-| `brew install pdf2htmlex` | ✅         | ✅ (native)        | ✅          |
-| Convert PDF smoke‑test    | ✅         | ✅                 | ✅          |
-| `brew audit` clean        | ✅         | ✅                 | ✅          |
-| Bottle pouring            | ✅         | ✅                 | ✅          |
-
----
-
-## [∞](#7pointers--references-for-the-assistant) 7 – Pointers & references for the assistant
-
-- Upstream maintainers acknowledge the current Homebrew formula is stale ([github.com][10]) and users on macOS are currently blocked ([github.com][10]).
-- The old Homebrew formula (removed in 2018) shows how resources were vendored ([trac.macports.org][4]).
-- Homebrew documentation on taps ([docs.brew.sh][11]), formula‑cookbook ([docs.brew.sh][9]), acceptable formula rules ([docs.brew.sh][12]).
-- Poppler ([formulae.brew.sh][2]) and FontForge ([formulae.brew.sh][3]) current formulae.
-- Apple guidance on universal binaries ([developer.apple.com][5]).
-- Community discussion about multi‑arch Homebrew builds ([github.com][6]).
-
-Hand the plan above to your LLM assistant; it now has a **clear, tool‑by‑tool blueprint** to analyse the codebase, adapt the build for macOS, and publish a modern Homebrew tap that “just works” on both chips.
-
-[1]: https://formulae.brew.sh/cask/fontforge?utm_source=chatgpt.com 'fontforge - Homebrew Formulae'
-[2]: https://formulae.brew.sh/formula/poppler?utm_source=chatgpt.com 'poppler - Homebrew Formulae'
-[3]: https://formulae.brew.sh/formula/fontforge?utm_source=chatgpt.com 'fontforge - Homebrew Formulae'
-[4]: https://trac.macports.org/ticket/56803?utm_source=chatgpt.com "56803 (pdf2htmlex @0.11: doesn't build) - MacPorts"
-[5]: https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary?utm_source=chatgpt.com 'Building a universal macOS binary | Apple Developer Documentation'
-[6]: https://github.com/orgs/Homebrew/discussions/4985?utm_source=chatgpt.com 'Installing a Universal 2 binary · Homebrew · Discussion #4985'
-[7]: https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap?utm_source=chatgpt.com 'How to Create and Maintain a Tap - Homebrew Documentation'
-[8]: https://github.com/pdf2htmlEX?utm_source=chatgpt.com 'pdf2htmlEX - GitHub'
-[9]: https://docs.brew.sh/Formula-Cookbook?utm_source=chatgpt.com 'Formula Cookbook - Homebrew Documentation'
-[10]: https://github.com/pdf2htmlEX/pdf2htmlEX/issues/159?utm_source=chatgpt.com 'how to install on macos · Issue #159 · pdf2htmlEX ... - GitHub'
-[11]: https://docs.brew.sh/Taps?utm_source=chatgpt.com 'Taps (Third-Party Repositories) - Homebrew Documentation'
-[12]: https://docs.brew.sh/Acceptable-Formulae?utm_source=chatgpt.com 'Acceptable Formulae - Homebrew Documentation'
+<file path="issues/102.txt">
+brew install --build-from-source Formula/pdf2htmlex.rb
+
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+error: pathspec 'main' did not match any file(s) known to git
+==> Auto-updated Homebrew!
+==> Updated Homebrew from c9d3df2e54 to 52d66f206a.
+Updated 1 tap (homebrew/cask).
+
+You have 181 outdated formulae and 10 outdated casks installed.
+
+Error: Failed to load cask: Formula/pdf2htmlex.rb
+Cask 'pdf2htmlex' is unreadable: wrong constant name #<Class:0x0000000124ec9bc0>
+Warning: Treating Formula/pdf2htmlex.rb as a formula.
+==> Fetching dependencies for pdf2htmlex: pkgconf and pango
+==> Fetching pkgconf
+==> Downloading https://ghcr.io/v2/homebrew/core/pkgconf/manifests/2.5.1
+###################################################################################################################### 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:a074f871aa476dec1101c13b4fcfbb9354a8b35bcb6e056f8411463
+###################################################################################################################### 100.0%
+==> Verifying attestation for pkgconf
+==> Fetching pango
+==> Downloading https://ghcr.io/v2/homebrew/core/pango/manifests/1.56.4
+###################################################################################################################### 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/pango/blobs/sha256:03a76dd1f0f289418ac065fdabfbf3a4391962587975f63fd33a109da
+###################################################################################################################### 100.0%
+==> Fetching pdf2htmlex
+==> Downloading https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
+==> Ignoring /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--
+Cached modified time 2025-06-23T00:21:45+02:00 is beforeLast-Modified header: 2025-06-27T11:14:01+00:00
+###################################################################################################################### 100.0%
+==> Downloading https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz
+==> Downloading https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz
+==> Installing dependencies for pdf2htmlex: pkgconf and pango
+==> Installing pdf2htmlex dependency: pkgconf
+==> Downloading https://ghcr.io/v2/homebrew/core/pkgconf/manifests/2.5.1
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/e0bf05fafcedcfbde9a9a488dc3a083cadd19584ac19f4cc053a9c265f841120--pkgconf-2.5.1.bottle_manifest.json
+==> Pouring pkgconf--2.5.1.sequoia.bottle.tar.gz
+🍺  /usr/local/Cellar/pkgconf/2.5.1: 28 files, 376.4KB
+==> Installing pdf2htmlex dependency: pango
+==> Downloading https://ghcr.io/v2/homebrew/core/pango/manifests/1.56.4
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/2aea7cad1d8c6268959bdd70cf5b58468d5ce9bf4a14a631e7edeae8c5715c72--pango-1.56.4.bottle_manifest.json
+==> Pouring pango--1.56.4.sonoma.bottle.tar.gz
+🍺  /usr/local/Cellar/pango/1.56.4: 69 files, 3MB
+==> Installing pdf2htmlex
+==> pdf2htmlEX Build Process Starting
+==> Building for architectures: x86_64
+==> Building Poppler 24.01.0...
+==> cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-30928-b1s8q1/pdf2htmlEX-0.18.8.rc1/staging -DCM
+==> ninja install
+==> ✓ Poppler 24.01.0 built successfully (38.0s)
+==> ✓ Poppler build validated
+==> Building FontForge 20230101...
+==> patch -p1 -i /private/tmp/pdf2htmlex-20250629-30928-b1s8q1/pdf2htmlEX-0.18.8.rc1/patches/disable-gettext.patch
+
+
+Last 15 lines from /Users/adam/Library/Logs/Homebrew/pdf2htmlex/03.patch:
+2025-06-28 23:42:14 +0000
+
+patch
+-p1
+-i
+/private/tmp/pdf2htmlex-20250629-30928-b1s8q1/pdf2htmlEX-0.18.8.rc1/patches/disable-gettext.patch
+
+File to patch: No file found--skip this patch? [y] 1 out of 1 hunks ignored--saving rejects to Oops.rej
+
+
+Error: ✗ Failed to build FontForge 20230101: Failed executing: patch -p1 -i /private/tmp/pdf2htmlex-20250629-30928-b1s8q1/pdf2htmlEX-0.18.8.rc1/patches/disable-gettext.patch
+Error: Build failed: FontForge 20230101 build failed
+Error: An exception occurred within a child process:
+  RuntimeError: FontForge 20230101 build failed
 </file>
 
-<file path=".gitignore">
-# macOS specific files
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+<file path="issues/103.txt">
+Error: Failed to load cask: Formula/pdf2htmlex.rb
+Cask 'pdf2htmlex' is unreadable: wrong constant name #<Class:0x00000001237a9d00>
+Warning: Treating Formula/pdf2htmlex.rb as a formula.
+==> Fetching pdf2htmlex
+==> Downloading https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz
+==> Downloading https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz
+==> Downloading https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz
+==> pdf2htmlEX Build Process Starting
+==> Building for architectures: x86_64
+==> Building Poppler 24.01.0...
+==> cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-25075-8m0n7p/pdf2htmlEX-0.18.8.rc1/staging -DCM
+==> ninja install
+==> ✓ Poppler 24.01.0 built successfully (37.3s)
+==> ✓ Poppler build validated
+==> Building FontForge 20230101...
+==> patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patc
+Last 15 lines from /Users/adam/Library/Logs/Homebrew/pdf2htmlex/03.patch:
+2025-06-29 12:37:56 +0000
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-.AppleDouble
-.LSOverride
+patch
+-d
+..
+-p1
+-i
+/private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patch
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# IDE files
-.idea/
-.vscode/
-*.sublime-project
-*.sublime-workspace
-.project
-.classpath
-.settings/
-
-# Common build and binary directories
-bin/
-build/
-dist/
-target/
-out/
-*.o
-*.so
-*.dylib
-*.dll
-*.exe
-
-# Logs and databases
-*.log
-*.sql
-*.sqlite
-*.db
-
-# Backup files
-*~
-*.bak
-*.swp
-*.swo
-
-# Python specific
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Node.js specific
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-.npm
-.yarn-integrity
-
-# Ruby specific
-*.gem
-*.rbc
-/.config
-/coverage/
-/InstalledFiles
-/pkg/
-/spec/reports/
-/spec/examples.txt
-/test/tmp/
-/test/version_tmp/
-/tmp/
-.rakeTasks
-
-# Local environment files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+patching file 'po/CMakeLists.txt'
+1 out of 1 hunks failed--saving rejects to 'po/CMakeLists.txt.rej'
+Error: ✗ Failed to build FontForge 20230101: Failed executing: patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patch
+Error: Build failed: FontForge 20230101 build failed
+Error: An exception occurred within a child process:
+  RuntimeError: FontForge 20230101 build failed
 </file>
 
-<file path="build_prototype.sh">
+<file path=".github/ISSUE_TEMPLATE/bug_report.md">
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: bug
+assignees: ''
+
+---
+
+**Describe the bug**
+A clear and concise description of what the bug is.
+
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Install formula with '...'
+2. Run command '...'
+3. See error
+
+**Expected behavior**
+A clear and concise description of what you expected to happen.
+
+**Error output**
+```
+Paste any error messages here
+```
+
+**System Information:**
+ - macOS version: [e.g. 14.0]
+ - Architecture: [e.g. Apple Silicon M1, Intel x86_64]
+ - Homebrew version: [run `brew --version`]
+ - pdf2htmlEX version: [run `pdf2htmlEX --version`]
+
+**Installation method:**
+- [ ] `brew install pdf2htmlex`
+- [ ] `brew install --build-from-source`
+- [ ] Other (please specify)
+
+**Additional context**
+Add any other context about the problem here. Include sample PDFs if relevant (ensure they don't contain sensitive information).
+</file>
+
+<file path=".github/ISSUE_TEMPLATE/feature_request.md">
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: enhancement
+assignees: ''
+
+---
+
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
+
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
+
+**Additional context**
+Add any other context or screenshots about the feature request here.
+
+**Would you be willing to help implement this feature?**
+- [ ] Yes, I can submit a PR
+- [ ] Yes, but I would need guidance
+- [ ] No, but I can test it
+- [ ] No
+</file>
+
+<file path=".github/workflows/release.yml">
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Get version
+      id: get_version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ inputs.version }}"
+        else
+          VERSION=${GITHUB_REF#refs/tags/}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        if [ -f "CHANGELOG.md" ]; then
+          # Extract latest version changes
+          CHANGES=$(awk '/^## \[/ {if (p) exit; p=1; next} p' CHANGELOG.md)
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "changes=No changelog available" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_version.outputs.version }}
+        release_name: Release ${{ steps.get_version.outputs.version }}
+        body: |
+          ## Changes in this release
+          
+          ${{ steps.changelog.outputs.changes }}
+          
+          ## Installation
+          
+          ```bash
+          brew tap twardoch/pdf2htmlex
+          brew install pdf2htmlex
+          ```
+          
+          Or install directly from this repository:
+          ```bash
+          brew install --build-from-source https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb
+          ```
+        draft: false
+        prerelease: false
+
+  build-bottles:
+    needs: create-release
+    strategy:
+      matrix:
+        os: [macos-12, macos-13, macos-14]
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ needs.create-release.outputs.version }}
+    
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    
+    - name: Install dependencies
+      run: |
+        brew install cmake ninja pkg-config
+        brew install cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz
+        brew install openjdk
+    
+    - name: Build bottle
+      id: build
+      run: |
+        brew install --build-bottle Formula/pdf2htmlex.rb
+        brew bottle --json --no-rebuild pdf2htmlex
+        
+        # Get bottle filename
+        BOTTLE_FILE=$(ls *.bottle.* | head -1)
+        echo "bottle_file=$BOTTLE_FILE" >> $GITHUB_OUTPUT
+        
+        # Extract bottle info
+        BOTTLE_JSON=$(brew bottle --json --no-rebuild pdf2htmlex | jq -r '.[].bottle.tags')
+        echo "bottle_json=$BOTTLE_JSON" >> $GITHUB_OUTPUT
+    
+    - name: Upload bottle
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ${{ steps.build.outputs.bottle_file }}
+        asset_name: ${{ steps.build.outputs.bottle_file }}
+        asset_content_type: application/gzip
+    
+    - name: Output bottle SHA
+      run: |
+        echo "Bottle SHA for ${{ matrix.os }}:"
+        shasum -a 256 ${{ steps.build.outputs.bottle_file }}
+
+  update-formula:
+    needs: [create-release, build-bottles]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: main
+    
+    - name: Update formula with bottle SHAs
+      run: |
+        echo "::notice::Bottle SHAs need to be manually added to the formula"
+        echo "Please update Formula/pdf2htmlex.rb with the bottle block"
+    
+    - name: Create PR for bottle updates
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: "Update bottle SHAs for ${{ needs.create-release.outputs.version }}"
+        body: |
+          This PR updates the bottle SHAs for release ${{ needs.create-release.outputs.version }}.
+          
+          Please manually update the bottle block in Formula/pdf2htmlex.rb with the SHAs from the release artifacts.
+        branch: update-bottles-${{ needs.create-release.outputs.version }}
+        commit-message: "Update bottle SHAs for ${{ needs.create-release.outputs.version }}"
+</file>
+
+<file path=".github/workflows/security.yml">
+name: Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run security scan weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check for known vulnerabilities in dependencies
+      run: |
+        # Check Poppler version for CVEs
+        POPPLER_VERSION="24.01.0"
+        echo "Checking Poppler $POPPLER_VERSION for vulnerabilities..."
+        
+        # Check FontForge version for CVEs
+        FONTFORGE_VERSION="20230101"
+        echo "Checking FontForge $FONTFORGE_VERSION for vulnerabilities..."
+        
+        # Note: In a real implementation, this would query CVE databases
+        # For now, we'll create a simple check
+        
+        cat > check_cves.py << 'EOF'
+        import json
+        import urllib.request
+        import sys
+        
+        def check_cves(product, version):
+            # This is a placeholder - in production, use proper CVE API
+            print(f"Checking {product} {version} for CVEs...")
+            # Would query https://nvd.nist.gov/vuln/search or similar
+            return []
+        
+        vulnerabilities = []
+        vulnerabilities.extend(check_cves("poppler", "24.01.0"))
+        vulnerabilities.extend(check_cves("fontforge", "20230101"))
+        
+        if vulnerabilities:
+            print("VULNERABILITIES FOUND:")
+            for vuln in vulnerabilities:
+                print(f"  - {vuln}")
+            sys.exit(1)
+        else:
+            print("No known vulnerabilities found")
+        EOF
+        
+        python3 check_cves.py
+    
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        languages: ruby
+    
+    - name: Check for hardcoded secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+    
+    - name: Audit formula security
+      run: |
+        # Check for insecure practices in formula
+        echo "Checking formula for security issues..."
+        
+        # Check for HTTP instead of HTTPS
+        if grep -E 'url.*"http://' Formula/pdf2htmlex.rb; then
+          echo "ERROR: Found HTTP URLs in formula. Use HTTPS instead."
+          exit 1
+        fi
+        
+        # Check for hardcoded paths
+        if grep -E '/(Users|home)/[^"]*' Formula/pdf2htmlex.rb | grep -v '#{'; then
+          echo "WARNING: Found potential hardcoded paths in formula"
+        fi
+        
+        # Check for missing checksums
+        if grep -E 'sha256.*"[^"]*"' Formula/pdf2htmlex.rb | grep -E '(TBD|TODO|XXX)'; then
+          echo "ERROR: Found placeholder checksums in formula"
+          exit 1
+        fi
+        
+        echo "Formula security check passed"
+
+  static-analysis:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    
+    - name: Install analysis tools
+      run: |
+        brew install shellcheck
+        brew install python3
+        pip3 install bandit safety
+    
+    - name: Shellcheck scripts
+      run: |
+        find . -name "*.sh" -type f -exec shellcheck {} \; || true
+    
+    - name: Check Python scripts
+      run: |
+        find . -name "*.py" -type f -exec bandit {} \; || true
+    
+    - name: Generate security report
+      if: always()
+      run: |
+        echo "# Security Scan Report" > security-report.md
+        echo "Date: $(date)" >> security-report.md
+        echo "" >> security-report.md
+        echo "## Summary" >> security-report.md
+        echo "Security scan completed. See individual check results above." >> security-report.md
+    
+    - name: Upload security report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-report
+        path: security-report.md
+</file>
+
+<file path=".github/workflows/test.yml">
+name: Test Formula
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-12, macos-13, macos-14]
+        architecture: [x86_64, arm64]
+        exclude:
+          # macOS 12 doesn't support arm64 runners
+          - os: macos-12
+            architecture: arm64
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    
+    - name: Cache Homebrew downloads
+      uses: actions/cache@v3
+      with:
+        path: ~/Library/Caches/Homebrew/downloads
+        key: ${{ runner.os }}-${{ matrix.architecture }}-homebrew-${{ hashFiles('Formula/pdf2htmlex.rb') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.architecture }}-homebrew-
+    
+    - name: Install build dependencies
+      run: |
+        brew install cmake ninja pkg-config
+        brew install cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz
+        brew install openjdk
+    
+    - name: Audit formula
+      run: brew audit --strict Formula/pdf2htmlex.rb
+    
+    - name: Install formula
+      run: |
+        if [ "${{ matrix.architecture }}" = "arm64" ] && [ "${{ runner.arch }}" = "X64" ]; then
+          echo "Skipping arm64 build on x86_64 runner"
+          exit 0
+        fi
+        brew install --build-from-source --verbose Formula/pdf2htmlex.rb
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+    
+    - name: Test formula
+      run: |
+        if [ "${{ matrix.architecture }}" = "arm64" ] && [ "${{ runner.arch }}" = "X64" ]; then
+          echo "Skipping arm64 test on x86_64 runner"
+          exit 0
+        fi
+        brew test --verbose pdf2htmlex
+    
+    - name: Verify universal binary
+      if: matrix.architecture == 'arm64' || (matrix.architecture == 'x86_64' && runner.arch == 'X64')
+      run: |
+        if [ -f "$(brew --prefix)/bin/pdf2htmlEX" ]; then
+          file $(brew --prefix)/bin/pdf2htmlEX
+          lipo -info $(brew --prefix)/bin/pdf2htmlEX
+        fi
+    
+    - name: Run integration tests
+      if: matrix.architecture == 'arm64' || (matrix.architecture == 'x86_64' && runner.arch == 'X64')
+      run: |
+        if [ -f "scripts/test-formula.sh" ]; then
+          bash scripts/test-formula.sh
+        fi
+    
+    - name: Upload logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-logs-${{ matrix.os }}-${{ matrix.architecture }}
+        path: ~/Library/Logs/Homebrew/pdf2htmlex/
+</file>
+
+<file path=".github/pull_request_template.md">
+## Description
+
+Please provide a brief description of the changes in this PR.
+
+## Type of Change
+
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Formula update (version bump, dependency change, etc.)
+
+## Checklist
+
+- [ ] I have tested the formula locally using `scripts/test-formula.sh`
+- [ ] I have run `brew audit --strict Formula/pdf2htmlex.rb` and it passes
+- [ ] I have verified the formula works on my platform (please specify: Intel/Apple Silicon, macOS version)
+- [ ] I have updated the CHANGELOG.md if applicable
+- [ ] I have added/updated tests if applicable
+- [ ] I have updated documentation if applicable
+
+## Testing
+
+Please describe how you tested these changes:
+
+- Platform: (e.g., Apple Silicon, macOS 14.0)
+- Test PDFs used:
+- Any specific options tested:
+
+## Formula Changes (if applicable)
+
+- [ ] Updated pdf2htmlEX version to: 
+- [ ] Updated Poppler version to: 
+- [ ] Updated FontForge version to: 
+- [ ] Calculated and verified SHA256 checksums
+
+## Additional Notes
+
+Any additional information that might be helpful for reviewers.
+</file>
+
+<file path="scripts/build-bottle.sh">
+#!/bin/bash
+# build-bottle.sh - Build bottles for pdf2htmlEX formula
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Parse arguments
+KEEP_BOTTLE=${KEEP_BOTTLE:-0}
+UPLOAD=${UPLOAD:-0}
+FORMULA_PATH=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --keep)
+            KEEP_BOTTLE=1
+            shift
+            ;;
+        --upload)
+            UPLOAD=1
+            shift
+            ;;
+        --formula)
+            FORMULA_PATH="$2"
+            shift 2
+            ;;
+        -h|--help)
+            echo "Usage: $0 [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "  --keep          Keep bottle file after building"
+            echo "  --upload        Upload bottle to GitHub release (requires gh)"
+            echo "  --formula PATH  Path to formula (default: auto-detect)"
+            echo "  -h, --help      Show this help message"
+            exit 0
+            ;;
+        *)
+            print_status "$RED" "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+print_status "$GREEN" "=== pdf2htmlEX Bottle Builder ==="
+echo ""
+
+# Check prerequisites
+if ! command_exists brew; then
+    print_status "$RED" "Error: Homebrew is not installed"
+    exit 1
+fi
+
+# Find formula path if not specified
+if [ -z "$FORMULA_PATH" ]; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    FORMULA_PATH="$SCRIPT_DIR/../Formula/pdf2htmlex.rb"
+fi
+
+if [ ! -f "$FORMULA_PATH" ]; then
+    print_status "$RED" "Error: Formula not found at $FORMULA_PATH"
+    exit 1
+fi
+
+# Get formula name
+FORMULA_NAME=$(basename "$FORMULA_PATH" .rb)
+
+# Check if formula is installed
+if ! brew list "$FORMULA_NAME" &>/dev/null; then
+    print_status "$YELLOW" "Formula not installed. Installing first..."
+    brew install --build-bottle "$FORMULA_PATH"
+else
+    print_status "$YELLOW" "Uninstalling existing installation..."
+    brew uninstall "$FORMULA_NAME"
+    print_status "$YELLOW" "Reinstalling with --build-bottle flag..."
+    brew install --build-bottle "$FORMULA_PATH"
+fi
+
+# Build the bottle
+print_status "$BLUE" "Building bottle..."
+brew bottle --json --no-rebuild "$FORMULA_NAME" > bottle_output.json
+
+# Parse bottle information
+if [ -f bottle_output.json ]; then
+    BOTTLE_FILE=$(jq -r ".\"$FORMULA_NAME\".bottle.tags[].filename" bottle_output.json | head -1)
+    print_status "$GREEN" "✓ Bottle created: $BOTTLE_FILE"
+    
+    # Show bottle information
+    print_status "$BLUE" "Bottle information:"
+    jq ".\"$FORMULA_NAME\".bottle.tags" bottle_output.json
+    
+    # Calculate SHA256
+    if [ -f "$BOTTLE_FILE" ]; then
+        SHA256=$(shasum -a 256 "$BOTTLE_FILE" | awk '{print $1}')
+        print_status "$YELLOW" "SHA256: $SHA256"
+    fi
+    
+    # Clean up JSON file
+    rm -f bottle_output.json
+else
+    print_status "$RED" "✗ Failed to create bottle"
+    exit 1
+fi
+
+# Show bottle block for formula
+print_status "$BLUE" "Add this bottle block to your formula:"
+echo ""
+cat << EOF
+  bottle do
+    sha256 cellar: :any, arm64_sonoma:  "$SHA256"
+    sha256 cellar: :any, arm64_ventura: "$SHA256"
+    sha256 cellar: :any, ventura:       "$SHA256"
+    sha256 cellar: :any, monterey:      "$SHA256"
+  end
+EOF
+echo ""
+print_status "$YELLOW" "Note: You'll need to build on each platform to get accurate SHAs"
+
+# Upload to GitHub if requested
+if [ "$UPLOAD" = "1" ]; then
+    if command_exists gh; then
+        print_status "$BLUE" "Uploading to GitHub release..."
+        
+        # Get latest release
+        LATEST_RELEASE=$(gh release list --limit 1 | awk '{print $1}')
+        
+        if [ -n "$LATEST_RELEASE" ]; then
+            gh release upload "$LATEST_RELEASE" "$BOTTLE_FILE"
+            print_status "$GREEN" "✓ Bottle uploaded to release $LATEST_RELEASE"
+        else
+            print_status "$RED" "No releases found. Create a release first."
+        fi
+    else
+        print_status "$RED" "GitHub CLI (gh) not installed. Cannot upload."
+    fi
+fi
+
+# Clean up or keep bottle
+if [ "$KEEP_BOTTLE" = "1" ]; then
+    print_status "$GREEN" "Bottle kept at: $BOTTLE_FILE"
+else
+    print_status "$YELLOW" "Cleaning up bottle file..."
+    rm -f "$BOTTLE_FILE"
+fi
+
+print_status "$GREEN" "=== Bottle building complete! ==="
+
+# Additional instructions
+echo ""
+print_status "$YELLOW" "Next steps:"
+echo "1. Build bottles on all target platforms"
+echo "2. Collect SHA256 values for each platform"
+echo "3. Update formula with bottle block"
+echo "4. Test bottle installation:"
+echo "   brew install --force-bottle $FORMULA_NAME"
+</file>
+
+<file path="scripts/check-dependencies.sh">
+#!/bin/bash
+# check-dependencies.sh - Check and verify pdf2htmlEX dependencies
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to check brew package
+check_brew_package() {
+    local package=$1
+    local required=${2:-true}
+    
+    if brew list "$package" &>/dev/null; then
+        local version=$(brew list --versions "$package" | awk '{print $2}')
+        print_status "$GREEN" "  ✓ $package ($version)"
+        return 0
+    else
+        if [ "$required" = true ]; then
+            print_status "$RED" "  ✗ $package (NOT INSTALLED)"
+        else
+            print_status "$YELLOW" "  ○ $package (optional, not installed)"
+        fi
+        return 1
+    fi
+}
+
+# Function to check system tool
+check_system_tool() {
+    local tool=$1
+    local check_version_cmd=${2:-"$tool --version"}
+    
+    if command_exists "$tool"; then
+        local version=$($check_version_cmd 2>&1 | head -1 || echo "unknown version")
+        print_status "$GREEN" "  ✓ $tool: $version"
+        return 0
+    else
+        print_status "$RED" "  ✗ $tool (NOT FOUND)"
+        return 1
+    fi
+}
+
+# Function to check upstream versions
+check_upstream_versions() {
+    print_status "$BLUE" "\n=== Checking Upstream Versions ==="
+    
+    # Check pdf2htmlEX
+    print_status "$YELLOW" "pdf2htmlEX latest releases:"
+    curl -s https://api.github.com/repos/pdf2htmlEX/pdf2htmlEX/releases | \
+        jq -r '.[:3] | .[] | "  - \(.tag_name) (\(.published_at | split("T")[0]))"' 2>/dev/null || \
+        print_status "$RED" "  Failed to fetch releases"
+    
+    # Check Poppler
+    print_status "$YELLOW" "\nPoppler recent versions:"
+    curl -s https://poppler.freedesktop.org/ | \
+        grep -Eo 'poppler-[0-9]+\.[0-9]+\.[0-9]+\.tar\.xz' | \
+        sort -V | tail -5 | sed 's/^/  - /' || \
+        print_status "$RED" "  Failed to fetch versions"
+    
+    # Check FontForge
+    print_status "$YELLOW" "\nFontForge latest releases:"
+    curl -s https://api.github.com/repos/fontforge/fontforge/releases | \
+        jq -r '.[:3] | .[] | "  - \(.tag_name) (\(.published_at | split("T")[0]))"' 2>/dev/null || \
+        print_status "$RED" "  Failed to fetch releases"
+}
+
+# Main script
+print_status "$GREEN" "=== pdf2htmlEX Dependency Check ==="
+echo ""
+
+# Check if Homebrew is installed
+if ! command_exists brew; then
+    print_status "$RED" "Error: Homebrew is not installed"
+    print_status "$YELLOW" "Install from: https://brew.sh"
+    exit 1
+fi
+
+# Check build tools
+print_status "$BLUE" "=== Build Tools ==="
+check_system_tool "cmake" "cmake --version"
+check_system_tool "ninja" "ninja --version"
+check_system_tool "pkg-config" "pkg-config --version"
+check_system_tool "git" "git --version"
+
+# Check required dependencies
+print_status "$BLUE" "\n=== Required Dependencies ==="
+MISSING_DEPS=0
+
+for dep in cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz; do
+    check_brew_package "$dep" || ((MISSING_DEPS++))
+done
+
+# Check optional dependencies
+print_status "$BLUE" "\n=== Optional Dependencies ==="
+check_brew_package "openjdk" false
+check_brew_package "ccache" false
+
+# Check if pdf2htmlEX is installed
+print_status "$BLUE" "\n=== pdf2htmlEX Installation ==="
+if command_exists pdf2htmlEX; then
+    PDF2HTMLEX_VERSION=$(pdf2htmlEX --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+[^ ]*' | head -1 || echo "unknown")
+    print_status "$GREEN" "✓ pdf2htmlEX is installed (version: $PDF2HTMLEX_VERSION)"
+    
+    # Check binary details
+    BINARY_PATH=$(which pdf2htmlEX)
+    print_status "$YELLOW" "  Binary: $BINARY_PATH"
+    
+    # Check architecture
+    if command_exists file; then
+        ARCH_INFO=$(file "$BINARY_PATH" | sed 's/.*: //')
+        print_status "$YELLOW" "  Architecture: $ARCH_INFO"
+    fi
+    
+    # Check dynamic libraries
+    if command_exists otool; then
+        print_status "$YELLOW" "  Dynamic libraries:"
+        otool -L "$BINARY_PATH" | grep -v "$BINARY_PATH:" | head -5 | sed 's/^/    /'
+        DYLIB_COUNT=$(otool -L "$BINARY_PATH" | grep -c '\.dylib' || true)
+        print_status "$YELLOW" "    ... and $((DYLIB_COUNT - 5)) more"
+    fi
+else
+    print_status "$YELLOW" "○ pdf2htmlEX is not installed"
+fi
+
+# Check formula
+print_status "$BLUE" "\n=== Formula Status ==="
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FORMULA_PATH="$SCRIPT_DIR/../Formula/pdf2htmlex.rb"
+
+if [ -f "$FORMULA_PATH" ]; then
+    print_status "$GREEN" "✓ Formula found at: $FORMULA_PATH"
+    
+    # Extract versions from formula
+    FORMULA_PDF2HTMLEX=$(grep -E '^\s*version\s+"' "$FORMULA_PATH" | sed -E 's/.*"(.*)".*/\1/')
+    FORMULA_POPPLER=$(grep -A1 'resource "poppler"' "$FORMULA_PATH" | grep url | sed -E 's/.*poppler-(.*)\.tar.*/\1/')
+    FORMULA_FONTFORGE=$(grep -A1 'resource "fontforge"' "$FORMULA_PATH" | grep url | sed -E 's/.*fontforge-(.*)\.tar.*/\1/')
+    
+    print_status "$YELLOW" "  Versions in formula:"
+    print_status "$YELLOW" "    pdf2htmlEX: $FORMULA_PDF2HTMLEX"
+    print_status "$YELLOW" "    Poppler: $FORMULA_POPPLER"
+    print_status "$YELLOW" "    FontForge: $FORMULA_FONTFORGE"
+else
+    print_status "$RED" "✗ Formula not found"
+fi
+
+# System information
+print_status "$BLUE" "\n=== System Information ==="
+print_status "$YELLOW" "  macOS: $(sw_vers -productVersion)"
+print_status "$YELLOW" "  Architecture: $(uname -m)"
+print_status "$YELLOW" "  Xcode: $(xcodebuild -version 2>/dev/null | head -1 || echo "Not installed")"
+print_status "$YELLOW" "  Homebrew: $(brew --version | head -1)"
+
+# Check for potential issues
+print_status "$BLUE" "\n=== Potential Issues ==="
+ISSUES=0
+
+# Check for missing dependencies
+if [ $MISSING_DEPS -gt 0 ]; then
+    print_status "$RED" "✗ Missing $MISSING_DEPS required dependencies"
+    ((ISSUES++))
+fi
+
+# Check for outdated Xcode
+if ! xcode-select -p &>/dev/null; then
+    print_status "$RED" "✗ Xcode Command Line Tools not installed"
+    print_status "$YELLOW" "  Install with: xcode-select --install"
+    ((ISSUES++))
+fi
+
+# Check for Rosetta on Apple Silicon
+if [ "$(uname -m)" = "arm64" ] && [ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]; then
+    print_status "$YELLOW" "○ Rosetta 2 not installed (optional, for x86_64 compatibility)"
+    print_status "$YELLOW" "  Install with: softwareupdate --install-rosetta"
+fi
+
+if [ $ISSUES -eq 0 ]; then
+    print_status "$GREEN" "✓ No issues detected"
+fi
+
+# Installation instructions
+if [ $MISSING_DEPS -gt 0 ]; then
+    print_status "$BLUE" "\n=== Installation Instructions ==="
+    print_status "$YELLOW" "Install missing dependencies with:"
+    echo "  brew install cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz"
+fi
+
+# Optional: Check upstream versions
+if [ "${CHECK_UPSTREAM:-0}" = "1" ]; then
+    check_upstream_versions
+fi
+
+# Summary
+echo ""
+if [ $MISSING_DEPS -eq 0 ] && [ $ISSUES -eq 0 ]; then
+    print_status "$GREEN" "=== All dependencies satisfied! ==="
+else
+    print_status "$RED" "=== Dependencies check failed ==="
+    print_status "$YELLOW" "Please install missing dependencies before building pdf2htmlEX"
+    exit 1
+fi
+</file>
+
+<file path="scripts/setup-tap.sh">
+#!/bin/bash
+# setup-tap.sh - Set up a proper Homebrew tap for pdf2htmlEX
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+print_status "$GREEN" "=== pdf2htmlEX Tap Setup Script ==="
+echo ""
+
+# Check if Homebrew is installed
+if ! command_exists brew; then
+    print_status "$RED" "Error: Homebrew is not installed"
+    print_status "$YELLOW" "Install from: https://brew.sh"
+    exit 1
+fi
+
+# Parse arguments
+TAP_NAME="${1:-twardoch/pdf2htmlex}"
+FORMULA_URL="https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb"
+
+print_status "$YELLOW" "This script will set up a Homebrew tap for pdf2htmlEX"
+echo ""
+echo "Tap name: $TAP_NAME"
+echo ""
+
+# Check if tap already exists
+if brew tap | grep -q "^$TAP_NAME\$"; then
+    print_status "$YELLOW" "Tap $TAP_NAME already exists. Updating..."
+    brew untap "$TAP_NAME"
+fi
+
+# Create the tap
+print_status "$BLUE" "Creating tap..."
+brew tap-new "$TAP_NAME" --no-git
+
+# Get tap directory
+TAP_DIR=$(brew --repository)/Library/Taps/$(echo "$TAP_NAME" | tr '/' '/homebrew-')
+
+# Create Formula directory if it doesn't exist
+mkdir -p "$TAP_DIR/Formula"
+
+# Download the formula
+print_status "$BLUE" "Downloading formula..."
+curl -sL "$FORMULA_URL" -o "$TAP_DIR/Formula/pdf2htmlex.rb"
+
+# Verify the formula
+print_status "$BLUE" "Verifying formula..."
+if brew audit --strict "$TAP_DIR/Formula/pdf2htmlex.rb" 2>/dev/null; then
+    print_status "$GREEN" "✓ Formula audit passed"
+else
+    print_status "$YELLOW" "⚠ Formula has some warnings (this is normal)"
+fi
+
+# Initialize git repository (optional, for version control)
+if [ ! -d "$TAP_DIR/.git" ]; then
+    print_status "$BLUE" "Initializing git repository..."
+    cd "$TAP_DIR"
+    git init
+    git add .
+    git commit -m "Initial commit with pdf2htmlex formula"
+    cd - >/dev/null
+fi
+
+print_status "$GREEN" "=== Setup Complete! ==="
+echo ""
+print_status "$YELLOW" "You can now install pdf2htmlEX with:"
+echo ""
+echo "  brew install $TAP_NAME/pdf2htmlex"
+echo ""
+print_status "$YELLOW" "Or build from source:"
+echo ""
+echo "  brew install --build-from-source $TAP_NAME/pdf2htmlex"
+echo ""
+print_status "$YELLOW" "To uninstall the tap later:"
+echo ""
+echo "  brew untap $TAP_NAME"
+echo ""
+</file>
+
+<file path="scripts/test-build.sh">
 #!/bin/bash
 set -ex
 
 # --- Configuration ---
+ORIG_PWD=$(pwd)
+BUILD_TEMP_DIR_NAME="build_temp_test_script" # This directory is in .gitignore
+
+mkdir -p "$BUILD_TEMP_DIR_NAME"
+cd "$BUILD_TEMP_DIR_NAME"
+echo "Working in temporary build directory: $(pwd)"
+
 ARCHS="x86_64;arm64" # For CMAKE_OSX_ARCHITECTURES
-INSTALL_PREFIX="$(pwd)/staging" # Install everything into a local staging area first
-HOMEBREW_PREFIX_VAL="%%HOMEBREW_PREFIX%%" # Placeholder for actual Homebrew prefix
+INSTALL_PREFIX="$(pwd)/staging" # Install dependencies into staging area within the temp build dir
+mkdir -p "$INSTALL_PREFIX"
+
+# Attempt to get Homebrew prefix automatically, otherwise use a default or ask user to set
+HOMEBREW_PREFIX_VAL=$(brew --prefix 2>/dev/null || echo "/opt/homebrew") # Common default for Apple Silicon, /usr/local for Intel Mac
+
+echo "Using Homebrew Prefix: $HOMEBREW_PREFIX_VAL"
+echo "If this is incorrect, ensure 'brew' is in your PATH or set HOMEBREW_PREFIX_VAL manually in the script."
 
 # Ensure paths to Homebrew-installed libraries are discoverable
-export PKG_CONFIG_PATH="$HOMEBREW_PREFIX_VAL/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/share/pkgconfig:/usr/lib/pkgconfig"
-export CMAKE_PREFIX_PATH="$HOMEBREW_PREFIX_VAL:$CMAKE_PREFIX_PATH"
+# Append existing PKG_CONFIG_PATH and CMAKE_PREFIX_PATH to avoid overwriting them
+export PKG_CONFIG_PATH="$HOMEBREW_PREFIX_VAL/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/share/pkgconfig:/usr/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+export CMAKE_PREFIX_PATH="$HOMEBREW_PREFIX_VAL${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 export PATH="$HOMEBREW_PREFIX_VAL/bin:$PATH"
 
 # --- Build Poppler (Static) ---
+# This script expects Poppler source code to be downloaded and extracted.
+# Version: 24.01.0
+# URL: https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
+# Expected directory: ./poppler-24.01.0
 echo "Building Poppler..."
-# Assume Poppler source is in ./poppler-24.01.0
-if [ ! -d poppler-24.01.0 ]; then
-    echo "Poppler source directory not found!"
-    exit 1
+POPPLER_URL="https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
+POPPLER_ARCHIVE="poppler-24.01.0.tar.xz"
+POPPLER_DIR="poppler-24.01.0"
+if [ ! -d "$POPPLER_DIR" ]; then
+    echo "Poppler source directory './$POPPLER_DIR' not found."
+    if [ ! -f "$POPPLER_ARCHIVE" ]; then
+        echo "Downloading Poppler source from $POPPLER_URL..."
+        curl -L -o "$POPPLER_ARCHIVE" "$POPPLER_URL"
+    fi
+    echo "Extracting Poppler source..."
+    tar -xJf "$POPPLER_ARCHIVE"
+    if [ ! -d "$POPPLER_DIR" ]; then
+        echo "Extraction failed or extracted to an unexpected directory name."
+        exit 1
+    fi
 fi
-cd poppler-24.01.0
+cd "$POPPLER_DIR"
 mkdir -p build && cd build
 
 cmake .. \
@@ -870,13 +1274,40 @@ ninja install
 cd ../..
 
 # --- Build FontForge (Static) ---
+# This script expects FontForge source code to be downloaded and extracted.
+# Version: 20230101
+# URL: https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz
+# Expected directory: ./fontforge-20230101
 echo "Building FontForge..."
-# Assume FontForge source is in ./fontforge-20230101
-if [ ! -d fontforge-20230101 ]; then
-    echo "FontForge source directory not found!"
-    exit 1
+FONTFORGE_URL="https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz"
+FONTFORGE_ARCHIVE="fontforge-20230101.tar.gz"
+FONTFORGE_DIR="fontforge-20230101"
+if [ ! -d "$FONTFORGE_DIR" ]; then
+    echo "FontForge source directory './$FONTFORGE_DIR' not found."
+    if [ ! -f "$FONTFORGE_ARCHIVE" ]; then
+        echo "Downloading FontForge source from $FONTFORGE_URL..."
+        curl -L -o "$FONTFORGE_ARCHIVE" "$FONTFORGE_URL"
+    fi
+    echo "Extracting FontForge source..."
+    tar -xzf "$FONTFORGE_ARCHIVE"
+    # The archive extracts to fontforge-fontforge-20230101 or similar if it's from GitHub tags usually
+    # Need to handle if it extracts to fontforge-20230101 or fontforge-fontforge-20230101
+    # A quick check: curl -sL https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz | tar -tzf - | head -n 1
+    # Output is: fontforge-20230101/
+    if [ ! -d "$FONTFORGE_DIR" ]; then
+        # Attempt to rename if it extracted with a common GitHub pattern like project-tag
+        EXTRACTED_SUBDIR=$(tar -tzf "$FONTFORGE_ARCHIVE" | head -n 1 | sed 's@/.*@@')
+        if [ -d "$EXTRACTED_SUBDIR" ] && [ "$EXTRACTED_SUBDIR" != "$FONTFORGE_DIR" ]; then
+            echo "Renaming $EXTRACTED_SUBDIR to $FONTFORGE_DIR"
+            mv "$EXTRACTED_SUBDIR" "$FONTFORGE_DIR"
+        fi
+    fi
+    if [ ! -d "$FONTFORGE_DIR" ]; then
+        echo "Extraction failed or extracted to an unexpected directory name."
+        exit 1
+    fi
 fi
-cd fontforge-20230101
+cd "$FONTFORGE_DIR"
 # Apply patches if any (example)
 # git apply ../patches/fontforge-20170731-fixGDraw.patch
 mkdir -p build && cd build
@@ -918,50 +1349,938 @@ cd ../..
 
 # --- Build pdf2htmlEX ---
 echo "Building pdf2htmlEX..."
-# Assume pdf2htmlEX source is in current directory .
-if [ ! -f CMakeLists.txt ] && [ -f pdf2htmlEX/CMakeLists.txt ]; then
-    # If we are in the root of the cloned repo, cd into the subdir
-    cd pdf2htmlEX
+
+PDF2HTMLEX_CHECKOUT_ROOT="$ORIG_PWD" # This is the root of the git checkout
+PDF2HTMLEX_SOURCE_SUBDIR="pdf2htmlEX" # The sources are in a subdirectory
+
+# Check if the source directory exists
+if [ ! -f "$PDF2HTMLEX_CHECKOUT_ROOT/$PDF2HTMLEX_SOURCE_SUBDIR/CMakeLists.txt" ]; then
+    echo "pdf2htmlEX source directory not found at $PDF2HTMLEX_CHECKOUT_ROOT/$PDF2HTMLEX_SOURCE_SUBDIR"
+    echo "This script expects to be run from the root of the pdf2htmlEX Homebrew formula project,"
+    echo "and for the pdf2htmlEX sources to be in a subdirectory named 'pdf2htmlEX'."
+    exit 1
 fi
 
 # The CMakeLists.txt for pdf2htmlEX will need to find Poppler and FontForge
-# We've installed them into $INSTALL_PREFIX, so we need to tell pdf2htmlEX's CMake
-export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CMAKE_PREFIX_PATH="$INSTALL_PREFIX:$CMAKE_PREFIX_PATH"
+# We've installed them into $INSTALL_PREFIX (which is $BUILD_TEMP_DIR_NAME/staging)
+export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+export CMAKE_PREFIX_PATH="$INSTALL_PREFIX${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 
 # For pdf2htmlEX/share scripts (build_css.sh, build_js.sh) to find java
-# Assuming openjdk is installed by Homebrew and in PATH
-# In a real formula, Formula["openjdk"].opt_prefix would be used
-export JAVA_HOME="$HOMEBREW_PREFIX_VAL/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
-export PATH="$JAVA_HOME/bin:$PATH"
+# Assuming openjdk is installed by Homebrew.
+# Attempt to set JAVA_HOME based on Homebrew's openjdk.
+if [ -d "$HOMEBREW_PREFIX_VAL/opt/openjdk/libexec/openjdk.jdk/Contents/Home" ]; then
+    export JAVA_HOME="$HOMEBREW_PREFIX_VAL/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+elif [ -d "$HOMEBREW_PREFIX_VAL/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home" ]; then
+    export JAVA_HOME="$HOMEBREW_PREFIX_VAL/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+elif [ -d "$HOMEBREW_PREFIX_VAL/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home" ]; then
+    export JAVA_HOME="$HOMEBREW_PREFIX_VAL/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home"
+else
+    echo "Warning: Could not automatically determine JAVA_HOME from Homebrew's openjdk. build_css.sh/build_js.sh might fail."
+    echo "Consider setting JAVA_HOME manually if issues occur."
+fi
 
-mkdir -p build && cd build
-cmake .. \
+if [ -n "$JAVA_HOME" ]; then
+  export PATH="$JAVA_HOME/bin:$PATH"
+  echo "Using JAVA_HOME: $JAVA_HOME"
+fi
+
+mkdir -p pdf2htmlEX_builddir
+cd pdf2htmlEX_builddir
+
+cmake "$PDF2HTMLEX_CHECKOUT_ROOT/$PDF2HTMLEX_SOURCE_SUBDIR" \
     -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX/final" \ # Final install location for pdf2htmlEX
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX/final" \
     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
     -DPOPPLER_STATIC=ON \
     -DFONTFORGE_STATIC=ON \
-    -DCMAKE_PREFIX_PATH="$INSTALL_PREFIX;$CMAKE_PREFIX_PATH" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_PREFIX${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}" \ # Prepend our static deps
     -DCMAKE_FIND_FRAMEWORK=NEVER \
     -DCMAKE_FIND_APPBUNDLE=NEVER
 
 ninja install
-cd ..
-if [ -d pdf2htmlEX ]; then # go back to root if we cd'd
-    cd ..
-fi
+cd .. # Back to $BUILD_TEMP_DIR_NAME
 
 echo "Build complete. Products in $INSTALL_PREFIX/final"
 echo "Universal binary expected at $INSTALL_PREFIX/final/bin/pdf2htmlEX"
 
 # --- Verification (conceptual) ---
-# file "$INSTALL_PREFIX/final/bin/pdf2htmlEX"
+# Now, the binary is $INSTALL_PREFIX/final/bin/pdf2htmlEX
+# Example: file "$INSTALL_PREFIX/final/bin/pdf2htmlEX"
 # lipo -info "$INSTALL_PREFIX/final/bin/pdf2htmlEX"
+
+# To make it easier to run from $ORIG_PWD, copy the final binary out (optional)
+# mkdir -p "$ORIG_PWD/test_script_output/bin"
+# cp "$INSTALL_PREFIX/final/bin/pdf2htmlEX" "$ORIG_PWD/test_script_output/bin/"
+# echo "pdf2htmlEX binary also copied to $ORIG_PWD/test_script_output/bin/"
 </file>
 
-<file path="pdf2htmlex.rb">
+<file path="scripts/test-formula.sh">
+#!/bin/bash
+# test-formula.sh - Test the pdf2htmlEX formula locally
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to create test PDF
+create_test_pdf() {
+    local pdf_file="$1"
+    cat > "$pdf_file" << 'EOF'
+%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
+4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+5 0 obj<</Length 87>>stream
+BT
+/F1 24 Tf
+100 700 Td
+(Hello from pdf2htmlEX!) Tj
+0 -30 Td
+/F1 16 Tf
+(Testing formula build) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000009 00000 n
+0000000052 00000 n
+0000000101 00000 n
+0000000229 00000 n
+0000000299 00000 n
+trailer<</Size 6/Root 1 0 R>>
+startxref
+441
+%%EOF
+EOF
+}
+
+print_status "$GREEN" "=== pdf2htmlEX Formula Test Script ==="
+echo ""
+
+# Check prerequisites
+print_status "$YELLOW" "Checking prerequisites..."
+
+if ! command_exists brew; then
+    print_status "$RED" "Error: Homebrew is not installed"
+    exit 1
+fi
+
+# Get formula path
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FORMULA_PATH="$SCRIPT_DIR/../Formula/pdf2htmlex.rb"
+
+if [ ! -f "$FORMULA_PATH" ]; then
+    print_status "$RED" "Error: Formula not found at $FORMULA_PATH"
+    exit 1
+fi
+
+# Run audit
+print_status "$YELLOW" "Running formula audit..."
+if brew audit --strict "$FORMULA_PATH"; then
+    print_status "$GREEN" "✓ Formula audit passed"
+else
+    print_status "$RED" "✗ Formula audit failed"
+    exit 1
+fi
+
+# Check if already installed
+if brew list pdf2htmlex &>/dev/null; then
+    print_status "$YELLOW" "pdf2htmlEX is already installed. Uninstalling first..."
+    brew uninstall pdf2htmlex
+fi
+
+# Install formula
+print_status "$YELLOW" "Installing formula from source..."
+if brew install --build-from-source "$FORMULA_PATH"; then
+    print_status "$GREEN" "✓ Formula installed successfully"
+else
+    print_status "$RED" "✗ Formula installation failed"
+    exit 1
+fi
+
+# Run brew test
+print_status "$YELLOW" "Running brew test..."
+if brew test pdf2htmlex; then
+    print_status "$GREEN" "✓ Brew test passed"
+else
+    print_status "$RED" "✗ Brew test failed"
+    exit 1
+fi
+
+# Test basic functionality
+print_status "$YELLOW" "Testing basic functionality..."
+
+# Create temporary directory
+TEST_DIR=$(mktemp -d)
+cd "$TEST_DIR"
+
+# Create test PDF
+create_test_pdf "test.pdf"
+
+# Convert PDF to HTML
+print_status "$YELLOW" "Converting test PDF to HTML..."
+if pdf2htmlEX test.pdf; then
+    print_status "$GREEN" "✓ PDF conversion successful"
+else
+    print_status "$RED" "✗ PDF conversion failed"
+    cd - >/dev/null
+    rm -rf "$TEST_DIR"
+    exit 1
+fi
+
+# Check output
+if [ -f "test.html" ]; then
+    if grep -q "Hello from pdf2htmlEX!" test.html; then
+        print_status "$GREEN" "✓ HTML output contains expected content"
+    else
+        print_status "$RED" "✗ HTML output missing expected content"
+        cd - >/dev/null
+        rm -rf "$TEST_DIR"
+        exit 1
+    fi
+else
+    print_status "$RED" "✗ HTML output file not created"
+    cd - >/dev/null
+    rm -rf "$TEST_DIR"
+    exit 1
+fi
+
+# Test with options
+print_status "$YELLOW" "Testing with various options..."
+
+# Test zoom option
+if pdf2htmlEX --zoom 2 test.pdf test-zoom.html; then
+    print_status "$GREEN" "✓ Zoom option works"
+else
+    print_status "$RED" "✗ Zoom option failed"
+fi
+
+# Test split pages
+if pdf2htmlEX --split-pages 1 test.pdf test-split.html; then
+    print_status "$GREEN" "✓ Split pages option works"
+else
+    print_status "$RED" "✗ Split pages option failed"
+fi
+
+# Check architecture
+print_status "$YELLOW" "Checking binary architecture..."
+BINARY_PATH="$(brew --prefix)/bin/pdf2htmlEX"
+if [ -f "$BINARY_PATH" ]; then
+    ARCH_INFO=$(file "$BINARY_PATH")
+    echo "Binary info: $ARCH_INFO"
+    
+    if [[ "$ARCH_INFO" == *"universal"* ]] || [[ "$ARCH_INFO" == *"x86_64"* ]] || [[ "$ARCH_INFO" == *"arm64"* ]]; then
+        print_status "$GREEN" "✓ Binary architecture looks correct"
+        
+        # Check with lipo if available
+        if command_exists lipo; then
+            print_status "$YELLOW" "Detailed architecture info:"
+            lipo -info "$BINARY_PATH"
+        fi
+    else
+        print_status "$RED" "✗ Unexpected binary architecture"
+    fi
+else
+    print_status "$RED" "✗ Binary not found at expected location"
+fi
+
+# Cleanup
+cd - >/dev/null
+rm -rf "$TEST_DIR"
+
+# Performance test (optional)
+if [ "${RUN_PERF_TEST:-0}" = "1" ]; then
+    print_status "$YELLOW" "Running performance test..."
+    
+    # Create a more complex PDF for performance testing
+    PERF_DIR=$(mktemp -d)
+    cd "$PERF_DIR"
+    
+    # Here we would create a larger PDF or use a sample
+    # For now, just use the simple test
+    create_test_pdf "perf-test.pdf"
+    
+    # Time the conversion
+    START_TIME=$(date +%s)
+    pdf2htmlEX perf-test.pdf >/dev/null 2>&1
+    END_TIME=$(date +%s)
+    DURATION=$((END_TIME - START_TIME))
+    
+    print_status "$GREEN" "✓ Performance test completed in ${DURATION}s"
+    
+    cd - >/dev/null
+    rm -rf "$PERF_DIR"
+fi
+
+# Summary
+echo ""
+print_status "$GREEN" "=== All tests passed! ==="
+print_status "$YELLOW" "pdf2htmlEX version:"
+pdf2htmlEX --version
+
+# Optional: show formula info
+if [ "${SHOW_INFO:-0}" = "1" ]; then
+    echo ""
+    print_status "$YELLOW" "Formula info:"
+    brew info pdf2htmlex
+fi
+</file>
+
+<file path="scripts/update-version.sh">
+#!/bin/bash
+# update-version.sh - Update pdf2htmlEX version in the formula
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to calculate SHA256
+calculate_sha256() {
+    local url=$1
+    local temp_file=$(mktemp)
+    
+    print_status "$YELLOW" "Downloading from $url..."
+    if curl -L -o "$temp_file" "$url"; then
+        local sha=$(shasum -a 256 "$temp_file" | awk '{print $1}')
+        rm -f "$temp_file"
+        echo "$sha"
+    else
+        rm -f "$temp_file"
+        return 1
+    fi
+}
+
+# Usage function
+usage() {
+    cat << EOF
+Usage: $0 [OPTIONS]
+
+Update the pdf2htmlEX formula with new versions and checksums.
+
+OPTIONS:
+    -p, --pdf2htmlex VERSION    Update pdf2htmlEX version
+    -o, --poppler VERSION       Update Poppler version
+    -f, --fontforge VERSION     Update FontForge version
+    -a, --all                   Update all components (interactive)
+    -h, --help                  Show this help message
+
+EXAMPLES:
+    $0 --pdf2htmlex 0.18.8.rc2
+    $0 --poppler 24.02.0
+    $0 --all
+EOF
+}
+
+# Parse arguments
+UPDATE_PDF2HTMLEX=""
+UPDATE_POPPLER=""
+UPDATE_FONTFORGE=""
+UPDATE_ALL=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -p|--pdf2htmlex)
+            UPDATE_PDF2HTMLEX="$2"
+            shift 2
+            ;;
+        -o|--poppler)
+            UPDATE_POPPLER="$2"
+            shift 2
+            ;;
+        -f|--fontforge)
+            UPDATE_FONTFORGE="$2"
+            shift 2
+            ;;
+        -a|--all)
+            UPDATE_ALL=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            print_status "$RED" "Unknown option: $1"
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+# Get formula path
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FORMULA_PATH="$SCRIPT_DIR/../Formula/pdf2htmlex.rb"
+
+if [ ! -f "$FORMULA_PATH" ]; then
+    print_status "$RED" "Error: Formula not found at $FORMULA_PATH"
+    exit 1
+fi
+
+# Interactive mode for --all
+if [ "$UPDATE_ALL" = true ]; then
+    print_status "$GREEN" "=== Interactive Version Update ==="
+    echo ""
+    
+    # Get current versions
+    CURRENT_PDF2HTMLEX=$(grep -E '^\s*version\s+"' "$FORMULA_PATH" | sed -E 's/.*"(.*)".*/\1/')
+    CURRENT_POPPLER=$(grep -A1 'resource "poppler"' "$FORMULA_PATH" | grep url | sed -E 's/.*poppler-(.*)\.tar.*/\1/')
+    CURRENT_FONTFORGE=$(grep -A1 'resource "fontforge"' "$FORMULA_PATH" | grep url | sed -E 's/.*fontforge-(.*)\.tar.*/\1/')
+    
+    print_status "$YELLOW" "Current versions:"
+    echo "  pdf2htmlEX: $CURRENT_PDF2HTMLEX"
+    echo "  Poppler: $CURRENT_POPPLER"
+    echo "  FontForge: $CURRENT_FONTFORGE"
+    echo ""
+    
+    read -p "Update pdf2htmlEX version? (current: $CURRENT_PDF2HTMLEX, press Enter to skip): " UPDATE_PDF2HTMLEX
+    read -p "Update Poppler version? (current: $CURRENT_POPPLER, press Enter to skip): " UPDATE_POPPLER
+    read -p "Update FontForge version? (current: $CURRENT_FONTFORGE, press Enter to skip): " UPDATE_FONTFORGE
+fi
+
+# Create backup
+BACKUP_FILE="${FORMULA_PATH}.backup.$(date +%Y%m%d_%H%M%S)"
+cp "$FORMULA_PATH" "$BACKUP_FILE"
+print_status "$GREEN" "Created backup: $BACKUP_FILE"
+
+# Update pdf2htmlEX version
+if [ -n "$UPDATE_PDF2HTMLEX" ]; then
+    print_status "$YELLOW" "Updating pdf2htmlEX to version $UPDATE_PDF2HTMLEX..."
+    
+    # Construct URL
+    URL="https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v${UPDATE_PDF2HTMLEX}.tar.gz"
+    
+    # Calculate SHA256
+    SHA256=$(calculate_sha256 "$URL")
+    if [ $? -eq 0 ]; then
+        # Update version
+        sed -i '' "s/version \".*\"/version \"$UPDATE_PDF2HTMLEX\"/" "$FORMULA_PATH"
+        
+        # Update URL if needed
+        sed -i '' "s|url \".*pdf2htmlEX.*\"|url \"$URL\"|" "$FORMULA_PATH"
+        
+        # Update SHA256
+        sed -i '' "/url.*pdf2htmlEX/,/sha256/ s/sha256 \".*\"/sha256 \"$SHA256\"/" "$FORMULA_PATH"
+        
+        print_status "$GREEN" "✓ Updated pdf2htmlEX to $UPDATE_PDF2HTMLEX"
+        print_status "$GREEN" "  SHA256: $SHA256"
+    else
+        print_status "$RED" "✗ Failed to download pdf2htmlEX version $UPDATE_PDF2HTMLEX"
+    fi
+fi
+
+# Update Poppler version
+if [ -n "$UPDATE_POPPLER" ]; then
+    print_status "$YELLOW" "Updating Poppler to version $UPDATE_POPPLER..."
+    
+    # Construct URL
+    URL="https://poppler.freedesktop.org/poppler-${UPDATE_POPPLER}.tar.xz"
+    
+    # Calculate SHA256
+    SHA256=$(calculate_sha256 "$URL")
+    if [ $? -eq 0 ]; then
+        # Update URL and SHA256 in the poppler resource block
+        sed -i '' "/resource \"poppler\"/,/end/ s|url \".*\"|url \"$URL\"|" "$FORMULA_PATH"
+        sed -i '' "/resource \"poppler\"/,/end/ s/sha256 \".*\"/sha256 \"$SHA256\"/" "$FORMULA_PATH"
+        
+        print_status "$GREEN" "✓ Updated Poppler to $UPDATE_POPPLER"
+        print_status "$GREEN" "  SHA256: $SHA256"
+    else
+        print_status "$RED" "✗ Failed to download Poppler version $UPDATE_POPPLER"
+    fi
+fi
+
+# Update FontForge version
+if [ -n "$UPDATE_FONTFORGE" ]; then
+    print_status "$YELLOW" "Updating FontForge to version $UPDATE_FONTFORGE..."
+    
+    # Construct URL
+    URL="https://github.com/fontforge/fontforge/releases/download/${UPDATE_FONTFORGE}/fontforge-${UPDATE_FONTFORGE}.tar.xz"
+    
+    # Calculate SHA256
+    SHA256=$(calculate_sha256 "$URL")
+    if [ $? -eq 0 ]; then
+        # Update URL and SHA256 in the fontforge resource block
+        sed -i '' "/resource \"fontforge\"/,/end/ s|url \".*\"|url \"$URL\"|" "$FORMULA_PATH"
+        sed -i '' "/resource \"fontforge\"/,/end/ s/sha256 \".*\"/sha256 \"$SHA256\"/" "$FORMULA_PATH"
+        
+        print_status "$GREEN" "✓ Updated FontForge to $UPDATE_FONTFORGE"
+        print_status "$GREEN" "  SHA256: $SHA256"
+    else
+        print_status "$RED" "✗ Failed to download FontForge version $UPDATE_FONTFORGE"
+    fi
+fi
+
+# Show diff
+if [ -n "$UPDATE_PDF2HTMLEX" ] || [ -n "$UPDATE_POPPLER" ] || [ -n "$UPDATE_FONTFORGE" ]; then
+    echo ""
+    print_status "$YELLOW" "Changes made:"
+    diff -u "$BACKUP_FILE" "$FORMULA_PATH" || true
+    
+    echo ""
+    print_status "$YELLOW" "Testing formula..."
+    if brew audit --strict "$FORMULA_PATH"; then
+        print_status "$GREEN" "✓ Formula audit passed"
+    else
+        print_status "$RED" "✗ Formula audit failed"
+        print_status "$YELLOW" "Restoring backup..."
+        cp "$BACKUP_FILE" "$FORMULA_PATH"
+        exit 1
+    fi
+    
+    echo ""
+    print_status "$GREEN" "=== Version update complete ==="
+    print_status "$YELLOW" "Next steps:"
+    echo "1. Test the formula: ./scripts/test-formula.sh"
+    echo "2. Commit changes: git add Formula/pdf2htmlex.rb && git commit -m 'Update versions'"
+    echo "3. Create PR or push to main"
+else
+    print_status "$YELLOW" "No updates requested"
+    rm -f "$BACKUP_FILE"
+fi
+</file>
+
+<file path="tests/fixtures/create-test-pdfs.sh">
+#!/bin/bash
+# create-test-pdfs.sh - Create test PDF files for pdf2htmlEX testing
+
+set -euo pipefail
+
+# Create simple PDF
+cat > simple.pdf << 'EOF'
+%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
+4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+5 0 obj<</Length 87>>stream
+BT
+/F1 24 Tf
+100 700 Td
+(Simple PDF Test) Tj
+0 -30 Td
+/F1 16 Tf
+(This is a test document) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000009 00000 n
+0000000052 00000 n
+0000000101 00000 n
+0000000229 00000 n
+0000000299 00000 n
+trailer<</Size 6/Root 1 0 R>>
+startxref
+441
+%%EOF
+EOF
+
+echo "Created simple.pdf"
+
+# Note: More complex PDFs would require proper PDF generation tools
+# This script provides a starting point for test fixtures
+</file>
+
+<file path="tests/fixtures/README.md">
+# Test Fixtures
+
+This directory contains PDF test files for testing pdf2htmlEX functionality.
+
+## Test Files
+
+- `simple.pdf` - Basic single-page PDF with text
+- `complex.pdf` - Multi-page PDF with images, fonts, and complex layout
+- `unicode.pdf` - PDF with international characters and Unicode text
+- `forms.pdf` - PDF with form fields
+- `images.pdf` - PDF with various image formats
+
+## Creating Test PDFs
+
+Test PDFs can be created using the `create-test-pdfs.sh` script in this directory.
+</file>
+
+<file path="tests/integration/test_conversions.sh">
+#!/bin/bash
+# test_conversions.sh - Integration tests for pdf2htmlEX conversions
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Test counters
+TESTS_RUN=0
+TESTS_PASSED=0
+TESTS_FAILED=0
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to run a test
+run_test() {
+    local test_name=$1
+    local pdf_file=$2
+    local options=$3
+    local expected_content=$4
+    
+    ((TESTS_RUN++))
+    
+    print_status "$YELLOW" "Running test: $test_name"
+    
+    # Create temp directory for this test
+    local test_dir=$(mktemp -d)
+    cd "$test_dir"
+    
+    # Run conversion
+    if pdf2htmlEX $options "$pdf_file" output.html 2>/dev/null; then
+        # Check if output exists
+        if [ -f "output.html" ]; then
+            # Check for expected content
+            if grep -q "$expected_content" output.html; then
+                print_status "$GREEN" "  ✓ PASSED"
+                ((TESTS_PASSED++))
+            else
+                print_status "$RED" "  ✗ FAILED: Expected content not found"
+                ((TESTS_FAILED++))
+            fi
+        else
+            print_status "$RED" "  ✗ FAILED: No output file created"
+            ((TESTS_FAILED++))
+        fi
+    else
+        print_status "$RED" "  ✗ FAILED: Conversion failed"
+        ((TESTS_FAILED++))
+    fi
+    
+    # Cleanup
+    cd - >/dev/null
+    rm -rf "$test_dir"
+}
+
+# Main test execution
+print_status "$GREEN" "=== pdf2htmlEX Integration Tests ==="
+echo ""
+
+# Check if pdf2htmlEX is installed
+if ! command -v pdf2htmlEX >/dev/null 2>&1; then
+    print_status "$RED" "Error: pdf2htmlEX not found in PATH"
+    exit 1
+fi
+
+# Get test fixtures directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FIXTURES_DIR="$SCRIPT_DIR/../fixtures"
+
+# Create a simple test PDF if fixtures don't exist
+if [ ! -f "$FIXTURES_DIR/simple.pdf" ]; then
+    print_status "$YELLOW" "Creating test fixtures..."
+    cd "$FIXTURES_DIR"
+    if [ -f "create-test-pdfs.sh" ]; then
+        ./create-test-pdfs.sh
+    fi
+    cd - >/dev/null
+fi
+
+# Test 1: Basic conversion
+if [ -f "$FIXTURES_DIR/simple.pdf" ]; then
+    run_test "Basic conversion" "$FIXTURES_DIR/simple.pdf" "" "Simple PDF Test"
+fi
+
+# Test 2: Zoom option
+if [ -f "$FIXTURES_DIR/simple.pdf" ]; then
+    run_test "Zoom 2x" "$FIXTURES_DIR/simple.pdf" "--zoom 2" "Simple PDF Test"
+fi
+
+# Test 3: Split pages
+if [ -f "$FIXTURES_DIR/simple.pdf" ]; then
+    run_test "Split pages" "$FIXTURES_DIR/simple.pdf" "--split-pages 1" "Simple PDF Test"
+fi
+
+# Test 4: Embed CSS
+if [ -f "$FIXTURES_DIR/simple.pdf" ]; then
+    run_test "Embed CSS" "$FIXTURES_DIR/simple.pdf" "--embed-css 1" "Simple PDF Test"
+fi
+
+# Test 5: Process outline
+if [ -f "$FIXTURES_DIR/simple.pdf" ]; then
+    run_test "Process outline" "$FIXTURES_DIR/simple.pdf" "--process-outline 1" "Simple PDF Test"
+fi
+
+# Summary
+echo ""
+print_status "$GREEN" "=== Test Summary ==="
+echo "Tests run:    $TESTS_RUN"
+echo "Tests passed: $TESTS_PASSED"
+echo "Tests failed: $TESTS_FAILED"
+
+if [ $TESTS_FAILED -eq 0 ]; then
+    print_status "$GREEN" "All tests passed!"
+    exit 0
+else
+    print_status "$RED" "Some tests failed"
+    exit 1
+fi
+</file>
+
+<file path=".editorconfig">
+# EditorConfig helps maintain consistent coding styles across different editors
+# https://editorconfig.org
+
+root = true
+
+# Default settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Ruby files (including Homebrew formulas)
+[*.rb]
+indent_size = 2
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+# Shell scripts should be executable
+shell = bash
+
+# Markdown files
+[*.md]
+# Trailing whitespace is significant in Markdown for line breaks
+trim_trailing_whitespace = false
+max_line_length = 100
+
+# YAML files (GitHub Actions, etc.)
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_size = 2
+
+# Makefile
+[Makefile]
+indent_style = tab
+
+# Python scripts (if any)
+[*.py]
+indent_size = 4
+
+# Git files
+[.gitignore]
+indent_size = 2
+
+[.gitattributes]
+indent_size = 2
+
+# Test files
+[test/fixtures/*.pdf]
+# Binary files, no modifications
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+</file>
+
+<file path="build.sh">
+#!/usr/bin/env bash
+
+# Install Homebrew if not installed
+if ! command -v brew &>/dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Install pdf2htmlEX from source formula
+brew install --build-from-source Formula/pdf2htmlex.rb
+</file>
+
+<file path="Makefile">
+# Makefile for pdf2htmlEX Homebrew Formula
+
+.PHONY: help install test audit clean deps update-version check-deps lint
+
+# Default target
+help:
+	@echo "pdf2htmlEX Homebrew Formula - Development Tasks"
+	@echo ""
+	@echo "Available targets:"
+	@echo "  make install      - Install the formula from source"
+	@echo "  make test         - Run all tests"
+	@echo "  make audit        - Run brew audit on the formula" 
+	@echo "  make clean        - Clean build artifacts and test files"
+	@echo "  make deps         - Install required dependencies"
+	@echo "  make check-deps   - Check if all dependencies are installed"
+	@echo "  make update       - Interactive version update"
+	@echo "  make lint         - Run linting checks"
+	@echo ""
+	@echo "Quick start:"
+	@echo "  make deps         # Install dependencies"
+	@echo "  make install      # Install formula"
+	@echo "  make test         # Run tests"
+
+# Install the formula
+install:
+	@echo "Installing pdf2htmlEX formula..."
+	@brew uninstall pdf2htmlex 2>/dev/null || true
+	@brew install --build-from-source Formula/pdf2htmlex.rb
+
+# Run all tests
+test: test-formula test-integration
+	@echo "All tests completed!"
+
+# Run formula tests
+test-formula:
+	@echo "Running formula tests..."
+	@./scripts/test-formula.sh
+
+# Run integration tests
+test-integration:
+	@echo "Running integration tests..."
+	@./tests/integration/test_conversions.sh
+
+# Audit the formula
+audit:
+	@echo "Auditing formula..."
+	@brew audit --strict Formula/pdf2htmlex.rb
+
+# Clean build artifacts
+clean:
+	@echo "Cleaning build artifacts..."
+	@rm -rf staging/
+	@rm -f test.pdf test.html test-*.pdf test-*.html
+	@rm -f Formula/*.backup.*
+	@find . -name "*.log" -delete
+	@find . -name ".DS_Store" -delete
+	@echo "Clean complete!"
+
+# Install dependencies
+deps:
+	@echo "Installing dependencies..."
+	@brew install cmake ninja pkg-config
+	@brew install cairo fontconfig freetype gettext glib jpeg-turbo libpng libtiff libxml2 pango harfbuzz
+	@brew install openjdk
+	@echo "Dependencies installed!"
+
+# Check dependencies
+check-deps:
+	@./scripts/check-dependencies.sh
+
+# Update versions interactively
+update:
+	@./scripts/update-version.sh --all
+
+# Lint checks
+lint: lint-shell lint-ruby
+
+# Lint shell scripts
+lint-shell:
+	@echo "Linting shell scripts..."
+	@if command -v shellcheck >/dev/null; then \
+		find . -name "*.sh" -type f -exec shellcheck {} \; ; \
+	else \
+		echo "shellcheck not installed, skipping shell linting"; \
+	fi
+
+# Lint Ruby files
+lint-ruby:
+	@echo "Linting Ruby files..."
+	@brew style Formula/pdf2htmlex.rb
+
+# Quick test after changes
+quick-test:
+	@brew audit Formula/pdf2htmlex.rb
+	@if command -v pdf2htmlEX >/dev/null; then \
+		pdf2htmlEX --version; \
+	fi
+
+# Create a release
+release:
+	@echo "Creating release..."
+	@echo "1. Update version in formula"
+	@echo "2. Update CHANGELOG.md"
+	@echo "3. Commit changes"
+	@echo "4. Tag with version"
+	@echo "5. Push to GitHub"
+	@echo ""
+	@echo "Run: git tag -a vX.Y.Z -m 'Release vX.Y.Z'"
+	@echo "     git push origin main --tags"
+
+# Development setup
+setup: deps
+	@echo "Setting up development environment..."
+	@chmod +x scripts/*.sh
+	@chmod +x tests/integration/*.sh
+	@chmod +x tests/fixtures/*.sh
+	@echo "Setup complete!"
+
+# Show current versions
+versions:
+	@echo "Current versions in formula:"
+	@grep -E '^\s*version\s+"' Formula/pdf2htmlex.rb || echo "pdf2htmlEX: not found"
+	@grep -A1 'resource "poppler"' Formula/pdf2htmlex.rb | grep url | sed 's/.*poppler-\(.*\)\.tar.*/Poppler: \1/' || echo "Poppler: not found"
+	@grep -A1 'resource "fontforge"' Formula/pdf2htmlex.rb | grep url | sed 's/.*fontforge-\(.*\)\.tar.*/FontForge: \1/' || echo "FontForge: not found"
+
+# Run CI locally
+ci: audit test
+	@echo "CI checks passed locally!"
+
+# Show formula info
+info:
+	@if brew list pdf2htmlex &>/dev/null; then \
+		brew info pdf2htmlex; \
+	else \
+		echo "pdf2htmlEX not installed"; \
+	fi
+</file>
+
+<file path="Formula/pdf2htmlex.rb">
 # typed: false
 # frozen_string_literal: true
 
@@ -970,7 +2289,7 @@ class Pdf2htmlex < Formula
   homepage "https://github.com/pdf2htmlEX/pdf2htmlEX"
   url "https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz"
   version "0.18.8.rc1"
-  sha256 "###SHA256_SUM_PDF2HTMLEX###" # Placeholder, replace with actual checksum
+  sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
   license "GPL-3.0-or-later"
   revision 1 # Increment if resources or build logic changes without a version bump
 
@@ -996,15 +2315,59 @@ class Pdf2htmlex < Formula
 
   resource "poppler" do
     url "https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
-    sha256 "###SHA256_SUM_POPPLER###" # Placeholder
+    sha256 "c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08"
   end
 
   resource "fontforge" do
     url "https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz"
-    sha256 "###SHA256_SUM_FONTFORGE###" # Placeholder
+    sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
+  end
+
+  # Helper methods for build process
+  def build_with_progress(component, &block)
+    ohai "Building #{component}..."
+    start_time = Time.now
+    
+    begin
+      yield
+      elapsed = Time.now - start_time
+      ohai "✓ #{component} built successfully (#{elapsed.round(1)}s)"
+    rescue => e
+      onoe "✗ Failed to build #{component}: #{e.message}"
+      raise "#{component} build failed"
+    end
+  end
+
+  def validate_build_stage(component, path)
+    unless File.exist?(path)
+      onoe "Build validation failed: #{component} artifact not found at #{path}"
+      raise "#{component} build validation failed"
+    end
+    ohai "✓ #{component} build validated"
+  end
+
+  def with_build_environment(&block)
+    # Save original environment
+    orig_cflags = ENV["CFLAGS"]
+    orig_cxxflags = ENV["CXXFLAGS"]
+    orig_ldflags = ENV["LDFLAGS"]
+    
+    # Set optimized build flags
+    ENV.append "CFLAGS", "-O2 -fstack-protector-strong"
+    ENV.append "CXXFLAGS", "-O2 -fstack-protector-strong"
+    ENV.append "LDFLAGS", "-Wl,-rpath,@loader_path/../lib"
+    
+    yield
+  ensure
+    # Restore original environment
+    ENV["CFLAGS"] = orig_cflags
+    ENV["CXXFLAGS"] = orig_cxxflags
+    ENV["LDFLAGS"] = orig_ldflags
   end
 
   def install
+    ohai "pdf2htmlEX Build Process Starting"
+    
     # Staging prefix for our custom-built static libraries
     ENV.cxx11
 
@@ -1018,9 +2381,37 @@ class Pdf2htmlex < Formula
     ENV.remove "HOMEBREW_CFLAGS", / ?-march=\S*/
     ENV.remove "HOMEBREW_CXXFLAGS", / ?-march=\S*/
 
+    # Determine the architectures to build for.
+    # Homebrew < 4.5 exposed Hardware::CPU.universal_archs but this method
+    # was removed in 4.5 (see https://brew.sh/2025/04/29/homebrew-4.5.0/).
+    # Use it when available for backwards-compatibility, otherwise fall back to
+    # a manual selection that still produces a universal binary.
+    archs = if Hardware::CPU.respond_to?(:universal_archs)
+      Hardware::CPU.universal_archs.join(";")
+    else
+      if Hardware::CPU.arm?
+        # Native Apple Silicon build, include Intel slice for universal binary
+        "arm64;x86_64"
+      else
+        # Building the extra arm64 slice on Intel hosts requires Xcode 12+
+        # *and* a recent macOS SDK.  Older toolchains will error out during
+        # the CMake compiler checks (see issue observed by users).
+        # Default to a safe single-arch build unless the user explicitly opts
+        # into a universal build via the PDF2HTMLEX_FORCE_UNIVERSAL env var.
+        if ENV["PDF2HTMLEX_FORCE_UNIVERSAL"]
+          "x86_64;arm64"
+        else
+          "x86_64"
+        end
+      end
+    end
+    
+    ohai "Building for architectures: #{archs.gsub(";", ", ")}"
 
-    archs = Hardware::CPU.universal_archs.join(";")
     staging_prefix = buildpath/"staging"
+    
+    # Create build log
+    build_log = buildpath/"build.log"
 
     # Centralized CMAKE_PREFIX_PATH for all Homebrew deps
     cmake_prefix_paths = [
@@ -1038,61 +2429,92 @@ class Pdf2htmlex < Formula
     ].join(";")
     ENV["CMAKE_PREFIX_PATH"] = cmake_prefix_paths
 
-    # Build Poppler
-    resource("poppler").stage do
-      mkdir "build" do
-        system "cmake", "..",
-               "-G", "Ninja",
-               "-DCMAKE_BUILD_TYPE=Release",
-               "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
-               "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-               "-DCMAKE_PREFIX_PATH=#{ENV["CMAKE_PREFIX_PATH"]}",
-               "-DCMAKE_FIND_FRAMEWORK=NEVER",
-               "-DCMAKE_FIND_APPBUNDLE=NEVER",
-               "-DENABLE_UNSTABLE_API_ABI_HEADERS=OFF",
-               "-DBUILD_GTK_TESTS=OFF",
-               "-DBUILD_QT5_TESTS=OFF",
-               "-DBUILD_QT6_TESTS=OFF",
-               "-DBUILD_CPP_TESTS=OFF",
-               "-DBUILD_MANUAL_TESTS=OFF",
-               "-DENABLE_BOOST=OFF",
-               "-DENABLE_SPLASH=ON",
-               "-DENABLE_UTILS=OFF",
-               "-DENABLE_CPP=OFF",
-               "-DENABLE_GLIB=ON",
-               "-DENABLE_GOBJECT_INTROSPECTION=OFF",
-               "-DENABLE_GTK_DOC=OFF",
-               "-DENABLE_QT5=OFF",
-               "-DENABLE_QT6=OFF",
-               "-DENABLE_LIBOPENJPEG=none",
-               "-DENABLE_DCTDECODER=libjpeg",
-               "-DENABLE_CMS=none",
-               "-DENABLE_LCMS=OFF",
-               "-DENABLE_LIBCURL=OFF",
-               "-DENABLE_LIBTIFF=OFF",
-               "-DWITH_TIFF=OFF",
-               "-DWITH_NSS3=OFF",
-               "-DENABLE_NSS3=OFF",
-               "-DENABLE_GPGME=OFF",
-               "-DENABLE_ZLIB=ON",
-               "-DENABLE_ZLIB_UNCOMPRESS=OFF",
-               "-DUSE_FLOAT=OFF",
-               "-DBUILD_SHARED_LIBS=OFF",
-               "-DRUN_GPERF_IF_PRESENT=OFF",
-               "-DEXTRA_WARN=OFF",
-               "-DWITH_JPEG=ON",
-               "-DWITH_PNG=ON",
-               "-DWITH_Cairo=ON"
-        system "ninja", "install"
+    with_build_environment do
+      # Stage 1: Build Poppler
+      build_with_progress("Poppler 24.01.0") do
+        resource("poppler").stage do
+          mkdir "build" do
+            system "cmake", "..",
+                   "-G", "Ninja",
+                   "-DCMAKE_BUILD_TYPE=Release",
+                   "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
+                   "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+                   "-DCMAKE_PREFIX_PATH=#{ENV["CMAKE_PREFIX_PATH"]}",
+                   "-DCMAKE_FIND_FRAMEWORK=NEVER",
+                   "-DCMAKE_FIND_APPBUNDLE=NEVER",
+                   "-DENABLE_UNSTABLE_API_ABI_HEADERS=OFF",
+                   "-DBUILD_GTK_TESTS=OFF",
+                   "-DBUILD_QT5_TESTS=OFF",
+                   "-DBUILD_QT6_TESTS=OFF",
+                   "-DBUILD_CPP_TESTS=OFF",
+                   "-DBUILD_MANUAL_TESTS=OFF",
+                   "-DENABLE_BOOST=OFF",
+                   "-DENABLE_SPLASH=ON",
+                   "-DENABLE_UTILS=OFF",
+                   "-DENABLE_CPP=OFF",
+                   "-DENABLE_GLIB=ON",
+                   "-DENABLE_GOBJECT_INTROSPECTION=OFF",
+                   "-DENABLE_GTK_DOC=OFF",
+                   "-DENABLE_QT5=OFF",
+                   "-DENABLE_QT6=OFF",
+                   "-DENABLE_LIBOPENJPEG=none",
+                   "-DENABLE_DCTDECODER=libjpeg",
+                   "-DENABLE_CMS=none",
+                   "-DENABLE_LCMS=OFF",
+                   "-DENABLE_LIBCURL=OFF",
+                   "-DENABLE_LIBTIFF=OFF",
+                   "-DWITH_TIFF=OFF",
+                   "-DWITH_NSS3=OFF",
+                   "-DENABLE_NSS3=OFF",
+                   "-DENABLE_GPGME=OFF",
+                   "-DENABLE_ZLIB=ON",
+                   "-DENABLE_ZLIB_UNCOMPRESS=OFF",
+                   "-DUSE_FLOAT=OFF",
+                   "-DBUILD_SHARED_LIBS=OFF",
+                   "-DRUN_GPERF_IF_PRESENT=OFF",
+                   "-DEXTRA_WARN=OFF",
+                   "-DWITH_JPEG=ON",
+                   "-DWITH_PNG=ON",
+                   "-DWITH_Cairo=ON"
+            system "ninja", "install"
+          end
+        end
       end
-    end
+      validate_build_stage("Poppler", staging_prefix/"lib/libpoppler.a")
 
-    # Build FontForge
-    resource("fontforge").stage do
-      mkdir "build" do
-        # FontForge needs to find the Poppler we just built in staging_prefix
-        fontforge_cmake_prefix_path = "#{staging_prefix};#{ENV["CMAKE_PREFIX_PATH"]}"
-        system "cmake", "..",
+      # Stage 2: Build FontForge
+      build_with_progress("FontForge 20230101") do
+        resource("fontforge").stage do
+          mkdir "build" do
+            # FontForge needs to find the Poppler we just built in staging_prefix
+            fontforge_cmake_prefix_path = "#{staging_prefix};#{ENV["CMAKE_PREFIX_PATH"]}"
+            
+            # Disable problematic gettext/msgfmt build completely by pointing to /bin/true
+            ENV["MSGFMT"] = "/bin/true"
+            ENV["XGETTEXT"] = "/bin/true"
+            ENV["MSGMERGE"] = "/bin/true"
+            ENV.delete("LANG")
+            ENV.delete("LC_ALL")
+            ENV.delete("LC_MESSAGES")
+            ENV["LC_ALL"] = "C"
+            
+            # Create and apply patch to disable message compilation before configuring the build.
+            # We use an absolute path for the patch file to avoid issues with the -d option.
+            patch_file = Pathname.pwd/"disable-gettext.patch"
+            patch_file.write <<~EOS
+              diff --git a/po/CMakeLists.txt b/po/CMakeLists.txt
+              index d5bcb789d..b695a5a09 100644
+              --- a/po/CMakeLists.txt
+              +++ b/po/CMakeLists.txt
+              @@ -1,3 +1,4 @@
+              +return()
+               # Distributed under the original FontForge BSD 3-clause license
+               
+               if (GETTEXT_FOUND)
+            EOS
+            system "patch", "-d", "..", "-p1", "-i", patch_file.to_s
+            
+            system "cmake", "..",
                "-G", "Ninja",
                "-DCMAKE_BUILD_TYPE=Release",
                "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
@@ -1124,41 +2546,63 @@ class Pdf2htmlex < Formula
                "-DENABLE_SANITIZER=none",
                "-DENABLE_FREETYPE_DEBUGGER=",
                "-DSPHINX_USE_VENV=OFF",
+               "-DENABLE_GETTEXT=OFF",
+               "-DBUILD_GETTEXT=OFF",
+               "-DENABLE_NLS=OFF",
+               "-DENABLE_MULTILAYER=OFF",
                "-DREAL_TYPE=double",
                "-DTHEME=tango"
-        system "ninja", "install"
-      end
-    end
-
-    # Configure pdf2htmlEX build
-    ENV.prepend_path "PKG_CONFIG_PATH", "#{staging_prefix}/lib/pkgconfig"
-    # CMAKE_PREFIX_PATH for pdf2htmlEX needs our staging_prefix and the general Homebrew paths
-    pdf2htmlex_cmake_prefix_path = "#{staging_prefix};#{ENV["CMAKE_PREFIX_PATH"]}"
-
-
-    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
-
-    # pdf2htmlEX source is in the root of the buildpath (after url.stage)
-    # It has a pdf2htmlEX subdirectory which contains the main CMakeLists.txt
-    # The main tarball extracts to pdf2htmlEX-0.18.8.rc1, so cd into that.
-    cd buildpath/name do # 'name' is a special var in Homebrew for the extracted dir name
-      cd "pdf2htmlEX" do # The actual sources are in a subdirectory
-        mkdir "build" do
-          system "cmake", "..",
-                 "-G", "Ninja",
-                 "-DCMAKE_BUILD_TYPE=Release",
-                 "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-                 "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-                 "-DCMAKE_PREFIX_PATH=#{pdf2htmlex_cmake_prefix_path}",
-                 "-DCMAKE_FIND_FRAMEWORK=NEVER",
-                 "-DCMAKE_FIND_APPBUNDLE=NEVER"
-          system "ninja", "install"
+            system "ninja", "install"
+          end
         end
       end
+      validate_build_stage("FontForge", staging_prefix/"lib/libfontforge.a")
+
+      # Configure pdf2htmlEX build
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{staging_prefix}/lib/pkgconfig"
+      # CMAKE_PREFIX_PATH for pdf2htmlEX needs our staging_prefix and the general Homebrew paths
+      pdf2htmlex_cmake_prefix_path = "#{staging_prefix};#{ENV["CMAKE_PREFIX_PATH"]}"
+
+      ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
+
+      # Stage 3: Build pdf2htmlEX
+      build_with_progress("pdf2htmlEX #{version}") do
+        # pdf2htmlEX source is in the root of the buildpath (after url.stage)
+        # It has a pdf2htmlEX subdirectory which contains the main CMakeLists.txt
+        # The main tarball extracts to pdf2htmlEX-0.18.8.rc1, so cd into that.
+        cd "pdf2htmlEX-#{version}" do # Corrected cd to the extracted directory
+          cd "pdf2htmlEX" do # The actual sources are in a subdirectory
+            mkdir "build" do
+              system "cmake", "..",
+                     "-G", "Ninja",
+                     "-DCMAKE_BUILD_TYPE=Release",
+                     "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+                     "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+                     "-DCMAKE_PREFIX_PATH=#{pdf2htmlex_cmake_prefix_path}",
+                     "-DCMAKE_FIND_FRAMEWORK=NEVER",
+                     "-DCMAKE_FIND_APPBUNDLE=NEVER"
+              system "ninja", "install"
+            end
+          end
+        end
+      end
+      validate_build_stage("pdf2htmlEX", bin/"pdf2htmlEX")
     end
+
+    # Final validation
+    ohai "Running post-build validation..."
+    system bin/"pdf2htmlEX", "--version"
+    ohai "✓ Build completed successfully!"
+  rescue => e
+    onoe "Build failed: #{e.message}"
+    onoe "Check build log at: #{build_log}" if build_log.exist?
+    raise
   end
 
   test do
+    ohai "Running pdf2htmlEX tests..."
+    
+    # Test 1: Basic functionality with simple PDF
     (testpath/"test.pdf").write <<~EOS
       %PDF-1.4
       1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
@@ -1183,12 +2627,205 @@ class Pdf2htmlex < Formula
       %%EOF
     EOS
 
+    # Test basic conversion
     system bin/"pdf2htmlEX", testpath/"test.pdf"
     assert_predicate testpath/"test.html", :exist?, "test.html should be created"
     assert_match "pdf2htmlEX test", (testpath/"test.html").read, "Output HTML should contain text from PDF"
     assert_match "pdf2htmlEX", (testpath/"test.html").read, "Output HTML should mention pdf2htmlEX"
+    
+    # Test 2: Version output
+    version_output = shell_output("#{bin}/pdf2htmlEX --version")
+    assert_match version.to_s, version_output, "Version should match formula version"
+    
+    # Test 3: Help output
+    help_output = shell_output("#{bin}/pdf2htmlEX --help", 1)
+    assert_match "pdf2htmlEX", help_output, "Help should mention pdf2htmlEX"
+    assert_match "Usage:", help_output, "Help should show usage"
+    
+    # Test 4: Various command-line options
+    system bin/"pdf2htmlEX", "--zoom", "1.5", "--embed-css", "0", testpath/"test.pdf", testpath/"test_zoom.html"
+    assert_predicate testpath/"test_zoom.html", :exist?, "Custom output file should be created"
+    
+    # Test 5: Split pages option
+    system bin/"pdf2htmlEX", "--split-pages", "1", testpath/"test.pdf", testpath/"test_split.html"
+    assert_predicate testpath/"test_split", :directory?, "Split pages directory should be created"
+    
+    # Test 6: Process outline option
+    system bin/"pdf2htmlEX", "--process-outline", "1", testpath/"test.pdf", testpath/"test_outline.html"
+    assert_predicate testpath/"test_outline.html", :exist?, "Outline processing should work"
+    
+    # Test 7: Unicode handling
+    (testpath/"unicode_test.pdf").write <<~EOS
+      %PDF-1.4
+      1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+      2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+      3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
+      4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+      5 0 obj<</Length 150>>stream
+      BT /F1 24 Tf 100 700 Td (Hello ) Tj /F1 24 Tf (世界) Tj /F1 24 Tf ( €£¥) Tj ET
+      endstream
+      endobj
+      xref
+      0 6
+      0000000000 65535 f
+      0000000009 00000 n
+      0000000052 00000 n
+      0000000101 00000 n
+      0000000191 00000 n
+      0000000242 00000 n
+      trailer<</Size 6/Root 1 0 R>>
+      startxref
+      407
+      %%EOF
+    EOS
+    
+    system bin/"pdf2htmlEX", testpath/"unicode_test.pdf"
+    assert_predicate testpath/"unicode_test.html", :exist?, "Unicode PDF should be converted"
+    
+    # Test 8: Architecture validation
+    ohai "Validating binary architecture..."
+    binary_info = shell_output("file #{bin}/pdf2htmlEX")
+    lipo_info = shell_output("lipo -info #{bin}/pdf2htmlEX 2>/dev/null")
+    
+    if Hardware::CPU.arm?
+      assert_match "arm64", binary_info, "Binary should contain arm64 architecture"
+      # Check if universal binary
+      if binary_info.include?("x86_64")
+        assert_match "x86_64 arm64", lipo_info, "Universal binary should contain both architectures"
+        ohai "✓ Universal binary validated (arm64 + x86_64)"
+      else
+        ohai "✓ Native arm64 binary validated"
+      end
+    else
+      assert_match "x86_64", binary_info, "Binary should contain x86_64 architecture"
+      # Check if universal binary  
+      if binary_info.include?("arm64")
+        assert_match "x86_64 arm64", lipo_info, "Universal binary should contain both architectures"
+        ohai "✓ Universal binary validated (x86_64 + arm64)"
+      else
+        ohai "✓ Native x86_64 binary validated"
+      end
+    end
+    
+    # Test 9: Test both architectures if universal binary
+    if lipo_info.include?("x86_64") && lipo_info.include?("arm64")
+      ohai "Testing x86_64 architecture..."
+      x86_version = shell_output("arch -x86_64 #{bin}/pdf2htmlEX --version 2>&1")
+      assert_match version.to_s, x86_version, "x86_64 binary should run correctly"
+      
+      ohai "Testing arm64 architecture..."
+      arm_version = shell_output("arch -arm64 #{bin}/pdf2htmlEX --version 2>&1")
+      assert_match version.to_s, arm_version, "arm64 binary should run correctly"
+    end
+    
+    ohai "✓ All tests passed!"
   end
 end
+</file>
+
+<file path=".gitignore">
+__pycache__/
+._*
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.classpath
+.com.apple.timemachine.donotpresent
+.coverage
+.cursor/
+.cursorindexingignore
+.cursorrules
+.DocumentRevisions-V100
+.DS_Store
+.eggs/
+.env
+.env.development.local
+.env.local
+.env.production.local
+.env.test.local
+.fseventsd
+.giga/
+.idea/
+.installed.cfg
+.LSOverride
+.npm
+.project
+.Python
+.rakeTasks
+.settings/
+.specstory/
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.vscode/
+.yarn-integrity
+*.bak
+*.bottle.*
+*.db
+*.dll
+*.dylib
+*.egg
+*.egg-info/
+*.exe
+*.gem
+*.log
+*.o
+*.py[cod]
+*.rbc
+*.so
+*.sql
+*.sqlite
+*.sublime-project
+*.sublime-workspace
+*.swo
+*.swp
+*.tar.gz
+*.tar.xz
+*~
+*$py.class
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/examples.txt
+/spec/reports/
+/test/tmp/
+/test/version_tmp/
+/tmp/
+archive/
+bin/
+build_temp_test_script/
+build/
+coverage/
+develop-eggs/
+dist/
+downloads/
+eggs/
+env/
+Formula/*.backup.*
+Icon
+lib/
+lib64/
+Network Trash Folder
+node_modules/
+npm-debug.log
+out/
+parts/
+sdist/
+staging/
+target/
+Temporary Items
+test-*.html
+test-*.pdf
+test.html
+test.pdf
+tests/fixtures/*.pdf
+var/
+wheels/
+yarn-debug.log
+yarn-error.log
 </file>
 
 </files>
