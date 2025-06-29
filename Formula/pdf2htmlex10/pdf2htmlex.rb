@@ -89,7 +89,7 @@ class Pdf2htmlex < Formula
     end
 
     resource("fontforge").stage do
-      mkdir "build" do
+        mkdir "build" do
         system "cmake", "..",
                "-G", "Ninja",
                "-DCMAKE_BUILD_TYPE=Release",
