@@ -1,5 +1,8 @@
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 Error: Failed to load cask: Formula/pdf2htmlex.rb
-Cask 'pdf2htmlex' is unreadable: wrong constant name #<Class:0x00000001237a9d00>
+Cask 'pdf2htmlex' is unreadable: wrong constant name #<Class:0x00000001281c9930>
 Warning: Treating Formula/pdf2htmlex.rb as a formula.
 ==> Fetching pdf2htmlex
 ==> Downloading https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
@@ -11,25 +14,16 @@ Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/28585444564887
 ==> pdf2htmlEX Build Process Starting
 ==> Building for architectures: x86_64
 ==> Building Poppler 24.01.0...
-==> cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-25075-8m0n7p/pdf2htmlEX-0.18.8.rc1/staging -DCM
+==> cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-50345-jd868d/pdf2htmlEX-0.18.8.rc1/staging -DCM
 ==> ninja install
-==> ✓ Poppler 24.01.0 built successfully (37.3s)
+==> ✓ Poppler 24.01.0 built successfully (33.9s)
 ==> ✓ Poppler build validated
 ==> Building FontForge 20230101...
-==> patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patc
-Last 15 lines from /Users/adam/Library/Logs/Homebrew/pdf2htmlex/03.patch:
-2025-06-29 12:37:56 +0000
-
-patch
--d
-..
--p1
--i
-/private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patch
-
-patching file 'po/CMakeLists.txt'
-1 out of 1 hunks failed--saving rejects to 'po/CMakeLists.txt.rej'
-Error: ✗ Failed to build FontForge 20230101: Failed executing: patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-25075-utzonl/fontforge-20230101/build/disable-gettext.patch
-Error: Build failed: FontForge 20230101 build failed
+==> patch -d .. -p1 -i /private/tmp/pdf2htmlex--fontforge-20250629-50345-fqqhh5/fontforge-20230101/build/disable-gettext.patc
+==> cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-50345-jd868d/pdf2htmlEX-0.18.8.rc1/staging -DCM
+==> ninja install
+==> ✓ FontForge 20230101 built successfully (20.1s)
+Error: Build validation failed: FontForge artifact not found at /private/tmp/pdf2htmlex-20250629-50345-jd868d/pdf2htmlEX-0.18.8.rc1/staging/lib/libfontforge.a
+Error: Build failed: FontForge build validation failed
 Error: An exception occurred within a child process:
-  RuntimeError: FontForge 20230101 build failed
+  RuntimeError: FontForge build validation failed

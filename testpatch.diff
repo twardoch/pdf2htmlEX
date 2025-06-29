@@ -1,0 +1,4 @@
+--- a/po/CMakeLists.txt
++++ b/po/CMakeLists.txt
+@@ -0,0 +1,1 @@
++return()

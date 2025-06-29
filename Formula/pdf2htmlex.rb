@@ -220,14 +220,10 @@ class Pdf2htmlex < Formula
             patch_file = Pathname.pwd/"disable-gettext.patch"
             patch_file.write <<~EOS
               diff --git a/po/CMakeLists.txt b/po/CMakeLists.txt
-              index d5bcb789d..b695a5a09 100644
               --- a/po/CMakeLists.txt
               +++ b/po/CMakeLists.txt
-              @@ -1,3 +1,4 @@
+              @@ -0,0 +1,1 @@
               +return()
-               # Distributed under the original FontForge BSD 3-clause license
-               
-               if (GETTEXT_FOUND)
             EOS
             system "patch", "-d", "..", "-p1", "-i", patch_file.to_s
             
@@ -270,6 +266,19 @@ class Pdf2htmlex < Formula
                "-DREAL_TYPE=double",
                "-DTHEME=tango"
             system "ninja", "install"
+            
+            # Manual copy of static library since FontForge doesn't install it when BUILD_SHARED_LIBS=OFF
+            lib_source = "lib/libfontforge.a"
+            lib_dest = "#{staging_prefix}/lib/libfontforge.a"
+            
+            if File.exist?(lib_source)
+              system "mkdir", "-p", "#{staging_prefix}/lib"
+              system "cp", lib_source, lib_dest
+              ohai "✓ Manually copied libfontforge.a to staging directory"
+            else
+              onoe "Static library not found at #{lib_source}"
+              raise "FontForge static library build failed"
+            end
           end
         end
       end
@@ -284,23 +293,28 @@ class Pdf2htmlex < Formula
 
       # Stage 3: Build pdf2htmlEX
       build_with_progress("pdf2htmlEX #{version}") do
-        # pdf2htmlEX source is in the root of the buildpath (after url.stage)
-        # It has a pdf2htmlEX subdirectory which contains the main CMakeLists.txt
-        # The main tarball extracts to pdf2htmlEX-0.18.8.rc1, so cd into that.
-        cd "pdf2htmlEX-#{version}" do # Corrected cd to the extracted directory
-          cd "pdf2htmlEX" do # The actual sources are in a subdirectory
+        # The tarball extracts to a pdf2htmlEX directory directly
+        if Dir.exist?("pdf2htmlEX")
+          cd "pdf2htmlEX" do
             mkdir "build" do
-              system "cmake", "..",
-                     "-G", "Ninja",
-                     "-DCMAKE_BUILD_TYPE=Release",
-                     "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-                     "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-                     "-DCMAKE_PREFIX_PATH=#{pdf2htmlex_cmake_prefix_path}",
-                     "-DCMAKE_FIND_FRAMEWORK=NEVER",
-                     "-DCMAKE_FIND_APPBUNDLE=NEVER"
+                          system "cmake", "..",
+                   "-G", "Ninja",
+                   "-DCMAKE_BUILD_TYPE=Release",
+                   "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+                   "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+                   "-DCMAKE_PREFIX_PATH=#{pdf2htmlex_cmake_prefix_path}",
+                   "-DCMAKE_FIND_FRAMEWORK=NEVER",
+                   "-DCMAKE_FIND_APPBUNDLE=NEVER",
+                   "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                   "-DBUILD_TESTING=OFF",
+                   "-DENABLE_TESTS=OFF"
               system "ninja", "install"
             end
           end
+        else
+          onoe "pdf2htmlEX source directory not found"
+          ohai "Available directories: #{Dir.glob("*").select { |f| File.directory?(f) }.join(", ")}"
+          raise "pdf2htmlEX source directory structure unexpected"
         end
       end
       validate_build_stage("pdf2htmlEX", bin/"pdf2htmlEX")
