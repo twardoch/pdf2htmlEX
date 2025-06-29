@@ -1,0 +1,77 @@
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Fetching pdf2htmlex
+==> Downloading https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz
+==> Verifying checksum for 'e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz'
+==> Downloading https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz
+==> Verifying checksum for '5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz'
+==> Downloading https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz
+==> Verifying checksum for '28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz'
+/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz --directory /private/tmp/homebrew-unpack-20250629-62870-gaa8yc
+mv /private/tmp/homebrew-unpack-20250629-62870-gaa8yc/pdf2htmlEX-0.18.8.rc1 /private/tmp/pdf2htmlex-20250629-62870-bix6ld/pdf2htmlEX-0.18.8.rc1
+/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz --directory /private/tmp/homebrew-unpack-20250629-62870-gul9ex
+mv /private/tmp/homebrew-unpack-20250629-62870-gul9ex/poppler-24.01.0 /private/tmp/pdf2htmlex--poppler-20250629-62870-t0ytm6/poppler-24.01.0
+[34m==>[0m [1mtar -xf /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz --strip-components=1[0m
+[34m==>[0m [1mcmake .. -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-62870-bix6ld/pdf2htmlEX-0.18.8.rc1/poppler/build -DCMAKE_PREFIX_PATH=/usr/local/opt/cairo;/usr/local/opt/fontconfig;/usr/local/opt/freetype;/usr/local/opt/gettext;/usr/local/opt/glib;/usr/local/opt/jpeg-turbo;/usr/local/opt/libpng;/usr/local/opt/libtiff;/usr/local/opt/pango;/usr/local/opt/harfbuzz -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64 -DBUILD_SHARED_LIBS=OFF -DENABLE_UNSTABLE_API_ABI_HEADERS=OFF -DENABLE_SPLASH=ON -DENABLE_GLIB=ON -DENABLE_GOBJECT_INTROSPECTION=OFF -DENABLE_QT5=OFF -DENABLE_QT6=OFF -DENABLE_UTILS=OFF -DENABLE_CPP=OFF -DENABLE_GLIB=ON -DENABLE_LIBOPENJPEG=none -DENABLE_CMS=none -DENABLE_DCTDECODER=libjpeg -DENABLE_LIBPNG=ON -DENABLE_LIBTIFF=ON -DENABLE_NSS3=OFF -DENABLE_GPGME=OFF -DBUILD_GTK_TESTS=OFF -DBUILD_QT5_TESTS=OFF -DBUILD_QT6_TESTS=OFF -DBUILD_CPP_TESTS=OFF -DBUILD_MANUAL_TESTS=OFF -GNinja[0m
+CMake Warning:
+  Ignoring extra path from command line:
+
+   ".."
+
+
+CMake Error: The source directory "/private/tmp/pdf2htmlex--poppler-20250629-62870-t0ytm6/poppler-24.01.0/poppler" does not appear to contain CMakeLists.txt.
+Specify --help for usage, or press the help button on the CMake GUI.
+
+==> Formula
+Path: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/Formula/pdf2htmlex1/pdf2htmlex.rb
+==> Configuration
+HOMEBREW_VERSION: 4.5.8-112-g52d66f2
+ORIGIN: https://github.com/Homebrew/brew
+HEAD: 52d66f206a28e79cb030df484d6cd78c699c88f5
+Last commit: 22 hours ago
+Branch: master
+Core tap JSON: 29 Jun 17:40 UTC
+Core cask tap JSON: 29 Jun 17:40 UTC
+HOMEBREW_PREFIX: /usr/local
+HOMEBREW_CASK_OPTS: []
+HOMEBREW_EDITOR: cursor --wait
+HOMEBREW_GITHUB_API_TOKEN: set
+HOMEBREW_MAKE_JOBS: 16
+HOMEBREW_SORBET_RUNTIME: set
+Homebrew Ruby: 3.4.4 => /usr/local/Homebrew/Library/Homebrew/vendor/portable-ruby/3.4.4/bin/ruby
+CPU: 16-core 64-bit kabylake
+Clang: 17.0.0 build 1700
+Git: 2.47.0 => /usr/local/bin/git
+Curl: 8.7.1 => /usr/bin/curl
+macOS: 15.5-x86_64
+CLT: 16.4.0.0.1.1747106510
+Xcode: 16.4
+Error: pdf2htmlex 0.18.8.rc1 did not build
+==> ENV
+HOMEBREW_CC: clang
+HOMEBREW_CXX: clang++
+MAKEFLAGS: -j16
+CMAKE_PREFIX_PATH: /usr/local/opt/openjdk:/usr/local/opt/icu4c@77:/usr/local/opt/readline:/usr/local/opt/libxml2:/usr/local
+CMAKE_INCLUDE_PATH: /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers
+CMAKE_LIBRARY_PATH: /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries
+PKG_CONFIG_PATH: /usr/local/opt/pkgconf/lib/pkgconfig:/usr/local/opt/libpng/lib/pkgconfig:/usr/local/opt/freetype/lib/pkgconfig:/usr/local/opt/fontconfig/lib/pkgconfig:/usr/local/opt/pcre2/lib/pkgconfig:/usr/local/opt/glib/lib/pkgconfig:/usr/local/opt/libxau/lib/pkgconfig:/usr/local/opt/libxdmcp/lib/pkgconfig:/usr/local/opt/libxcb/lib/pkgconfig:/usr/local/opt/libx11/lib/pkgconfig:/usr/local/opt/libxext/lib/pkgconfig:/usr/local/opt/libxrender/lib/pkgconfig:/usr/local/opt/lzo/lib/pkgconfig:/usr/local/opt/pixman/lib/pkgconfig:/usr/local/opt/cairo/lib/pkgconfig:/usr/local/opt/jpeg-turbo/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig:/usr/local/opt/lz4/lib/pkgconfig:/usr/local/opt/zstd/lib/pkgconfig:/usr/local/opt/libtiff/lib/pkgconfig:/usr/local/opt/icu4c@77/lib/pkgconfig:/usr/local/opt/readline/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/opt/fribidi/lib/pkgconfig:/usr/local/opt/graphite2/lib/pkgconfig:/usr/local/opt/harfbuzz/lib/pkgconfig:/usr/local/opt/pango/lib/pkgconfig:/usr/local/opt/xorgproto/share/pkgconfig
+PKG_CONFIG_LIBDIR: /usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/15
+HOMEBREW_MAKE_JOBS: 16
+HOMEBREW_GIT: git
+HOMEBREW_SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk
+ACLOCAL_PATH: /usr/local/opt/libxml2/share/aclocal:/usr/local/share/aclocal
+PATH: /usr/local/Homebrew/Library/Homebrew/shims/mac/super:/usr/local/opt/cmake/bin:/usr/local/opt/ninja/bin:/usr/local/opt/pkgconf/bin:/usr/local/opt/openjdk/bin:/usr/local/opt/libpng/bin:/usr/local/opt/freetype/bin:/usr/local/opt/fontconfig/bin:/usr/local/opt/pcre2/bin:/usr/local/opt/gettext/bin:/usr/local/opt/glib/bin:/usr/local/opt/cairo/bin:/usr/local/opt/jpeg-turbo/bin:/usr/local/opt/xz/bin:/usr/local/opt/lz4/bin:/usr/local/opt/zstd/bin:/usr/local/opt/libtiff/bin:/usr/local/opt/icu4c@77/bin:/usr/local/opt/libxml2/bin:/usr/local/opt/fribidi/bin:/usr/local/opt/graphite2/bin:/usr/local/opt/harfbuzz/bin:/usr/local/opt/pango/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Logs:
+     /Users/adam/Library/Logs/Homebrew/pdf2htmlex/00.options.out
+     /Users/adam/Library/Logs/Homebrew/pdf2htmlex/01.tar
+     /Users/adam/Library/Logs/Homebrew/pdf2htmlex/02.cmake
+
+--------------------------------
+Build completed for pdf2htmlex1 at Sun Jun 29 19:40:25 CEST 2025
+--------------------------------
+--------------------------------

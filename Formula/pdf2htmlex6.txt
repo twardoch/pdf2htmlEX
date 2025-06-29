@@ -1,0 +1,358 @@
+==> Fetching pdf2htmlex
+==> Downloading https://poppler.freedesktop.org/poppler-24.01.0.tar.xz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz
+==> Verifying checksum for 'e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz'
+==> Downloading https://github.com/fontforge/fontforge/archive/refs/tags/20230101.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz
+==> Verifying checksum for '5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz'
+==> Downloading https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v0.18.8.rc1.tar.gz
+Already downloaded: /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz
+==> Verifying checksum for '28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz'
+/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/28585444564887e91e0ec9ba3668b3ad426e778bbb2ca40469055fa52c4ba1a5--pdf2htmlEX-0.18.8.rc1.tar.gz --directory /private/tmp/homebrew-unpack-20250629-85310-273xqy
+mv /private/tmp/homebrew-unpack-20250629-85310-273xqy/pdf2htmlEX-0.18.8.rc1 /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1
+[34m==>[0m [1mpdf2htmlEX Build Process Starting[0m
+[34m==>[0m [1mBuilding for architectures: x86_64[0m
+[34m==>[0m [1mBuilding Poppler 24.01.0...[0m
+/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/e71d08f00bca6703e4f0f75b69415f8cacecc62db0fbc9528becb0530e3d0a25--poppler-24.01.0.tar.xz --directory /private/tmp/homebrew-unpack-20250629-85310-sb0eog
+mv /private/tmp/homebrew-unpack-20250629-85310-sb0eog/poppler-24.01.0 /private/tmp/pdf2htmlex--poppler-20250629-85310-40dxe3/poppler-24.01.0
+[34m==>[0m [1mcmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_PREFIX_PATH=/usr/local/opt/cairo;/usr/local/opt/fontconfig;/usr/local/opt/freetype;/usr/local/opt/gettext;/usr/local/opt/glib;/usr/local/opt/jpeg-turbo;/usr/local/opt/libpng;/usr/local/opt/libtiff;/usr/local/opt/libxml2;/usr/local/opt/pango;/usr/local/opt/harfbuzz -DCMAKE_FIND_FRAMEWORK=NEVER -DCMAKE_FIND_APPBUNDLE=NEVER -DENABLE_UNSTABLE_API_ABI_HEADERS=OFF -DBUILD_GTK_TESTS=OFF -DBUILD_QT5_TESTS=OFF -DBUILD_QT6_TESTS=OFF -DBUILD_CPP_TESTS=OFF -DBUILD_MANUAL_TESTS=OFF -DENABLE_BOOST=OFF -DENABLE_SPLASH=ON -DENABLE_UTILS=OFF -DENABLE_CPP=OFF -DENABLE_GLIB=ON -DENABLE_GOBJECT_INTROSPECTION=OFF -DENABLE_GTK_DOC=OFF -DENABLE_QT5=OFF -DENABLE_QT6=OFF -DENABLE_LIBOPENJPEG=none -DENABLE_DCTDECODER=libjpeg -DENABLE_CMS=none -DENABLE_LCMS=OFF -DENABLE_LIBCURL=OFF -DENABLE_LIBTIFF=OFF -DWITH_TIFF=OFF -DWITH_NSS3=OFF -DENABLE_NSS3=OFF -DENABLE_GPGME=OFF -DENABLE_ZLIB=ON -DENABLE_ZLIB_UNCOMPRESS=OFF -DUSE_FLOAT=OFF -DBUILD_SHARED_LIBS=OFF -DRUN_GPERF_IF_PRESENT=OFF -DEXTRA_WARN=OFF -DWITH_JPEG=ON -DWITH_PNG=ON -DWITH_Cairo=ON[0m
+-- The C compiler identification is AppleClang 17.0.0.17000013
+-- The CXX compiler identification is AppleClang 17.0.0.17000013
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/local/Homebrew/Library/Homebrew/shims/mac/super/clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/local/Homebrew/Library/Homebrew/shims/mac/super/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/local/Homebrew/Library/Homebrew/shims/mac/super/pkg-config (found version "2.5.1")
+-- Checking _FILE_OFFSET_BITS for large files
+-- Checking _FILE_OFFSET_BITS for large files - not needed
+CMake Warning at CMakeLists.txt:98 (message):
+
+
+   No test data found in $testdatadir.
+   You will not be able to run 'make test' successfully.
+
+
+
+   The test data is not included in the source packages
+   and is also not part of the main git repository. Instead,
+   you can checkout the test data from its own git
+   repository with:
+
+
+
+     git clone git://git.freedesktop.org/git/poppler/test
+
+
+
+   You should checkout the test data as a sibling of your
+   poppler source folder or specify the location of your
+   checkout with -DTESTDATADIR=/path/to/checkoutdir/test.
+    
+
+
+-- Found Freetype: /usr/local/opt/freetype/lib/libfreetype.dylib (found suitable version "2.13.3", minimum required is "2.10")
+-- Found Fontconfig: /usr/local/opt/fontconfig/lib/libfontconfig.dylib (found suitable version "2.16.0", minimum required is "2.13")
+-- Found JPEG: /usr/local/opt/jpeg-turbo/lib/libjpeg.dylib (found version "80")
+-- Found ZLIB: /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/lib/libz.tbd (found version "1.2.12")
+-- Found PNG: /usr/local/opt/libpng/lib/libpng.dylib (found version "1.6.49")
+-- Performing Test HAVE_JPEG_MEM_SRC
+-- Performing Test HAVE_JPEG_MEM_SRC - Success
+-- Checking for module 'cairo>=1.16.0'
+--   Found cairo, version 1.18.4
+-- Found Cairo: /usr/local/opt/cairo/lib/libcairo.dylib (Required is at least version "1.16.0")
+CMake Warning (dev) at CMakeLists.txt:228 (find_package):
+  Policy CMP0167 is not set: The FindBoost module is removed.  Run "cmake
+  --help-policy CMP0167" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found Boost: /usr/local/lib/cmake/Boost-1.88.0/BoostConfig.cmake (found suitable version "1.88.0", minimum required is "1.71.0")
+-- Checking for modules 'glib-2.0>=2.64;gobject-2.0>=2.64;gio-2.0>=2.64'
+--   Found glib-2.0, version 2.84.3
+--   Found gobject-2.0, version 2.84.3
+--   Found gio-2.0, version 2.84.3
+-- Found GLIB: gio-2.0;gobject-2.0;glib-2.0;intl
+-- Checking for modules 'gtk+-3.0>=3.24;gdk-pixbuf-2.0>=2.40'
+--   Package 'gtk+-3.0' not found
+--   Package 'gdk-pixbuf-2.0' not found
+-- Could NOT find GTK (missing: GTK3_LIBRARIES GTK3_CFLAGS) 
+-- Checking for module 'poppler-data'
+--   Package 'poppler-data' not found
+-- Looking for include file dlfcn.h
+-- Looking for include file dlfcn.h - found
+-- Looking for include file fcntl.h
+-- Looking for include file fcntl.h - found
+-- Looking for include file stdlib.h
+-- Looking for include file stdlib.h - found
+-- Looking for include file sys/mman.h
+-- Looking for include file sys/mman.h - found
+-- Looking for include file sys/stat.h
+-- Looking for include file sys/stat.h - found
+-- Looking for include file unistd.h
+-- Looking for include file unistd.h - found
+-- Looking for fseek64
+-- Looking for fseek64 - not found
+-- Looking for fseeko
+-- Looking for fseeko - found
+-- Looking for ftell64
+-- Looking for ftell64 - not found
+-- Looking for pread64
+-- Looking for pread64 - not found
+-- Looking for lseek64
+-- Looking for lseek64 - not found
+-- Looking for gmtime_r
+-- Looking for gmtime_r - found
+-- Looking for timegm
+-- Looking for timegm - found
+-- Looking for gettimeofday
+-- Looking for gettimeofday - found
+-- Looking for localtime_r
+-- Looking for localtime_r - found
+-- Looking for popen
+-- Looking for popen - found
+-- Looking for mkstemp
+-- Looking for mkstemp - found
+-- Looking for strtok_r
+-- Looking for strtok_r - found
+-- Performing Test HAVE_DIRENT_H
+-- Performing Test HAVE_DIRENT_H - Success
+-- Performing Test HAVE_NDIR_H
+-- Performing Test HAVE_NDIR_H - Failed
+-- Performing Test HAVE_SYS_DIR_H
+-- Performing Test HAVE_SYS_DIR_H - Success
+-- Performing Test HAVE_SYS_NDIR_H
+-- Performing Test HAVE_SYS_NDIR_H - Failed
+-- Looking for nanosleep
+-- Looking for nanosleep - found
+-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY
+-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY - Success
+-- Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY
+-- Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY - Success
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR - Success
+-- Looking for explicit_bzero
+-- Looking for explicit_bzero - not found
+Building Poppler with support for:
+  font configuration:   fontconfig
+  use boost (Splash):   no
+  cairo output:         yes
+  qt5 wrapper:          no
+  qt6 wrapper:          no
+  glib wrapper:         yes
+    introspection:      no
+    gtk-doc:            no
+  cpp wrapper:          no
+  use libjpeg:          yes
+  use libpng:           yes
+  use libtiff:          no
+  use zlib uncompress:  no
+  use nss3:             no
+  use gpg:              no
+    default signature backend:          None
+  use curl:             no
+  use libopenjpeg2:     no
+  use lcms2:            no
+  command line utils:   no
+  fuzz target:          no
+  test data dir:        /private/tmp/pdf2htmlex--poppler-20250629-85310-40dxe3/poppler-24.01.0/../test
+Warning: You're not compiling any JPX decoder. Some files will fail to display properly.
+Warning: Use of boost is recommended for better performance.
+-- Configuring done (12.9s)
+-- Generating done (0.1s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    ENABLE_CMS
+    ENABLE_SPLASH
+    ENABLE_ZLIB
+    WITH_NSS3
+    WITH_TIFF
+
+
+-- Build files have been written to: /private/tmp/pdf2htmlex--poppler-20250629-85310-40dxe3/poppler-24.01.0/build
+[34m==>[0m [1mninja install[0m
+[1/145] Building CXX object CMakeFiles/poppler.dir/goo/glibc.cc.o
+[2/145] Building CXX object CMakeFiles/poppler.dir/goo/glibc_strtok_r.cc.o
+[3/145] Building CXX object CMakeFiles/poppler.dir/goo/TiffWriter.cc.o
+[4/145] Building CXX object CMakeFiles/poppler.dir/goo/ImgWriter.cc.o
+[5/145] Building CXX object CMakeFiles/poppler.dir/goo/GooTimer.cc.o
+[6/145] Building CXX object CMakeFiles/poppler.dir/goo/NetPBMWriter.cc.o
+[7/145] Building CXX object CMakeFiles/poppler.dir/goo/gstrtod.cc.o
+[8/145] Building CXX object CMakeFiles/poppler.dir/fofi/FoFiEncodings.cc.o
+[9/145] Building CXX object CMakeFiles/poppler.dir/goo/ft_utils.cc.o
+[10/145] Building CXX object CMakeFiles/poppler.dir/goo/gbasename.cc.o
+[11/145] Building CXX object CMakeFiles/poppler.dir/goo/PNGWriter.cc.o
+[12/145] Building CXX object CMakeFiles/poppler.dir/goo/JpegWriter.cc.o
+[13/145] Building CXX object CMakeFiles/poppler.dir/fofi/FoFiBase.cc.o
+[14/145] Building CXX object CMakeFiles/poppler.dir/goo/gfile.cc.o
+[15/145] Building CXX object CMakeFiles/poppler.dir/fofi/FoFiIdentifier.cc.o
+[16/145] Building CXX object CMakeFiles/poppler.dir/goo/GooString.cc.o
+[17/145] Building CXX object CMakeFiles/poppler.dir/fofi/FoFiType1.cc.o
+[18/145] Building CXX object CMakeFiles/poppler.dir/goo/gbase64.cc.o
+[19/145] Building CXX object CMakeFiles/poppler.dir/goo/grandom.cc.o
+[20/145] Building CXX object CMakeFiles/poppler.dir/poppler/Array.cc.o
+[21/145] Building CXX object CMakeFiles/poppler.dir/poppler/AnnotStampImageHelper.cc.o
+[22/145] Building CXX object CMakeFiles/poppler.dir/poppler/DateInfo.cc.o
+[23/145] Building CXX object CMakeFiles/poppler.dir/poppler/FontEncodingTables.cc.o
+[24/145] Building CXX object CMakeFiles/poppler.dir/poppler/CryptoSignBackend.cc.o
+[25/145] Building CXX object CMakeFiles/poppler.dir/fofi/FoFiTrueType.cc.o
+[26/145] Building CXX object CMakeFiles/poppler.dir/fofi/FoFiType1C.cc.o
+[27/145] Building CXX object CMakeFiles/poppler.dir/poppler/CharCodeToUnicode.cc.o
+[28/145] Building CXX object CMakeFiles/poppler.dir/poppler/CachedFile.cc.o
+[29/145] Building CXX object CMakeFiles/poppler.dir/poppler/Error.cc.o
+[30/145] Building CXX object CMakeFiles/poppler.dir/poppler/CMap.cc.o
+[31/145] Building CXX object CMakeFiles/poppler.dir/poppler/FILECacheLoader.cc.o
+[32/145] Building CXX object CMakeFiles/poppler.dir/poppler/FDPDFDocBuilder.cc.o
+[33/145] Building CXX object CMakeFiles/poppler.dir/poppler/Dict.cc.o
+[34/145] Building CXX object CMakeFiles/poppler.dir/poppler/Decrypt.cc.o
+[35/145] Building CXX object CMakeFiles/poppler.dir/poppler/FlateEncoder.cc.o
+[36/145] Building CXX object CMakeFiles/poppler.dir/poppler/FileSpec.cc.o
+[37/145] Building CXX object CMakeFiles/poppler.dir/poppler/Catalog.cc.o
+[38/145] Building CXX object CMakeFiles/poppler.dir/poppler/JArithmeticDecoder.cc.o
+[39/145] Building CXX object CMakeFiles/poppler.dir/poppler/FontInfo.cc.o
+[40/145] Building CXX object CMakeFiles/poppler.dir/poppler/Hints.cc.o
+[41/145] Building CXX object CMakeFiles/poppler.dir/poppler/ImageEmbeddingUtils.cc.o
+[42/145] Building CXX object CMakeFiles/poppler.dir/poppler/Function.cc.o
+[43/145] Building CXX object CMakeFiles/poppler.dir/poppler/NameToCharCode.cc.o
+[44/145] Building CXX object CMakeFiles/poppler.dir/poppler/JSInfo.cc.o
+[45/145] Building CXX object CMakeFiles/poppler.dir/poppler/Lexer.cc.o
+[46/145] Building CXX object CMakeFiles/poppler.dir/poppler/Linearization.cc.o
+[47/145] Building CXX object CMakeFiles/poppler.dir/poppler/GlobalParams.cc.o
+[48/145] Building CXX object CMakeFiles/poppler.dir/poppler/GfxFont.cc.o
+[49/145] Building CXX object CMakeFiles/poppler.dir/poppler/Object.cc.o
+[50/145] Building CXX object CMakeFiles/poppler.dir/poppler/LocalPDFDocBuilder.cc.o
+[51/145] Building CXX object CMakeFiles/poppler.dir/poppler/JBIG2Stream.cc.o
+[52/145] Building CXX object CMakeFiles/poppler.dir/poppler/Link.cc.o
+[53/145] Building CXX object CMakeFiles/poppler.dir/poppler/ProfileData.cc.o
+[54/145] Building CXX object CMakeFiles/poppler.dir/poppler/MarkedContentOutputDev.cc.o
+[55/145] Building CXX object CMakeFiles/poppler.dir/poppler/OptionalContent.cc.o
+[56/145] Building CXX object CMakeFiles/poppler.dir/poppler/OutputDev.cc.o
+[57/145] Building CXX object CMakeFiles/poppler.dir/poppler/PSTokenizer.cc.o
+[58/145] Building CXX object CMakeFiles/poppler.dir/poppler/Annot.cc.o
+[59/145] Building CXX object CMakeFiles/poppler.dir/poppler/PageTransition.cc.o
+[60/145] Building CXX object CMakeFiles/poppler.dir/poppler/Gfx.cc.o
+[61/145] Building CXX object CMakeFiles/poppler.dir/poppler/Outline.cc.o
+[62/145] Building CXX object CMakeFiles/poppler.dir/poppler/PDFDocEncoding.cc.o
+[63/145] Building CXX object CMakeFiles/poppler.dir/poppler/Parser.cc.o
+[64/145] Building CXX object CMakeFiles/poppler.dir/poppler/GfxState.cc.o
+[65/145] Building CXX object CMakeFiles/poppler.dir/poppler/Form.cc.o
+[66/145] Building CXX object CMakeFiles/poppler.dir/poppler/Page.cc.o
+[67/145] Building CXX object CMakeFiles/poppler.dir/poppler/UnicodeTypeTable.cc.o
+[68/145] Building CXX object CMakeFiles/poppler.dir/poppler/SignatureInfo.cc.o
+[69/145] Building CXX object CMakeFiles/poppler.dir/poppler/PDFDocBuilder.cc.o
+[70/145] Building CXX object CMakeFiles/poppler.dir/poppler/UnicodeMapFuncs.cc.o
+[71/145] Building CXX object CMakeFiles/poppler.dir/poppler/PDFDocFactory.cc.o
+[72/145] Building CXX object CMakeFiles/poppler.dir/poppler/PreScanOutputDev.cc.o
+[73/145] Building CXX object CMakeFiles/poppler.dir/poppler/UnicodeMap.cc.o
+[74/145] Building CXX object CMakeFiles/poppler.dir/poppler/UTF.cc.o
+[75/145] Building CXX object CMakeFiles/poppler.dir/poppler/StructTreeRoot.cc.o
+[76/145] Building CXX object CMakeFiles/poppler.dir/poppler/Sound.cc.o
+[77/145] Building CXX object CMakeFiles/poppler.dir/poppler/PageLabelInfo.cc.o
+[78/145] Building CXX object CMakeFiles/poppler.dir/poppler/CertificateInfo.cc.o
+[79/145] Building CXX object CMakeFiles/poppler.dir/poppler/StructElement.cc.o
+[80/145] Building CXX object CMakeFiles/poppler.dir/poppler/SecurityHandler.cc.o
+[81/145] Building CXX object CMakeFiles/poppler.dir/poppler/ViewerPreferences.cc.o
+[82/145] Building CXX object CMakeFiles/poppler.dir/poppler/Stream.cc.o
+[83/145] Building CXX object CMakeFiles/poppler.dir/poppler/Movie.cc.o
+[84/145] Building CXX object CMakeFiles/poppler.dir/poppler/XRef.cc.o
+[85/145] Building CXX object CMakeFiles/poppler.dir/poppler/Rendition.cc.o
+[86/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFontFileID.cc.o
+[87/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashPath.cc.o
+[88/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashPattern.cc.o
+[89/145] Building CXX object CMakeFiles/poppler.dir/poppler/BBoxOutputDev.cc.o
+[90/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFTFont.cc.o
+[91/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFont.cc.o
+[92/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFTFontEngine.cc.o
+[93/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFontFile.cc.o
+[94/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFontEngine.cc.o
+[95/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashClip.cc.o
+[96/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashFTFontFile.cc.o
+[97/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashBitmap.cc.o
+[98/145] Building C object CMakeFiles/poppler.dir/poppler/CourierWidths.pregenerated.c.o
+[99/145] Building C object CMakeFiles/poppler.dir/poppler/CourierBoldWidths.pregenerated.c.o
+[100/145] Building C object CMakeFiles/poppler.dir/poppler/CourierBoldObliqueWidths.pregenerated.c.o
+[101/145] Building C object CMakeFiles/poppler.dir/poppler/CourierObliqueWidths.pregenerated.c.o
+[102/145] Building C object CMakeFiles/poppler.dir/poppler/HelveticaWidths.pregenerated.c.o
+[103/145] Building C object CMakeFiles/poppler.dir/poppler/HelveticaBoldWidths.pregenerated.c.o
+[104/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashScreen.cc.o
+[105/145] Building C object CMakeFiles/poppler.dir/poppler/HelveticaBoldObliqueWidths.pregenerated.c.o
+[106/145] Building C object CMakeFiles/poppler.dir/poppler/HelveticaObliqueWidths.pregenerated.c.o
+[107/145] Building C object CMakeFiles/poppler.dir/poppler/SymbolWidths.pregenerated.c.o
+[108/145] Building C object CMakeFiles/poppler.dir/poppler/TimesBoldWidths.pregenerated.c.o
+[109/145] Building C object CMakeFiles/poppler.dir/poppler/TimesBoldItalicWidths.pregenerated.c.o
+[110/145] Building C object CMakeFiles/poppler.dir/poppler/TimesItalicWidths.pregenerated.c.o
+[111/145] Building C object CMakeFiles/poppler.dir/poppler/TimesRomanWidths.pregenerated.c.o
+[112/145] Building C object CMakeFiles/poppler.dir/poppler/ZapfDingbatsWidths.pregenerated.c.o
+[113/145] Building CXX object CMakeFiles/poppler.dir/poppler/TextOutputDev.cc.o
+[114/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashXPath.cc.o
+[115/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashState.cc.o
+[116/145] Building CXX object CMakeFiles/poppler.dir/poppler/PDFDoc.cc.o
+[117/145] Building CXX object CMakeFiles/poppler.dir/poppler/SplashOutputDev.cc.o
+[118/145] Building CXX object CMakeFiles/poppler.dir/poppler/DCTStream.cc.o
+[119/145] Building CXX object CMakeFiles/poppler.dir/splash/SplashXPathScanner.cc.o
+[120/145] Building CXX object CMakeFiles/poppler.dir/poppler/PSOutputDev.cc.o
+[121/145] Building CXX object CMakeFiles/poppler.dir/splash/Splash.cc.o
+[122/145] Building CXX object CMakeFiles/poppler.dir/poppler/JPXStream.cc.o
+[123/145] Linking CXX static library libpoppler.a
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: libpoppler.a(TiffWriter.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: libpoppler.a(glibc.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: libpoppler.a(glibc_strtok_r.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: libpoppler.a(TiffWriter.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: libpoppler.a(glibc.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: libpoppler.a(glibc_strtok_r.cc.o) has no symbols
+[124/145] Generating poppler-enums.h
+[125/145] Generating poppler-enums.c
+[126/145] Building C object glib/CMakeFiles/poppler-glib.dir/poppler-enums.c.o
+[127/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-date.cc.o
+[128/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/__/poppler/CairoRescaleBox.cc.o
+[129/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-cached-file-loader.cc.o
+[130/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-input-stream.cc.o
+[131/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler.cc.o
+[132/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-layer.cc.o
+[133/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-media.cc.o
+[134/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-movie.cc.o
+[135/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-attachment.cc.o
+[136/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-action.cc.o
+[137/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-form-field.cc.o
+[138/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-annot.cc.o
+[139/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-page.cc.o
+[140/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-structure-element.cc.o
+[141/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/__/poppler/CairoFontEngine.cc.o
+[142/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/poppler-document.cc.o
+[143/145] Building CXX object glib/CMakeFiles/poppler-glib.dir/__/poppler/CairoOutputDev.cc.o
+[144/145] Linking CXX static library glib/libpoppler-glib.a
+[144/145] Install the project...
+-- Install configuration: "Release"
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/libpoppler.a
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/libpoppler.a(TiffWriter.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/libpoppler.a(glibc.cc.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/libpoppler.a(glibc_strtok_r.cc.o) has no symbols
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/libpoppler-glib.a
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-action.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-date.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-document.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-page.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-attachment.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-form-field.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-annot.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-layer.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-movie.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-media.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-structure-element.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-enums.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-features.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/include/poppler/glib/poppler-macros.h
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/pkgconfig/poppler.pc
+-- Installing: /private/tmp/pdf2htmlex-20250629-85310-m7e8zq/pdf2htmlEX-0.18.8.rc1/staging/lib/pkgconfig/poppler-glib.pc
+[34m==>[0m [1m✓ Poppler 24.01.0 built successfully (33.7s)[0m
+[34m==>[0m [1m✓ Poppler build validated[0m
+[34m==>[0m [1mBuilding FontForge 20230101...[0m
+/usr/bin/env tar --extract --no-same-owner --file /Users/adam/Library/Caches/Homebrew/downloads/5aedb6f1a514594becf55f10c05c35627ba4e0e7f8815772e3bcb085b0e675b6--fontforge-20230101.tar.gz --directory /private/tmp/homebrew-unpack-20250629-85310-c

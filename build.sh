@@ -16,4 +16,4 @@ fi
 
 # Install pdf2htmlEX from source formula with verbose output for debugging
 echo "==> Building pdf2htmlEX from source (this may take several minutes)..."
-brew install --build-from-source --verbose Formula/pdf2htmlex.rb
+brew install --formula --build-from-source --verbose Formula/pdf2htmlex.rb

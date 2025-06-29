@@ -1,0 +1,9 @@
+Error: pdf2htmlex: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/Formula/pdf2htmlex2/pdf2htmlex.rb:501: syntax error found
+  499 |     ohai "✓ All tests passed!"
+  500 |   end
+> 501 | end
+      | ^~~ unexpected 'end', ignoring it
+--------------------------------
+Build completed for pdf2htmlex2 at Sun Jun 29 19:40:28 CEST 2025
+--------------------------------
+--------------------------------
