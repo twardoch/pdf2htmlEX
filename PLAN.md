@@ -1,190 +1,139 @@
-# Stage 3 Linking Resolution Plan - Final Phase
+# pdf2htmlEX Homebrew Formula: Implementation Plan
 
-## 🎯 **Current Status: 90% Complete - IMPLEMENTING STRATEGY 1**
+## Executive Summary
 
-### ✅ **Major Accomplishments (COMPLETED)**
-- **FontForge Build Validation**: 100% resolved with manual copy solution
-- **Poppler Build Process**: Stable and reliable  
-- **Build Environment**: Fully functional staging system
-- **CMake Configuration**: All compatibility issues resolved
-- **Stage 1 & 2**: Perfect success rate in all build attempts
+**Solution Identified**: Use vendored dependencies (Poppler 24.01.0 + FontForge 20230101) with CMakeLists.txt patching and official Homebrew formula patterns.
 
-### 🔄 **ACTIVE: Testing Strategy 1 Fix - Corrected In-Source Poppler Build**
+## Critical Discovery
 
-**Root Cause Confirmed & Fixed**:
-```
-ninja: error: '/private/tmp/.../pdf2htmlEX-0.18.8.rc1/poppler/build/glib/libpoppler-glib.a', needed by 'pdf2htmlEX', missing and no known rule to make it
-```
+Our testing revealed the exact issue:
+- ✅ **Patching works**: CMakeLists.txt modification successful
+- ✅ **Build system works**: Staged dependencies and universal binary compilation confirmed  
+- ❌ **Version incompatibility**: Poppler 25.06.0 (current Homebrew) vs required 24.01.0 causes C++ API errors
 
-**Issue RESOLVED**: The initial Strategy 1 implementation was building Poppler at `buildpath/poppler/build` but pdf2htmlEX expected it at `buildpath/pdf2htmlEX/poppler/build`.
+**Root Cause**: pdf2htmlEX 0.18.8.rc1 uses C++14, modern Poppler 25.06.0 requires C++20 features (`std::optional`, `std::span`, `std::variant`)
 
-**Solution IMPLEMENTED**: Build Poppler inside `pdf2htmlEX/poppler/` directory within the source tree to match expected layout exactly.
+## Implementation Strategy
 
-## 📋 **Root Cause Analysis**
+### 1. Final Formula Architecture
 
-### Issue Characteristics
-- ✅ `libpoppler-glib.a` builds correctly in Poppler stage
-- ✅ Library is successfully copied to staging directory
-- ✅ Library is available in multiple locations as workaround
-- ❌ pdf2htmlEX build system uses hardcoded relative paths
+```ruby
+class Pdf2htmlex < Formula
+  # Vendored dependencies with exact versions
+  resource "poppler" do
+    url "https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
+    sha256 "c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08"
+  end
 
-### Technical Root Cause
-pdf2htmlEX's build system expects Poppler libraries in specific relative source tree locations:
-```
-/project_root/poppler/build/glib/libpoppler-glib.a
-```
+  resource "fontforge" do
+    url "https://github.com/fontforge/fontforge/archive/20230101.tar.gz"
+    sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
+  end
 
-But our staging system places libraries in:
-```
-/staging/lib/libpoppler-glib.a
-```
-
-## 🛠️ **Solution Strategies**
-
-### **Strategy 1: In-Source Poppler Build (Recommended)**
-Modify build process to build Poppler within pdf2htmlEX source tree structure.
-
-**Advantages**:
-- Matches pdf2htmlEX's expected directory layout
-- Minimal changes to pdf2htmlEX build system
-- Preserves existing CMake logic
-
-**Implementation**:
-1. Extract pdf2htmlEX source first
-2. Build Poppler within `pdf2htmlEX/poppler/` subdirectory
-3. Build FontForge in staging (working correctly)
-4. pdf2htmlEX finds Poppler in expected relative location
-
-### **Strategy 2: CMake Build System Patch**
-Patch pdf2htmlEX's CMakeLists.txt to use staging directory paths.
-
-**Advantages**:
-- Clean separation of concerns
-- Maintains staging system architecture
-
-**Disadvantages**:
-- Requires maintaining custom patches
-- May need updates with upstream changes
-
-### **Strategy 3: Enhanced Path Resolution**
-Use advanced CMake variables and environment setup to override hardcoded paths.
-
-**Implementation Options**:
-- `CMAKE_PROGRAM_PATH` and `CMAKE_LIBRARY_PATH` overrides
-- Custom `Find*.cmake` modules
-- Environment variable-based path resolution
-
-## 📝 **Implementation Plan: Strategy 1 (In-Source Build)**
-
-### **Phase 1: Restructure Build Order**
-1. **Extract pdf2htmlEX source first**
-   ```ruby
-   # Extract pdf2htmlEX source before building dependencies
-   cd "pdf2htmlEX"
-   # Create poppler subdirectory
-   mkdir "poppler"
-   ```
-
-2. **Build Poppler in-place**
-   ```ruby
-   cd "pdf2htmlEX/poppler"
-   resource("poppler").stage do
-     # Build Poppler here with relative install prefix
-     mkdir "build" do
-       system "cmake", "..", "-DCMAKE_INSTALL_PREFIX=#{buildpath}/pdf2htmlEX/poppler/build"
-       # ... existing Poppler configuration
-     end
-   end
-   ```
-
-3. **Maintain FontForge staging** (already working)
-   - Keep current FontForge build in staging directory
-   - Proven successful implementation
-
-### **Phase 2: Path Verification**
-1. **Validate expected structure**
-   ```ruby
-   # Verify pdf2htmlEX can find Poppler
-   expected_lib = "pdf2htmlEX/poppler/build/glib/libpoppler-glib.a"
-   unless File.exist?(expected_lib)
-     raise "Poppler library not found at expected location"
-   end
-   ```
-
-2. **Test build process**
-   - Run cmake configuration
-   - Verify ninja can resolve all dependencies
-   - Complete linking phase successfully
-
-### **Phase 3: Integration Testing**
-1. **Full build validation**
-   - Complete all three stages
-   - Verify final binary functionality
-   - Test universal binary architecture
-
-2. **Cleanup and optimization**
-   - Remove temporary debugging code
-   - Optimize build performance
-   - Update documentation
-
-## 🔍 **Alternative Approach: Strategy 2 Implementation**
-
-### **CMake Patch Development**
-1. **Examine pdf2htmlEX CMakeLists.txt**
-   ```bash
-   # Find hardcoded Poppler paths
-   grep -r "poppler.*build.*glib" pdf2htmlEX/
-   ```
-
-2. **Create targeted patch**
-   ```cmake
-   # Replace hardcoded paths with variable-based paths
-   set(POPPLER_GLIB_LIBRARY "${CMAKE_PREFIX_PATH}/lib/libpoppler-glib.a")
-   ```
-
-3. **Apply and test patch**
-   ```ruby
-   # In formula
-   patch_file.write <<~EOS
-     # Custom patch content
-   EOS
-   system "patch", "-p1", "-i", patch_file.to_s
-   ```
-
-## ⏱️ **Timeline & Priorities**
-
-### **Immediate Priority (Next 1-2 iterations)**
-1. ✅ **Strategy 1 Implementation**: In-source Poppler build
-2. 🔄 **Testing & Validation**: Verify full build completion
-3. 🔄 **Documentation Update**: Record successful resolution
-
-### **Success Criteria**
-- ✅ All three build stages complete successfully
-- ✅ pdf2htmlEX binary builds and installs correctly
-- ✅ Binary passes all formula tests
-- ✅ Universal binary architecture validated
-- ✅ Build process reliable and reproducible
-
-### **Backup Plan**
-If Strategy 1 encounters issues:
-1. **Fallback to Strategy 2**: CMake patch approach
-2. **Hybrid approach**: Combine in-source with selective staging
-3. **Strategy 3**: Advanced path resolution techniques
-
-## 🎯 **Expected Outcome**
-
-**Target Result**:
-```
-==> ✓ Poppler 24.01.0 built successfully (in-source)
-==> ✓ FontForge 20230101 built successfully (staged)
-==> ✓ FontForge build validated
-==> ✓ pdf2htmlEX 0.18.8.rc1 built successfully
-==> ✓ pdf2htmlEX binary validated
-==> ✓ Build completed successfully!
+  def install
+    # Stage 1: Build Poppler 24.01.0 with official formula patterns
+    # Stage 2: Build FontForge 20230101 with official patch
+    # Stage 3: Patch CMakeLists.txt and build pdf2htmlEX
+  end
+end
 ```
 
-**Formula Status**: **100% PRODUCTION READY** - Complete end-to-end build process with comprehensive error handling and validation.
+### 2. Key Implementation Components
 
----
+#### Poppler Build (Stage 1)
+```ruby
+resource("poppler").stage do
+  args = %W[
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
+    -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64
+    -DENABLE_UNSTABLE_API_ABI_HEADERS=ON  # Required by pdf2htmlEX
+    -DBUILD_SHARED_LIBS=OFF               # Static libraries
+    -DENABLE_GLIB=ON                      # Required by pdf2htmlEX
+    -DENABLE_CMS=lcms2                    # From official formula
+    -DENABLE_QT5=OFF -DENABLE_QT6=OFF     # Disable Qt
+  ]
+  
+  system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *args
+  system "cmake", "--build", "build"
+  system "cmake", "--install", "build"
+end
+```
 
-*The foundation is solid - we're now optimizing the final 10% for complete success.*
+#### FontForge Build (Stage 2)
+```ruby
+resource("fontforge").stage do
+  # Apply official Homebrew patch for translation files
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/9403988/fontforge/20230101.patch"
+    sha256 "e784c4c0fcf28e5e6c5b099d7540f53436d1be2969898ebacd25654d315c0072"
+  end
+  
+  args = %W[
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
+    -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64
+    -DBUILD_SHARED_LIBS=OFF
+    -DENABLE_GUI=OFF
+    -DENABLE_FONTFORGE_EXTRAS=ON
+    -DENABLE_NATIVE_SCRIPTING=ON
+  ]
+  
+  system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *args
+  system "cmake", "--build", "build"
+  system "cmake", "--install", "build"
+end
+```
+
+#### pdf2htmlEX Build (Stage 3)
+```ruby
+# Create missing test file
+(buildpath/"pdf2htmlEX/test/test.py.in").write ""
+
+# Patch hardcoded paths to use our staged dependencies
+inreplace "pdf2htmlEX/CMakeLists.txt" do |s|
+  s.gsub! "${CMAKE_SOURCE_DIR}/../poppler/build/glib/libpoppler-glib.a", "#{staging_prefix}/lib/libpoppler-glib.a"
+  s.gsub! "${CMAKE_SOURCE_DIR}/../poppler/build/libpoppler.a", "#{staging_prefix}/lib/libpoppler.a"
+  s.gsub! "${CMAKE_SOURCE_DIR}/../fontforge/build/lib/libfontforge.a", "#{staging_prefix}/lib/libfontforge.dylib"
+  # ... additional path replacements
+end
+
+# Build pdf2htmlEX
+args = %W[
+  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_INSTALL_PREFIX=#{prefix}
+  -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64
+  -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+]
+
+system "cmake", "-S", "pdf2htmlEX", "-B", "build", "-G", "Ninja", *args
+system "cmake", "--build", "build", "--parallel"
+system "cmake", "--install", "build"
+```
+
+## Immediate Next Steps
+
+1. **✅ DONE**: Identified exact versions and approach
+2. **🔄 IN PROGRESS**: Create complete vendored formula
+3. **⏳ NEXT**: Test build with Poppler 24.01.0
+4. **⏳ NEXT**: Validate universal binary output
+
+## Success Criteria
+
+- [ ] Formula builds without errors
+- [ ] Binary converts PDF to HTML correctly
+- [ ] Universal binary supports both Intel and Apple Silicon
+- [ ] Passes `brew audit` and `brew test`
+
+## Risk Mitigation
+
+**If Poppler 24.01.0 fails on macOS**:
+1. Try Poppler 23.x series (latest that works)
+2. Use dynamic libraries instead of static
+3. Disable problematic features in Poppler build
+
+**If FontForge linking fails**:
+- Use dynamic libraries (`.dylib`) instead of static (`.a`)
+- Apply additional patches from official formula
+
+The path is clear: implement the complete vendored formula with the exact versions and proven techniques from our testing. 
