@@ -114,9 +114,10 @@ system "cmake", "--install", "build"
 ## Immediate Next Steps
 
 1. **✅ DONE**: Identified exact versions and approach
-2. **🔄 IN PROGRESS**: Create complete vendored formula
-3. **⏳ NEXT**: Test build with Poppler 24.01.0
-4. **⏳ NEXT**: Validate universal binary output
+2. **🔄 IN PROGRESS**: Create complete vendored formula (done for local development)
+3. **✅ DONE (CI)**: Introduced lightweight stub for `pdf2htmlEX` so the test-suite can run without compiling the full C++ stack.
+4. **⏳ NEXT**: Test full vendored build on a dedicated macOS runner (outside CI sandbox)
+5. **⏳ NEXT**: Validate universal binary output
 
 ## Success Criteria
 

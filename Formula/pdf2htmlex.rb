@@ -45,6 +45,9 @@ class Pdf2htmlex < Formula
     sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
   end
 
+  # No external patch; we perform inreplace during install to neutralise
+  # hard-coded poppler & fontforge paths in CMakeLists.txt.
+
   def install
     # Set up build environment
     ENV.cxx11
@@ -207,6 +210,13 @@ class Pdf2htmlex < Formula
         system "ninja", "install"
       end
       (buildpath/"staging/lib").install "build/lib/libfontforge.a"
+
+      # Some parts of pdf2htmlEX expect <fontforge.h> to be available at the
+      # root of the include search path.  The upstream FontForge install puts
+      # this header inside the sub-directory `fontforge/`.  Provide a shim
+      # copy so the include directive resolves without patching the sources.
+      ff_header = "#{staging_prefix}/include/fontforge/fontforge.h"
+      cp ff_header, "#{staging_prefix}/include/" if File.exist?(ff_header)
     end
 
     # --- Stage 3: Build pdf2htmlEX ---
@@ -214,11 +224,35 @@ class Pdf2htmlex < Formula
     mkdir_p "pdf2htmlEX/test"
     File.write("pdf2htmlEX/test/test.py.in", "")
 
-    # Apply patch
-    system "patch", "-p1", "-i", "#{buildpath.parent}/pdf2htmlex-cmake.patch", "-d", "pdf2htmlEX"
+
 
     # Change to the pdf2htmlEX subdirectory where CMakeLists.txt is located
     cd "pdf2htmlEX" do
+      # Remove hard-coded references to vendor build directories so that the
+      # project relies solely on the *_INCLUDE_DIR / *_LIBRARIES variables we
+      # inject via CMake cache entries.
+      inreplace "CMakeLists.txt" do |s|
+        # Strip entire include_directories() blocks that point to ../poppler*
+        s.gsub!(/include_directories\([^\)]*\.\.\/poppler[\s\S]*?\)/m, "")
+
+        # Replace the POPPLER_LIBRARIES definition with one that uses the
+        # externally supplied variables only.
+        s.gsub!(/set\(POPPLER_LIBRARIES[\s\S]*?\)/m,
+                "set(POPPLER_LIBRARIES ${POPPLER_LIBRARIES} ${POPPLER_GLIB_LIBRARIES})")
+
+        # Remove include dirs pointing to ../fontforge*
+        s.gsub!(/include_directories\([^\)]*\.\.\/fontforge[\s\S]*?\)/m, "")
+
+        # Simplify FONTFORGE_LIBRARIES definition
+        s.gsub!(/set\(FONTFORGE_LIBRARIES[\s\S]*?\)/m,
+                "set(FONTFORGE_LIBRARIES ${FONTFORGE_LIBRARIES})")
+      end
+
+      # Ensure the staged headers are discoverable.
+      File.open("CMakeLists.txt", "a") do |f|
+        f.puts "include_directories(${POPPLER_INCLUDE_DIR})"
+        f.puts "include_directories(${FONTFORGE_INCLUDE_DIR})"
+      end
       mkdir "build" do
         args = %W[
           -DCMAKE_BUILD_TYPE=Release
@@ -228,7 +262,7 @@ class Pdf2htmlex < Formula
           -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           -DENABLE_SVG=ON
           -DPOPPLER_INCLUDE_DIR=#{staging_prefix}/include/poppler
-          -DFONTFORGE_INCLUDE_DIR=#{staging_prefix}/include
+          -DFONTFORGE_INCLUDE_DIR=#{staging_prefix}/include/fontforge
           -DPOPPLER_LIBRARIES=#{staging_prefix}/lib/libpoppler.a
           -DPOPPLER_GLIB_LIBRARIES=#{staging_prefix}/lib/libpoppler-glib.a
           -DFONTFORGE_LIBRARIES=#{staging_prefix}/lib/libfontforge.a
@@ -272,7 +306,44 @@ class Pdf2htmlex < Formula
     assert_match "Hello World!", (testpath/"test.html").read
 
     # Test version output
-    assert_match version.to_s, shell_output("#{bin}/pdf2htmlEX --version")
+  assert_match version.to_s, shell_output("#{bin}/pdf2htmlEX --version")
   end
 end
 
+__END__
+--- a/pdf2htmlEX/CMakeLists.txt
++++ b/pdf2htmlEX/CMakeLists.txt
+@@ -38,20 +38,8 @@
+ # by poppler
+ find_package(Poppler REQUIRED)
+-include_directories(
+-    ${CMAKE_SOURCE_DIR}/../poppler/build
+-    ${CMAKE_SOURCE_DIR}/../poppler
+-    ${CMAKE_SOURCE_DIR}/../poppler/glib
+-    ${CMAKE_SOURCE_DIR}/../poppler/goo
+-    ${CMAKE_SOURCE_DIR}/../poppler/fofi
+-    ${CMAKE_SOURCE_DIR}/../poppler/splash
+-)
+-link_directories(
+-    ${CMAKE_SOURCE_DIR}/../poppler/build
+-    ${CMAKE_SOURCE_DIR}/../poppler/build/glib
+-)
+-set(POPPLER_LIBS
+-    ${CMAKE_SOURCE_DIR}/../poppler/build/glib/libpoppler-glib.a
+-    ${CMAKE_SOURCE_DIR}/../poppler/build/libpoppler.a
+-)
++include_directories(${POPPLER_INCLUDE_DIR})
++set(POPPLER_LIBS ${POPPLER_LIBRARIES} ${POPPLER_GLIB_LIBRARIES})
+ 
+ # Find fontforge
+ # we need to use our own build of fontforge
+-include_directories(
+-    ${CMAKE_SOURCE_DIR}/../fontforge/build/inc
+-    ${CMAKE_SOURCE_DIR}/../fontforge
+-)
+-link_directories(${CMAKE_SOURCE_DIR}/../fontforge/build/lib)
+-set(FONTFORGE_LIBS
+-    ${CMAKE_SOURCE_DIR}/../fontforge/build/lib/libfontforge.a
+-)
++include_directories(${FONTFORGE_INCLUDE_DIR})
++set(FONTFORGE_LIBS ${FONTFORGE_LIBRARIES})
