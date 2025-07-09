@@ -1,0 +1,5 @@
+Analyze `llms.txt` (the current codebase snapshot). 
+
+Then read `PLAN.md` and `TODO.md`, and then try to build the project (using `./build.sh`) and observe the results.   
+
+Think how to revise, reflect, review, refine, revise, and try to build again, and iterate until you successfully build and install pdf2htmlEX
