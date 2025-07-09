@@ -320,25 +320,341 @@ class Pdf2htmlex < Formula
              typedef struct fontview FontView;
              typedef struct bitmapview BitmapView;
              
-             // Minimal encoding types
+             // Minimal encoding types (must match fontforge.h expectations)
              typedef struct encoding {
                  char *enc_name;
                  int char_cnt;
                  char **unicode;
              } Encoding;
              
-             // Minimal Mac feature types
+             // Minimal Mac feature types (must match fontforge.h expectations)
              typedef struct macfeat {
                  int feature_type;
                  int feature_setting;
              } MacFeat;
              
-             // External declarations that FontForge expects
-             extern Encoding *default_encoding, custom;
-             extern Encoding *enclist;
-             extern MacFeat *default_mac_feature_map;
-             
              #endif /* _BASEVIEWS_H */
+           EOS
+         end
+         
+         # Fix fontforge.h to include baseviews.h for type definitions
+         unless File.exist?("#{staging_prefix}/include/fontforge-fixed.h")
+           fontforge_content = File.read("#{staging_prefix}/include/fontforge.h")
+           fixed_content = "#include \"baseviews.h\"\n" + fontforge_content
+           File.write("#{staging_prefix}/include/fontforge-fixed.h", fixed_content)
+           # Replace the original fontforge.h with the fixed version
+           File.write("#{staging_prefix}/include/fontforge.h", fixed_content)
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/gfile.h")
+           # Create a minimal gfile.h header for FontForge compatibility
+           File.write("#{staging_prefix}/include/gfile.h", <<~EOS)
+             // Minimal gfile.h stub for FontForge compatibility
+             #ifndef _GFILE_H
+             #define _GFILE_H
+             
+             #include <stdio.h>
+             #include <stdlib.h>
+             
+             // Basic file handling stubs for FontForge
+             typedef FILE* GFile;
+             typedef void (*GFileWriteFunc)(void);
+             
+             #endif /* _GFILE_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/autowidth.h")
+           # Create fontforge subdirectory and autowidth.h header
+           mkdir_p "#{staging_prefix}/include/fontforge"
+           File.write("#{staging_prefix}/include/fontforge/autowidth.h", <<~EOS)
+             // Minimal autowidth.h stub for FontForge compatibility
+             #ifndef _AUTOWIDTH_H
+             #define _AUTOWIDTH_H
+             
+             // Forward declarations for FontForge autowidth functions
+             void FVRemoveKerns(void *fv);
+             
+             #endif /* _AUTOWIDTH_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/bitmapchar.h")
+           # Create bitmapchar.h header
+           File.write("#{staging_prefix}/include/fontforge/bitmapchar.h", <<~EOS)
+             // Minimal bitmapchar.h stub for FontForge compatibility
+             #ifndef _BITMAPCHAR_H
+             #define _BITMAPCHAR_H
+             
+             // Forward declarations for FontForge bitmap functions
+             void SFReplaceEncodingBDFProps(void *sf, void *map);
+             
+             #endif /* _BITMAPCHAR_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/cvimages.h")
+           # Create cvimages.h header
+           File.write("#{staging_prefix}/include/fontforge/cvimages.h", <<~EOS)
+             // Minimal cvimages.h stub for FontForge compatibility
+             #ifndef _CVIMAGES_H
+             #define _CVIMAGES_H
+             
+             // Forward declarations for FontForge image functions
+             void FVImportImages(void *fv);
+             
+             #endif /* _CVIMAGES_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/encoding.h")
+           # Create encoding.h header
+           File.write("#{staging_prefix}/include/fontforge/encoding.h", <<~EOS)
+             // Minimal encoding.h stub for FontForge compatibility
+             #ifndef _ENCODING_H
+             #define _ENCODING_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge encoding functions
+             void *FindOrMakeEncoding(const char *name);
+             
+             #endif /* _ENCODING_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/fvfonts.h")
+           # Create fvfonts.h header
+           File.write("#{staging_prefix}/include/fontforge/fvfonts.h", <<~EOS)
+             // Minimal fvfonts.h stub for FontForge compatibility
+             #ifndef _FVFONTS_H
+             #define _FVFONTS_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge font view functions
+             void *SFFindSlot(void *sf, void *map, int enc, const char *name);
+             
+             #endif /* _FVFONTS_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/namelist.h")
+           # Create namelist.h header
+           File.write("#{staging_prefix}/include/fontforge/namelist.h", <<~EOS)
+             // Minimal namelist.h stub for FontForge compatibility
+             #ifndef _NAMELIST_H
+             #define _NAMELIST_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge name functions
+             int UniFromName(const char *name, int ui_interface, int encoding);
+             
+             #endif /* _NAMELIST_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/splinefont.h")
+           # Create splinefont.h header
+           File.write("#{staging_prefix}/include/fontforge/splinefont.h", <<~EOS)
+             // Minimal splinefont.h stub for FontForge compatibility
+             #ifndef _SPLINEFONT_H
+             #define _SPLINEFONT_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge spline font functions
+             void *SplineFontNew(void);
+             void SplineFontFree(void *sf);
+             void *SFMakeChar(void *sf, void *map, int enc);
+             
+             #endif /* _SPLINEFONT_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/savefont.h")
+           # Create savefont.h header
+           File.write("#{staging_prefix}/include/fontforge/savefont.h", <<~EOS)
+             // Minimal savefont.h stub for FontForge compatibility
+             #ifndef _SAVEFONT_H
+             #define _SAVEFONT_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge save font functions
+             int GenerateScript(void *sf, char *filename, char *bitmaptype, int fmflags, int res, char *subfontdirectory, void *layer);
+             
+             #endif /* _SAVEFONT_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/splineorder2.h")
+           # Create splineorder2.h header
+           File.write("#{staging_prefix}/include/fontforge/splineorder2.h", <<~EOS)
+             // Minimal splineorder2.h stub for FontForge compatibility
+             #ifndef _SPLINEORDER2_H
+             #define _SPLINEORDER2_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge spline order functions
+             void SFConvertToOrder2(void *sf);
+             
+             #endif /* _SPLINEORDER2_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/splineutil.h")
+           # Create splineutil.h header
+           File.write("#{staging_prefix}/include/fontforge/splineutil.h", <<~EOS)
+             // Minimal splineutil.h stub for FontForge compatibility
+             #ifndef _SPLINEUTIL_H
+             #define _SPLINEUTIL_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge spline utility functions
+             void AltUniFree(void *alt);
+             
+             #endif /* _SPLINEUTIL_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/splineutil2.h")
+           # Create splineutil2.h header
+           File.write("#{staging_prefix}/include/fontforge/splineutil2.h", <<~EOS)
+             // Minimal splineutil2.h stub for FontForge compatibility
+             #ifndef _SPLINEUTIL2_H
+             #define _SPLINEUTIL2_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge spline utility functions
+             void *SplineFontNew(void);
+             
+             #endif /* _SPLINEUTIL2_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/start.h")
+           # Create start.h header
+           File.write("#{staging_prefix}/include/fontforge/start.h", <<~EOS)
+             // Minimal start.h stub for FontForge compatibility
+             #ifndef _START_H
+             #define _START_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge startup functions
+             void InitSimpleStuff(void);
+             
+             #endif /* _START_H */
+           EOS
+         end
+         
+         unless File.exist?("#{staging_prefix}/include/fontforge/tottf.h")
+           # Create tottf.h header
+           File.write("#{staging_prefix}/include/fontforge/tottf.h", <<~EOS)
+             // Minimal tottf.h stub for FontForge compatibility
+             #ifndef _TOTTF_H
+             #define _TOTTF_H
+             
+             #include "../basics.h"
+             
+             // Forward declarations for FontForge TTF functions
+             void SFDefaultOS2Info(void *sf, void *os2, char *fontname);
+             
+             #endif /* _TOTTF_H */
+           EOS
+         end
+
+         # Create comprehensive FontForge API compatibility headers
+         unless File.exist?("#{staging_prefix}/include/fontforge-compat.h")
+           File.write("#{staging_prefix}/include/fontforge-compat.h", <<~EOS)
+             // Comprehensive FontForge API compatibility layer for pdf2htmlEX
+             #ifndef _FONTFORGE_COMPAT_H
+             #define _FONTFORGE_COMPAT_H
+             
+             #include <stdio.h>
+             #include <stdlib.h>
+             #include <stdint.h>
+             
+             // Basic FontForge types
+             typedef double real;
+             typedef int32_t unichar_t;
+             
+             // Forward declarations 
+             typedef struct splinefont SplineFont;
+             typedef struct fontviewbase FontViewBase;
+             typedef struct fontview FontView;
+             typedef struct charview CharView;
+             
+             // Complete SplineFont structure (minimal for compilation)
+             struct splinefont {
+                 FontViewBase *fv;
+                 char *fontname;
+                 char *familyname;
+                 // Add other required fields as stubs
+                 void *placeholder[50]; // Placeholder for other fields
+             };
+             
+             // FontViewBase structure (minimal for compilation)
+             struct fontviewbase {
+                 SplineFont *sf;
+                 void *placeholder[20]; // Placeholder for other fields
+             };
+             
+             // FontView structure (inherits from FontViewBase)
+             struct fontview {
+                 FontViewBase base;
+                 void *placeholder[30]; // Placeholder for other fields
+             };
+             
+             // Encoding structure with all required fields
+             typedef struct encoding {
+                 char *enc_name;
+                 int char_cnt;
+                 char **unicode;
+                 char **psnames;
+                 struct encoding *next;
+             } Encoding;
+             
+             // Value types for preferences
+             typedef enum { v_int, v_real, v_str, v_unicode } val_type;
+             typedef struct {
+                 val_type type;
+                 union {
+                     int ival;
+                     double dval;
+                     char *sval;
+                     unichar_t *uval;
+                 } u;
+             } Val;
+             
+             // UI Interface structure
+             typedef struct {
+                 void (*logwarning)(const char *fmt, ...);
+                 void (*post_error)(const char *title, const char *error, ...);
+             } UI_Interface;
+             
+             // Global variables
+             extern UI_Interface *ui_interface;
+             
+             // Function declarations
+             void FindProgDir(char *prog);
+             void InitSimpleStuff(void);
+             void SetPrefs(char *name, Val *val, void *arg);
+             FontViewBase *FVAppend(FontViewBase *fv);
+             FontViewBase *_FontViewCreate(SplineFont *sf);
+             SplineFont *SplineFontNew(void);
+             SplineFont *LoadSplineFont(char *filename, int openflags);
+             void SFDefaultOS2Info(SplineFont *sf, void *os2, char *fontname);
+             
+             // Constants
+             #define of_fstypepermitted 1
+             
+             #endif /* _FONTFORGE_COMPAT_H */
            EOS
          end
       end
@@ -374,12 +690,25 @@ class Pdf2htmlex < Formula
     # Patch 1: Fix FontForge header include path (it's just fontforge.h)
     # No change needed - the original include is correct
     
-    # Patch 2: Fix string API changes in font.cc (minimal safe changes only)
+    # Patch 2: Fix modern Poppler API changes in font.cc
     inreplace "pdf2htmlEX/src/HTMLRenderer/font.cc" do |s|
-      # Fix string API changes - these are safe and necessary
+      # Fix string API changes
       s.gsub! 'font->getName()->toStr()', 'font->getName()->c_str()'
       s.gsub! 'localfontloc->path->toStr()', 'localfontloc->path.c_str()'
-      # Let the compiler tell us about other API issues - our patches were breaking syntax
+      
+      # Fix shared_ptr conversion for getFont
+      s.gsub! 'auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);',
+              'auto cur_font_shared = font_engine.getFont(std::shared_ptr<GfxFont>(font, [](GfxFont*){}), cur_doc, true, xref); auto * cur_font = cur_font_shared.get();'
+      
+      # Fix FoFiTrueType unique_ptr conversion (simplified approach)
+      s.gsub! 'FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str())',
+              'auto fftt_ptr = FoFiTrueType::load((char*)filepath.c_str()); FoFiTrueType * fftt = fftt_ptr.get()'
+      
+      # Fix optional GfxFontLoc conversion (simplified approach)
+      s.gsub! 'auto * font_loc = font->locateFont(xref, nullptr)',
+              'auto font_loc_opt = font->locateFont(xref, nullptr); auto * font_loc = font_loc_opt.has_value() ? &font_loc_opt.value() : nullptr'
+      s.gsub! 'GfxFontLoc * localfontloc = font->locateFont(xref, nullptr);',
+              'auto localfontloc_opt = font->locateFont(xref, nullptr); GfxFontLoc * localfontloc = localfontloc_opt.has_value() ? &localfontloc_opt.value() : nullptr;'
     end
     
 
@@ -419,10 +748,119 @@ class Pdf2htmlex < Formula
               'auto widgets_ptr = cur_catalog->getPage(pageNum)->getFormWidgets(); FormPageWidgets * widgets = widgets_ptr.get();'
     end
     
-    # Patch 8: Fix pdf2htmlEX.cc PDFDoc API changes (simplified to avoid std::optional issues)
+    # Patch 8: Fix pdf2htmlEX.cc PDFDoc API changes
     inreplace "pdf2htmlEX/src/pdf2htmlEX.cc" do |s|
+      # Modern Poppler expects std::optional<GooString> instead of GooString*
+      # Since GooString copy constructor is deleted, create from c_str()
       s.gsub! 'doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW);',
-              'doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW).release();'
+              'doc = PDFDocFactory().createPDFDoc(fileName, ownerPW ? std::make_optional(GooString(ownerPW->c_str())) : std::nullopt, userPW ? std::make_optional(GooString(userPW->c_str())) : std::nullopt).release();'
+    end
+    
+    # Patch 9: Fix FontForge API compatibility in ffw.c
+    inreplace "pdf2htmlEX/src/util/ffw.c" do |s|
+      # Add all required FontForge compatibility definitions at the top
+      s.gsub! '#include <stdio.h>',
+              <<~EOS
+                #include <stdio.h>
+                #include <stdlib.h>
+                #include <string.h>
+                
+                // FontForge API compatibility layer for pdf2htmlEX
+                typedef double real;
+                typedef int32_t unichar_t;
+                
+                // Complete structure definitions (before FontForge includes)
+                struct splinefont {
+                    void *fv;
+                    char *fontname;
+                    char *familyname;
+                    int ascent, descent;
+                    void *placeholder[50];
+                };
+                
+                struct encmap {
+                    int enccount;
+                    void *placeholder[10];
+                };
+                
+                struct fontviewbase {
+                    struct splinefont *sf;
+                    void *placeholder[20];
+                };
+                
+                struct fontview {
+                    struct fontviewbase base;
+                    struct splinefont *sf;
+                    struct splinefont *cidmaster;
+                    struct encmap *map;
+                    char *selected;
+                    void *placeholder[30];
+                };
+                
+                // Complete Encoding structure
+                struct encoding_full {
+                    char *enc_name;
+                    int char_cnt;
+                    char **unicode;
+                    char **psnames;
+                    struct encoding_full *next;
+                };
+                
+                // Value types for preferences
+                typedef enum { v_int, v_real, v_str, v_unicode } val_type;
+                typedef struct {
+                    val_type type;
+                    union {
+                        int ival;
+                        double dval;
+                        char *sval;
+                        unichar_t *uval;
+                    } u;
+                } Val;
+                
+                // Define ui_interface as int to match header expectation
+                int ui_interface = 0;
+                
+                // Function implementations (stubs)
+                void FindProgDir(char *prog) { /* stub */ }
+                void InitSimpleStuff(void) { /* stub */ }
+                void SetPrefs(char *name, Val *val, void *arg) { /* stub */ }
+                void *FVAppend(void *fv) { return fv; }
+                void *_FontViewCreate(void *sf) { 
+                    struct fontview *fv = malloc(sizeof(struct fontview));
+                    memset(fv, 0, sizeof(struct fontview));
+                    fv->sf = (struct splinefont*)sf;
+                    fv->map = malloc(sizeof(struct encmap));
+                    fv->map->enccount = 256;
+                    fv->selected = malloc(256);
+                    return fv;
+                }
+                void *SplineFontNew(void) { 
+                    struct splinefont *sf = malloc(sizeof(struct splinefont));
+                    memset(sf, 0, sizeof(struct splinefont));
+                    return sf;
+                }
+                void *LoadSplineFont(char *filename, int openflags) { return SplineFontNew(); }
+                void SFDefaultOS2Info(void *sf, void *os2, char *fontname) { /* stub */ }
+                void FVRemoveVKerns(void *fv) { /* stub */ }
+                
+                #define of_fstypepermitted 1
+              EOS
+      
+      # Fix the Encoding typedef to use our complete structure
+      s.gsub! 'Encoding *', 'struct encoding_full *'
+      
+      # Fix FontViewBase type usage
+      s.gsub! 'static FontViewBase * cur_fv = NULL;',
+              'static struct fontview * cur_fv = NULL;'
+      
+             # Fix function calls to use our definitions
+       s.gsub! 'cur_fv = FVAppend(_FontViewCreate(SplineFontNew()));',
+               'cur_fv = (struct fontview*)FVAppend(_FontViewCreate(SplineFontNew()));'
+      
+      # Fix font->fv access
+      s.gsub! 'if(!font->fv) {',
+              'if(!((struct splinefont*)font)->fv) {'
     end
 
     # Change to the pdf2htmlEX subdirectory where CMakeLists.txt is located

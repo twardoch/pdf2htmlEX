@@ -1,6 +1,4 @@
-# Next Task: 
-
-- [ ] Read @103.txt , analyze @llms.txt which holds the snapshot of the code, and reflect and think deeply about how to solve the problem. Consult @archive/fontforge for the full codebase of fontforge to better understand the compilation problems. Then into @PLAN.md write a detailed, extensive, multi-faceted, well-considered plan on how to fix the problem.    
+  
 
 # pdf2htmlEX Homebrew Formula
 
@@ -569,3 +567,8 @@ The pdf2htmlEX Homebrew formula implements a specialized build system for conver
 - macOS-specific optimizations and configurations
 - Architecture detection and binary generation
 - System dependency management
+
+
+If you work with Python, use 'uv pip' instead of 'pip', and use 'uvx hatch test' instead of 'python -m pytest'. 
+
+When I say /report, you must: Read all `./TODO.md` and `./PLAN.md` files and analyze recent changes. Document all changes in `./CHANGELOG.md`. From `./TODO.md` and `./PLAN.md` remove things that are done. Make sure that `./PLAN.md` contains a detailed, clear plan that discusses specifics, while `./TODO.md` is its flat simplified itemized `- [ ]`-prefixed representation. When I say /work, you must work in iterations like so: Read all `./TODO.md` and `./PLAN.md` files and reflect. Work on the tasks. Think, contemplate, research, reflect, refine, revise. Be careful, curious, vigilant, energetic. Verify your changes. Think aloud. Consult, research, reflect. Then update `./PLAN.md` and `./TODO.md` with tasks that will lead to improving the work you’ve just done. Then '/report', and then iterate again.
