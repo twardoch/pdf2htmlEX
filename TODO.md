@@ -1,8 +1,7 @@
 # TODO: pdf2htmlEX Homebrew Formula Implementation
 
-## Current Phase: Complete Vendored Formula Implementation
-
 ### Immediate Tasks (Current Priority)
+
 - [x] Replace template formula with complete vendored implementation
 - [x] Update formula to use Poppler 24.01.0 (updated from 22.12.0)
 - [x] Simplify formula structure by removing excessive header stubbing
@@ -11,12 +10,14 @@
 - [ ] Run comprehensive validation tests
 
 ### Success Criteria
+
 - [ ] Formula builds without errors using vendored Poppler 24.01.0 and FontForge 20230101
 - [ ] Binary converts PDF to HTML correctly  
 - [ ] Universal binary supports both Intel and Apple Silicon
 - [ ] Passes `brew audit` and `brew test`
 
 ### Implementation Status
+
 - ✅ Identified exact versions and approach needed
 - ✅ Created comprehensive test suite with validation scripts
 - ✅ Confirmed CMakeLists.txt patching works
@@ -26,11 +27,13 @@
 - ⏳ **NEXT**: Production testing and optimization
 
 ### Risk Mitigation (If Needed)
+
 - [ ] If Poppler 24.01.0 fails on macOS, try Poppler 23.x series
 - [ ] If FontForge linking fails, use dynamic libraries (.dylib) instead of static (.a)
 - [ ] Apply additional patches from official formula if needed
 
 ## Next Phase Tasks
+
 - [ ] Run full build test on clean macOS environment
 - [ ] Test with real-world PDF files of various complexity
 - [ ] Performance benchmarking

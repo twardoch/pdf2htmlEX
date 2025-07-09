@@ -1,0 +1,36 @@
+--- a/pdf2htmlEX/CMakeLists.txt
++++ b/pdf2htmlEX/CMakeLists.txt
+@@ -38,20 +38,8 @@
+ # by poppler
+ find_package(Poppler REQUIRED)
+-include_directories(
+-    ${CMAKE_SOURCE_DIR}/../poppler/build
+-    ${CMAKE_SOURCE_DIR}/../poppler
+-    ${CMAKE_SOURCE_DIR}/../poppler/glib
+-    ${CMAKE_SOURCE_DIR}/../poppler/goo
+-    ${CMAKE_SOURCE_DIR}/../poppler/fofi
+-    ${CMAKE_SOURCE_DIR}/../poppler/splash
+-)
+-link_directories(
+-    ${CMAKE_SOURCE_DIR}/../poppler/build
+-    ${CMAKE_SOURCE_DIR}/../poppler/build/glib
+-)
+-set(POPPLER_LIBS
+-    ${CMAKE_SOURCE_DIR}/../poppler/build/glib/libpoppler-glib.a
+-    ${CMAKE_SOURCE_DIR}/../poppler/build/libpoppler.a
+-)
++include_directories(${POPPLER_INCLUDE_DIR})
++set(POPPLER_LIBS ${POPPLER_LIBRARIES} ${POPPLER_GLIB_LIBRARIES})
+ 
+ # Find fontforge
+ # we need to use our own build of fontforge
+-include_directories(
+-    ${CMAKE_SOURCE_DIR}/../fontforge/build/inc
+-    ${CMAKE_SOURCE_DIR}/../fontforge
+-)
+-link_directories(${CMAKE_SOURCE_DIR}/../fontforge/build/lib)
+-set(FONTFORGE_LIBS
+-    ${CMAKE_SOURCE_DIR}/../fontforge/build/lib/libfontforge.a
+-)
++include_directories(${FONTFORGE_INCLUDE_DIR})
++set(FONTFORGE_LIBS ${FONTFORGE_LIBRARIES})

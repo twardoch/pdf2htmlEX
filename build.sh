@@ -6,12 +6,20 @@ echo "    This build uses an optimized approach that builds Poppler within the"
 echo "    pdf2htmlEX source tree structure to resolve linking dependencies."
 echo ""
 
-npx repomix -i "archive,.giga,issues,GEMINI.md,AGENTS.md" -o "./llms.txt" .
+# npx repomix -i "archive,.giga,issues,GEMINI.md,AGENTS.md" -o "./llms.txt" .
 
-# Install Homebrew if not installed
+# Set up Homebrew environment
+if [ -x "/opt/homebrew/bin/brew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x "/usr/local/bin/brew" ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Check if brew is now available
 if ! command -v brew &>/dev/null; then
-    echo "Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo "Error: Homebrew is not installed or could not be found." >&2
+    echo "Please install Homebrew first: https://brew.sh/" >&2
+    exit 1
 fi
 
 # Install pdf2htmlEX from source formula with verbose output for debugging
