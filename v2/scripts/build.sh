@@ -179,6 +179,9 @@ build_poppler() {
         -DENABLE_QT6=OFF \
         -DENABLE_LIBTIFF=OFF \
         -DWITH_TIFF=OFF \
+        -DWITH_NSS3=OFF \
+        -DENABLE_NSS3=OFF \
+        -DENABLE_GPGME=OFF \
         -DENABLE_LIBOPENJPEG=openjpeg2 \
         -DENABLE_CMS=lcms2 \
         -DWITH_JPEG=ON \
@@ -231,7 +234,7 @@ build_pdf2htmlex() {
     cp -r "$STAGING_DIR"/* poppler/ 2>/dev/null || mkdir -p poppler && cp -r "$STAGING_DIR"/* poppler/
     cp -r "$STAGING_DIR"/* fontforge/ 2>/dev/null || mkdir -p fontforge && cp -r "$STAGING_DIR"/* fontforge/
     
-    # Build pdf2htmlEX
+    # Build pdf2htmlex
     mkdir -p build
     cd build
     
@@ -269,7 +272,6 @@ validate_build() {
     fi
     
     # Test basic functionality
-    log "Testing basic functionality..."
     if "$binary" --version; then
         log "Version check passed"
     else
