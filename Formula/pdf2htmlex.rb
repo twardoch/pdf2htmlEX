@@ -215,11 +215,44 @@ class Pdf2htmlex < Formula
       # root of the include search path.  The upstream FontForge install puts
       # this header inside the sub-directory `fontforge/`.  Provide a shim
       # copy so the include directive resolves without patching the sources.
-      ff_header = "#{staging_prefix}/include/fontforge/fontforge.h"
-      cp ff_header, "#{staging_prefix}/include/" if File.exist?(ff_header)
+      dest_dir = "#{staging_prefix}/include/fontforge"
+      FileUtils.mkdir_p dest_dir
+
+      installed_header = "#{dest_dir}/fontforge.h"
+      source_header = File.exist?("fontforge/fontforge.h") ? "fontforge/fontforge.h" : ff_header
+
+      FileUtils.cp source_header, installed_header unless File.exist?(installed_header)
+
+      # Copy any additional headers that FontForge has generated into the
+      # temporary build/inc directory but did not install.  These are required
+      # by pdf2htmlEX (e.g. fontforge-config.h).
+      # Copy headers from both the build/inc directory (generated) and the
+      # original `inc` directory in the source tree.
+      Dir.glob("{build/inc,inc}/**/*.h").each do |hdr|
+        dest_path = File.join(dest_dir, File.basename(hdr))
+        FileUtils.cp hdr, dest_path unless File.exist?(dest_path)
+      end
+
+      # Copy *all* FontForge public headers recursively to ensure no missing
+      # transitive includes (e.g. basics.h, splinefont.h, etc.).  Keeping the
+      # directory layout avoids name clashes and preserves relative includes
+      # inside the FontForge codebase.
+      Dir.glob("fontforge/**/*.{h,H}").each do |hdr|
+        rel_path = Pathname.new(hdr).relative_path_from(Pathname.new("fontforge"))
+        target   = staging_prefix/"include"/"fontforge"/rel_path
+        FileUtils.mkdir_p target.dirname
+        FileUtils.cp hdr, target unless File.exist?(target)
+      end
     end
 
     # --- Stage 3: Build pdf2htmlEX ---
+    # Ensure GLib's gio headers are reachable when fontforge headers include
+    # <gio/gio.h>.
+    ENV.append "CPPFLAGS", "-I#{Formula["glib"].opt_include}/glib-2.0"
+    ENV.append "CPPFLAGS", "-I#{Formula["glib"].opt_lib}/glib-2.0/include"
+    ENV.append "CFLAGS", "-I#{Formula["glib"].opt_include}/glib-2.0 -I#{Formula["glib"].opt_lib}/glib-2.0/include"
+    ENV.append "CXXFLAGS", "-I#{Formula["glib"].opt_include}/glib-2.0 -I#{Formula["glib"].opt_lib}/glib-2.0/include"
+
     # Create missing test.py.in file that CMake expects
     mkdir_p "pdf2htmlEX/test"
     File.write("pdf2htmlEX/test/test.py.in", "")
@@ -246,6 +279,7 @@ class Pdf2htmlex < Formula
         # Simplify FONTFORGE_LIBRARIES definition
         s.gsub!(/set\(FONTFORGE_LIBRARIES[\s\S]*?\)/m,
                 "set(FONTFORGE_LIBRARIES ${FONTFORGE_LIBRARIES})")
+        s.gsub!(/src\/util\/ffw\.c\s*/, "")
       end
 
       # Ensure the staged headers are discoverable.
@@ -266,6 +300,9 @@ class Pdf2htmlex < Formula
           -DPOPPLER_LIBRARIES=#{staging_prefix}/lib/libpoppler.a
           -DPOPPLER_GLIB_LIBRARIES=#{staging_prefix}/lib/libpoppler-glib.a
           -DFONTFORGE_LIBRARIES=#{staging_prefix}/lib/libfontforge.a
+          -DCMAKE_CXX_STANDARD=17
+          -DCMAKE_C_FLAGS=-I#{staging_prefix}/include\ \-I#{Formula["glib"].opt_include}/glib-2.0\ \-I#{Formula["glib"].opt_lib}/glib-2.0/include
+          -DCMAKE_CXX_FLAGS=-I#{staging_prefix}/include\ \-I#{Formula["glib"].opt_include}/glib-2.0\ \-I#{Formula["glib"].opt_lib}/glib-2.0/include
         ]
 
         system "cmake", "..", "-G", "Ninja", *args
