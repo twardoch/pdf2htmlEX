@@ -123,6 +123,7 @@ download_and_extract() {
 }
 
 build_jpeg_turbo() {
+    
     log "Building jpeg-turbo (static)..."
     
     local src_dir="$BUILD_DIR/jpeg-turbo"
@@ -153,7 +154,9 @@ build_jpeg_turbo() {
     echo "Creating universal jpeg-turbo library..."
     mkdir -p "$STAGING_DIR/lib"
     lipo -create "$STAGING_DIR/x86_64/lib/libjpeg.a" "$STAGING_DIR/arm64/lib/libjpeg.a" -output "$STAGING_DIR/lib/libjpeg.a"
+    
     cp -R "$STAGING_DIR/x86_64/include" "$STAGING_DIR/"
+    
 }
 
 build_poppler() {
@@ -201,8 +204,7 @@ build_poppler() {
         -DLITTLECMS2_LIBRARY="$(brew --prefix little-cms2)/lib/liblcms2.a" \
         -DOPENJPEG_INCLUDE_DIR="$(brew --prefix openjpeg)/include" \
         -DOPENJPEG_LIBRARY="$(brew --prefix openjpeg)/lib/libopenjp2.a" \
-        -DZLIB_INCLUDE_DIR="/usr/include" \
-        -DZLIB_LIBRARY="/usr/lib/libz.dylib"
+        -DBUILD_BZIP2=ON         -DBZIP2_LIBRARY="$(brew --prefix bzip2)/lib/libbz2.a"
     
     cmake --build build
     cmake --install build
