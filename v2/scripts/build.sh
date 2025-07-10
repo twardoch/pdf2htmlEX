@@ -24,7 +24,7 @@ readonly FONTFORGE_VERSION="20230101"
 
 # URLs
 readonly PDF2HTMLEX_URL="https://github.com/pdf2htmlEX/pdf2htmlEX/archive/v${PDF2HTMLEX_VERSION}.tar.gz"
-readonly JPEG_TURBO_URL="https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-${JPEG_TURBO_VERSION}.tar.gz"
+readonly JPEG_TURBO_URL="https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.0.2.tar.gz"
 readonly POPPLER_URL="https://poppler.freedesktop.org/poppler-${POPPLER_VERSION}.tar.xz"
 readonly FONTFORGE_URL="https://github.com/fontforge/fontforge/archive/${FONTFORGE_VERSION}.tar.gz"
 
@@ -55,7 +55,7 @@ check_dependencies() {
     
     local missing_deps=()
     
-    for cmd in cmake ninja pkg-config curl tar xz; do
+    for cmd in cmake ninja pkg-config curl tar xz lipo; do
         if ! command -v "$cmd" &> /dev/null; then
             missing_deps+=("$cmd")
         fi
@@ -130,15 +130,30 @@ build_jpeg_turbo() {
     
     cd "$src_dir"
     
-    cmake -S . -B build \
-        -DCMAKE_INSTALL_PREFIX="$STAGING_DIR" \
-        -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+    echo "Building jpeg-turbo for x86_64..."
+    cmake -S . -B build_x86_64 \
+        -DCMAKE_INSTALL_PREFIX="$STAGING_DIR/x86_64" \
+        -DCMAKE_OSX_ARCHITECTURES=x86_64 \
         -DENABLE_SHARED=OFF \
         -DENABLE_STATIC=ON \
         -DCMAKE_BUILD_TYPE=Release
-    
-    cmake --build build
-    cmake --install build
+    cmake --build build_x86_64
+    cmake --install build_x86_64
+
+    echo "Building jpeg-turbo for arm64..."
+    cmake -S . -B build_arm64 \
+        -DCMAKE_INSTALL_PREFIX="$STAGING_DIR/arm64" \
+        -DCMAKE_OSX_ARCHITECTURES=arm64 \
+        -DENABLE_SHARED=OFF \
+        -DENABLE_STATIC=ON \
+        -DCMAKE_BUILD_TYPE=Release
+    cmake --build build_arm64
+    cmake --install build_arm64
+
+    echo "Creating universal jpeg-turbo library..."
+    mkdir -p "$STAGING_DIR/lib"
+    lipo -create "$STAGING_DIR/x86_64/lib/libjpeg.a" "$STAGING_DIR/arm64/lib/libjpeg.a" -output "$STAGING_DIR/lib/libjpeg.a"
+    cp -R "$STAGING_DIR/x86_64/include" "$STAGING_DIR/"
 }
 
 build_poppler() {
@@ -162,11 +177,15 @@ build_poppler() {
         -DENABLE_CPP=OFF \
         -DENABLE_QT5=OFF \
         -DENABLE_QT6=OFF \
+        -DENABLE_LIBTIFF=OFF \
+        -DWITH_TIFF=OFF \
         -DENABLE_LIBOPENJPEG=openjpeg2 \
         -DENABLE_CMS=lcms2 \
         -DWITH_JPEG=ON \
         -DENABLE_DCTDECODER=libjpeg \
         -DENABLE_LIBJPEG=ON \
+        -DJPEG_INCLUDE_DIR="$STAGING_DIR/include" \
+        -DJPEG_LIBRARY="$STAGING_DIR/lib/libjpeg.a" \
         -DCMAKE_BUILD_TYPE=Release
     
     cmake --build build

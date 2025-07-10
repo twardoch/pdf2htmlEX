@@ -11,8 +11,8 @@ class Pdf2htmlex < Formula
 
   # V2 Strategy: Add jpeg-turbo as a resource to fix Poppler build
   resource "jpeg-turbo" do
-    url "https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.2.tar.gz"
-    sha256 "b248932c275a39395a55434385d83442b25d6894435511c333a74991c1aeba5f"
+    url "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.0.2.tar.gz"
+    sha256 "b236933836fab254353351b536a324f77260135f638542914e2c438a8b84e2bf"
   end
 
   resource "poppler" do
