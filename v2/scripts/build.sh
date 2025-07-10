@@ -189,7 +189,20 @@ build_poppler() {
         -DENABLE_LIBJPEG=ON \
         -DJPEG_INCLUDE_DIR="$STAGING_DIR/include" \
         -DJPEG_LIBRARY="$STAGING_DIR/lib/libjpeg.a" \
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release \
+        -DFREETYPE_INCLUDE_DIR_ft2build="$(brew --prefix freetype)/include/freetype2" \
+        -DFREETYPE_INCLUDE_DIR_freetype2="$(brew --prefix freetype)/include/freetype2" \
+        -DFREETYPE_LIBRARY="$(brew --prefix freetype)/lib/libfreetype.a" \
+        -DFONTCONFIG_INCLUDE_DIR="$(brew --prefix fontconfig)/include" \
+        -DFONTCONFIG_LIBRARY="$(brew --prefix fontconfig)/lib/libfontconfig.a" \
+        -DLIBPNG_INCLUDE_DIR="$(brew --prefix libpng)/include" \
+        -DLIBPNG_LIBRARY="$(brew --prefix libpng)/lib/libpng.a" \
+        -DLITTLECMS2_INCLUDE_DIR="$(brew --prefix little-cms2)/include" \
+        -DLITTLECMS2_LIBRARY="$(brew --prefix little-cms2)/lib/liblcms2.a" \
+        -DOPENJPEG_INCLUDE_DIR="$(brew --prefix openjpeg)/include" \
+        -DOPENJPEG_LIBRARY="$(brew --prefix openjpeg)/lib/libopenjp2.a" \
+        -DZLIB_INCLUDE_DIR="/usr/include" \
+        -DZLIB_LIBRARY="/usr/lib/libz.dylib"
     
     cmake --build build
     cmake --install build
