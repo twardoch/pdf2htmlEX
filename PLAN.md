@@ -1,25 +1,40 @@
-# pdf2htmlEX Homebrew Formula: Implementation Plan
+# V2 Plan: A Detailed Blueprint for a Resilient pdf2htmlEX Homebrew Formula
 
-## Executive Summary
+This document provides a detailed, actionable plan for creating a stable and maintainable Homebrew formula for `pdf2htmlEX` on macOS. It synthesizes the lessons from the `v1` attempt and the strategic insights from all `v2` planning documents.
 
-**Solution Identified**: Use vendored dependencies (Poppler 24.01.0 + FontForge 20230101) with CMakeLists.txt patching and official Homebrew formula patterns.
+## 1. Executive Summary: The Path to Success
 
-## Critical Discovery
+The `v1` attempt correctly identified the core strategy—vendoring specific versions of `Poppler` and `FontForge`—but failed on a specific compilation issue (`DCTStream` error) due to disabling JPEG support in Poppler.
 
-Our testing revealed the exact issue:
-- ✅ **Patching works**: CMakeLists.txt modification successful
-- ✅ **Build system works**: Staged dependencies and universal binary compilation confirmed  
-- ❌ **Version incompatibility**: Poppler 25.06.0 (current Homebrew) vs required 24.01.0 causes C++ API errors
+The `v2` strategy corrects this by building upon the `v1` foundation with two key improvements:
 
-**Root Cause**: pdf2htmlEX 0.18.8.rc1 uses C++14, modern Poppler 25.06.0 requires C++20 features (`std::optional`, `std::span`, `std::variant`)
+1.  **Re-enable JPEG Support**: We will vendor and statically build `libjpeg-turbo`, allowing `Poppler` to compile correctly without disabling its core features. This fixes the root cause of the `v1` failure.
+2.  **Adopt an In-Source Build Pattern**: Instead of complex patching of `pdf2htmlEX`'s `CMakeLists.txt`, we will create the exact directory structure it expects. This simplifies the build process, making it more robust and easier to maintain.
 
-## Implementation Strategy
+The result will be a self-contained, universal binary that works reliably across modern Intel and Apple Silicon Macs.
 
-### 1. Final Formula Architecture
+## 2. The V2 Homebrew Formula: A Technical Deep Dive
+
+The new formula, `v2/Formula/pdf2htmlex.rb`, will be structured as follows. This is a near-complete implementation, heavily commented to explain the rationale behind each decision.
 
 ```ruby
+# typed: false
+# frozen_string_literal: true
+
 class Pdf2htmlex < Formula
-  # Vendored dependencies with exact versions
+  desc "Convert PDF to HTML without losing text or format"
+  homepage "https://github.com/pdf2htmlEX/pdf2htmlEX"
+  url "https://github.com/pdf2htmlEX/pdf2htmlEX/archive/v0.18.8.rc1.tar.gz"
+  sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
+  license "GPL-3.0-or-later"
+  version "0.18.8.rc1"
+
+  # ==> V2 Strategy: Add jpeg-turbo as a resource to fix Poppler build
+  resource "jpeg-turbo" do
+    url "https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.2.tar.gz"
+    sha256 "b248932c275a39395a55434385d83442b25d6894435511c333a74991c1aeba5f"
+  end
+
   resource "poppler" do
     url "https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
     sha256 "c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08"
@@ -30,111 +45,158 @@ class Pdf2htmlex < Formula
     sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
   end
 
+  depends_on "cmake" => :build
+  depends_on "ninja" => :build
+  depends_on "pkg-config" => :build
+  depends_on "openjdk" => :build
+
+  depends_on "cairo"
+  depends_on "fontconfig"
+  depends_on "freetype"
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "libpng"
+  depends_on "libtiff"
+  depends_on "libxml2"
+  depends_on "pango"
+  depends_on "harfbuzz"
+  depends_on "little-cms2"
+  depends_on "openjpeg"
+
   def install
-    # Stage 1: Build Poppler 24.01.0 with official formula patterns
-    # Stage 2: Build FontForge 20230101 with official patch
-    # Stage 3: Patch CMakeLists.txt and build pdf2htmlEX
+    ENV.cxx11
+    # Staging prefix for all our compiled static libraries
+    staging_prefix = buildpath/"staging"
+    # Universal binary architecture
+    archs = "x86_64;arm64"
+
+    # Set up environment for build
+    ENV.prepend_path "PKG_CONFIG_PATH", "#{staging_prefix}/lib/pkgconfig"
+    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
+
+    # --- Stage 1: Build jpeg-turbo (static) ---
+    ohai "Building static jpeg-turbo"
+    resource("jpeg-turbo").stage do
+      system "cmake", "-S", ".", "-B", "build",
+             "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
+             "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
+             "-DENABLE_SHARED=OFF",
+             "-DENABLE_STATIC=ON",
+             *std_cmake_args
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
+    end
+
+    # --- Stage 2: Build Poppler (static) ---
+    ohai "Building static Poppler"
+    resource("poppler").stage do
+      # Create a placeholder to prevent CMake test data error
+      (buildpath/"test").mkdir
+      
+      poppler_args = %W[
+        -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
+        -DCMAKE_OSX_ARCHITECTURES=#{archs}
+        -DBUILD_SHARED_LIBS=OFF
+        -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
+        -DENABLE_GLIB=ON
+        -DENABLE_UTILS=OFF
+        -DENABLE_CPP=OFF
+        -DENABLE_QT5=OFF
+        -DENABLE_QT6=OFF
+        -DENABLE_LIBOPENJPEG=openjpeg2
+        -DENABLE_CMS=lcms2
+        -DWITH_JPEG=ON
+        -DENABLE_DCTDECODER=libjpeg
+        -DENABLE_LIBJPEG=ON
+      ]
+      
+      system "cmake", "-S", ".", "-B", "build", *poppler_args, *std_cmake_args
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
+    end
+
+    # --- Stage 3: Build FontForge (static) ---
+    ohai "Building static FontForge"
+    resource("fontforge").stage do
+      # Disable failing translation builds
+      inreplace "po/CMakeLists.txt", "add_custom_target(pofiles ALL", "add_custom_target(pofiles"
+
+      fontforge_args = %W[
+        -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
+        -DCMAKE_OSX_ARCHITECTURES=#{archs}
+        -DBUILD_SHARED_LIBS=OFF
+        -DENABLE_GUI=OFF
+        -DENABLE_NATIVE_SCRIPTING=ON
+        -DENABLE_PYTHON_SCRIPTING=OFF
+      ]
+
+      system "cmake", "-S", ".", "-B", "build", *fontforge_args, *std_cmake_args
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
+    end
+
+    # --- Stage 4: Build pdf2htmlEX (linking against staged libs) ---
+    ohai "Building pdf2htmlEX"
+    
+    # ==> V2 Strategy: In-source build pattern
+    # Move the compiled dependencies into the directory structure that
+    # pdf2htmlEX's CMakeLists.txt expects. This avoids complex patching.
+    (buildpath/"poppler").install Pathname.glob("#{staging_prefix}/*")
+    (buildpath/"fontforge").install Pathname.glob("#{staging_prefix}/*")
+
+    # Create a build directory inside the source tree
+    mkdir "build" do
+      # No more inreplace needed! CMake will find deps in ../poppler and ../fontforge
+      system "cmake", "..", *std_cmake_args
+      system "make"
+      system "make", "install"
+    end
+  end
+
+  test do
+    system bin/"pdf2htmlEX", "--version"
+    # ... more comprehensive tests from v1 ...
   end
 end
 ```
 
-### 2. Key Implementation Components
+## 4. Phased Implementation and Validation Plan
 
-#### Poppler Build (Stage 1)
-```ruby
-resource("poppler").stage do
-  args = %W[
-    -DCMAKE_BUILD_TYPE=Release
-    -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
-    -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64
-    -DENABLE_UNSTABLE_API_ABI_HEADERS=ON  # Required by pdf2htmlEX
-    -DBUILD_SHARED_LIBS=OFF               # Static libraries
-    -DENABLE_GLIB=ON                      # Required by pdf2htmlEX
-    -DENABLE_CMS=lcms2                    # From official formula
-    -DENABLE_QT5=OFF -DENABLE_QT6=OFF     # Disable Qt
-  ]
-  
-  system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *args
-  system "cmake", "--build", "build"
-  system "cmake", "--install", "build"
-end
-```
+This plan breaks the work into manageable, verifiable stages.
 
-#### FontForge Build (Stage 2)
-```ruby
-resource("fontforge").stage do
-  # Apply official Homebrew patch for translation files
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/9403988/fontforge/20230101.patch"
-    sha256 "e784c4c0fcf28e5e6c5b099d7540f53436d1be2969898ebacd25654d315c0072"
-  end
-  
-  args = %W[
-    -DCMAKE_BUILD_TYPE=Release
-    -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
-    -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64
-    -DBUILD_SHARED_LIBS=OFF
-    -DENABLE_GUI=OFF
-    -DENABLE_FONTFORGE_EXTRAS=ON
-    -DENABLE_NATIVE_SCRIPTING=ON
-  ]
-  
-  system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *args
-  system "cmake", "--build", "build"
-  system "cmake", "--install", "build"
-end
-```
+#### **Phase 1: Local Build Validation**
+*   **Task**: Create a `v2/scripts/build.sh` script that automates the four-stage build process locally, outside of Homebrew.
+*   **Goal**: Prove that the build logic is sound and produces a working, universal binary.
+*   **Validation**:
+    1.  The script completes without errors.
+    2.  The final `pdf2htmlEX` binary is created in a `dist/` directory.
+    3.  `file dist/bin/pdf2htmlEX` reports `Mach-O universal binary with 2 architectures: [x86_64:..., arm64:...]`.
+    4.  `otool -L dist/bin/pdf2htmlEX` shows linkage only to system libraries (e.g., `libSystem.B.dylib`, `libc++.1.dylib`), not to Homebrew-installed versions of `libpoppler` or `libfontforge`.
+    5.  Run the binary on a test PDF with a JPEG image and verify that the image is present in the output HTML.
 
-#### pdf2htmlEX Build (Stage 3)
-```ruby
-# Create missing test file
-(buildpath/"pdf2htmlEX/test/test.py.in").write ""
+#### **Phase 2: Homebrew Formula Integration**
+*   **Task**: Port the successful logic from `build.sh` into the `install` block of `v2/Formula/pdf2htmlex.rb`.
+*   **Goal**: A working Homebrew formula that can be installed from source.
+*   **Validation**:
+    1.  `brew install --build-from-source v2/Formula/pdf2htmlex.rb` completes successfully.
+    2.  `brew test pdf2htmlex` passes.
+    3.  `brew audit --strict` passes with no major errors.
 
-# Patch hardcoded paths to use our staged dependencies
-inreplace "pdf2htmlEX/CMakeLists.txt" do |s|
-  s.gsub! "${CMAKE_SOURCE_DIR}/../poppler/build/glib/libpoppler-glib.a", "#{staging_prefix}/lib/libpoppler-glib.a"
-  s.gsub! "${CMAKE_SOURCE_DIR}/../poppler/build/libpoppler.a", "#{staging_prefix}/lib/libpoppler.a"
-  s.gsub! "${CMAKE_SOURCE_DIR}/../fontforge/build/lib/libfontforge.a", "#{staging_prefix}/lib/libfontforge.dylib"
-  # ... additional path replacements
-end
+#### **Phase 3: CI/CD and Bottling**
+*   **Task**: Adapt the GitHub Actions workflows from `v1` to the `v2` formula.
+*   **Goal**: A fully automated CI/CD pipeline for testing, bottling, and releasing.
+*   **Validation**:
+    1.  The `test.yml` workflow passes on `macos-12`, `macos-13`, and `macos-14` for both Intel and Apple Silicon architectures.
+    2.  The `release.yml` workflow successfully builds and uploads bottles for all target platforms when a new version is tagged.
+    3.  The `security.yml` workflow runs without errors.
 
-# Build pdf2htmlEX
-args = %W[
-  -DCMAKE_BUILD_TYPE=Release
-  -DCMAKE_INSTALL_PREFIX=#{prefix}
-  -DCMAKE_OSX_ARCHITECTURES=x86_64;arm64
-  -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-]
+## 5. Risk Mitigation and Fallback Strategies
 
-system "cmake", "-S", "pdf2htmlEX", "-B", "build", "-G", "Ninja", *args
-system "cmake", "--build", "build", "--parallel"
-system "cmake", "--install", "build"
-```
+*   **Risk**: New versions of dependencies introduce breaking changes.
+    *   **Mitigation**: The formula pins exact versions via URL and SHA256. Updates will require careful testing. The `v2/scripts/update-version.sh` script will be used to manage this process.
+*   **Risk**: The in-source build pattern fails due to subtle path issues.
+    *   **Mitigation**: Revert to the `v1` strategy of patching `CMakeLists.txt` with `inreplace`, which is more complex but proven to work for path redirection.
+*   **Risk**: Native compilation proves too fragile or time-consuming for CI.
+    *   **Mitigation (Fallback Plan)**: Adopt the **Docker-first strategy** outlined in `v2/PLANS/plan4.md`. This involves shipping a lightweight wrapper script that executes `pdf2htmlEX` inside a pre-built Docker container. This guarantees functionality at the cost of a Docker runtime dependency.
 
-## Immediate Next Steps
-
-1. **✅ DONE**: Identified exact versions and approach
-2. **🔄 IN PROGRESS**: Create complete vendored formula (done for local development)
-3. **✅ DONE (CI)**: Introduced lightweight stub for `pdf2htmlEX` so the test-suite can run without compiling the full C++ stack.
-4. **⏳ NEXT**: Test full vendored build on a dedicated macOS runner (outside CI sandbox)
-5. **⏳ NEXT**: Validate universal binary output
-
-## Success Criteria
-
-- [ ] Formula builds without errors
-- [ ] Binary converts PDF to HTML correctly
-- [ ] Universal binary supports both Intel and Apple Silicon
-- [ ] Passes `brew audit` and `brew test`
-
-## Risk Mitigation
-
-**If Poppler 24.01.0 fails on macOS**:
-1. Try Poppler 23.x series (latest that works)
-2. Use dynamic libraries instead of static
-3. Disable problematic features in Poppler build
-
-**If FontForge linking fails**:
-- Use dynamic libraries (`.dylib`) instead of static (`.a`)
-- Apply additional patches from official formula
-
-The path is clear: implement the complete vendored formula with the exact versions and proven techniques from our testing. 
+This detailed plan provides a clear and robust path forward, addressing the specific technical blockers of the past while building on its successes.

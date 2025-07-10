@@ -9,7 +9,7 @@ mkdir -p "$BUILD_TEMP_DIR_NAME"
 cd "$BUILD_TEMP_DIR_NAME"
 echo "Working in temporary build directory: $(pwd)"
 
-ARCHS="x86_64;arm64" # For CMAKE_OSX_ARCHITECTURES
+ARCHS="x86_64;arm64"            # For CMAKE_OSX_ARCHITECTURES
 INSTALL_PREFIX="$(pwd)/staging" # Install dependencies into staging area within the temp build dir
 mkdir -p "$INSTALL_PREFIX"
 
@@ -20,9 +20,10 @@ echo "Using Homebrew Prefix: $HOMEBREW_PREFIX_VAL"
 echo "If this is incorrect, ensure 'brew' is in your PATH or set HOMEBREW_PREFIX_VAL manually in the script."
 
 # Ensure paths to Homebrew-installed libraries are discoverable
-# Append existing PKG_CONFIG_PATH and CMAKE_PREFIX_PATH to avoid overwriting them
-export PKG_CONFIG_PATH="$HOMEBREW_PREFIX_VAL/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/share/pkgconfig:/usr/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
-export CMAKE_PREFIX_PATH="$HOMEBREW_PREFIX_VAL${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
+# Prepend jpeg-turbo paths to PKG_CONFIG_PATH and CMAKE_PREFIX_PATH
+JPEG_TURBO_PREFIX="$HOMEBREW_PREFIX_VAL/opt/jpeg-turbo"
+export PKG_CONFIG_PATH="$JPEG_TURBO_PREFIX/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/share/pkgconfig:/usr/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+export CMAKE_PREFIX_PATH="$JPEG_TURBO_PREFIX:$HOMEBREW_PREFIX_VAL${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 export PATH="$HOMEBREW_PREFIX_VAL/bin:$PATH"
 
 # --- Build Poppler (Static) ---
@@ -71,7 +72,7 @@ cmake .. \
     -DENABLE_QT5=OFF \
     -DENABLE_QT6=OFF \
     -DENABLE_LIBOPENJPEG="none" \
-    -DENABLE_DCTDECODER="libjpeg" \
+    -DENABLE_DCTDECODER="unmaintained" \
     -DENABLE_CMS="none" \
     -DENABLE_LCMS=OFF \
     -DENABLE_LIBCURL=OFF \
@@ -88,7 +89,9 @@ cmake .. \
     -DEXTRA_WARN=OFF \
     -DWITH_JPEG=ON \
     -DWITH_PNG=ON \
-    -DWITH_Cairo=ON
+    -DWITH_Cairo=ON \
+    -DJPEG_INCLUDE_DIR="$JPEG_TURBO_PREFIX/include" \
+    -DJPEG_LIBRARY="$JPEG_TURBO_PREFIX/lib/libjpeg.dylib"
 
 ninja install
 cd ../..
@@ -170,7 +173,7 @@ cd ../..
 # --- Build pdf2htmlEX ---
 echo "Building pdf2htmlEX..."
 
-PDF2HTMLEX_CHECKOUT_ROOT="$ORIG_PWD" # This is the root of the git checkout
+PDF2HTMLEX_CHECKOUT_ROOT="$ORIG_PWD"  # This is the root of the git checkout
 PDF2HTMLEX_SOURCE_SUBDIR="pdf2htmlEX" # The sources are in a subdirectory
 
 # Check if the source directory exists
@@ -201,8 +204,8 @@ else
 fi
 
 if [ -n "$JAVA_HOME" ]; then
-  export PATH="$JAVA_HOME/bin:$PATH"
-  echo "Using JAVA_HOME: $JAVA_HOME"
+    export PATH="$JAVA_HOME/bin:$PATH"
+    echo "Using JAVA_HOME: $JAVA_HOME"
 fi
 
 mkdir -p pdf2htmlEX_builddir
@@ -216,7 +219,7 @@ cmake "$PDF2HTMLEX_CHECKOUT_ROOT/$PDF2HTMLEX_SOURCE_SUBDIR" \
     -DPOPPLER_STATIC=ON \
     -DFONTFORGE_STATIC=ON \
     -DCMAKE_PREFIX_PATH="$INSTALL_PREFIX${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}" \ # Prepend our static deps
-    -DCMAKE_FIND_FRAMEWORK=NEVER \
+-DCMAKE_FIND_FRAMEWORK=NEVER \
     -DCMAKE_FIND_APPBUNDLE=NEVER
 
 ninja install

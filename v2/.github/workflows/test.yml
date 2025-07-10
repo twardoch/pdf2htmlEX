@@ -1,0 +1,130 @@
+name: Test pdf2htmlEX Formula
+
+on:
+  push:
+    branches: [ main, v2-dev ]
+    paths:
+      - 'v2/**'
+      - '.github/workflows/test.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'v2/**'
+      - '.github/workflows/test.yml'
+  workflow_dispatch:
+
+jobs:
+  test-formula:
+    strategy:
+      matrix:
+        os: [macos-12, macos-13, macos-14]
+        include:
+          - os: macos-12
+            arch: x86_64
+          - os: macos-13
+            arch: x86_64
+          - os: macos-14
+            arch: arm64
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Homebrew
+      run: |
+        brew update
+        brew --version
+        echo "Architecture: ${{ matrix.arch }}"
+    
+    - name: Install dependencies
+      run: |
+        brew install cmake ninja pkg-config
+        brew install cairo fontconfig freetype gettext glib
+        brew install libpng libtiff libxml2 pango harfbuzz
+        brew install little-cms2 openjpeg openjdk
+    
+    - name: Audit formula
+      run: |
+        cd v2
+        brew audit --strict Formula/pdf2htmlex.rb
+    
+    - name: Test formula installation
+      run: |
+        cd v2
+        brew install --build-from-source --verbose Formula/pdf2htmlex.rb
+    
+    - name: Verify installation
+      run: |
+        # Check binary exists
+        which pdf2htmlEX
+        pdf2htmlEX --version
+        
+        # Check if universal binary (on Apple Silicon)
+        if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+          file $(which pdf2htmlEX) | grep -E "universal binary|arm64" || exit 1
+        fi
+        
+        # Check static linking
+        otool -L $(which pdf2htmlEX) | grep -v "libpoppler\|libfontforge" || exit 0
+    
+    - name: Run basic tests
+      run: |
+        cd v2/tests
+        ./test_basic.sh
+    
+    - name: Run font tests
+      run: |
+        cd v2/tests
+        ./test_fonts.sh
+    
+    - name: Run formula test block
+      run: |
+        brew test pdf2htmlex
+    
+    - name: Test PDF conversion
+      run: |
+        # Create test PDF
+        cat > test.pdf << 'EOF'
+        %PDF-1.4
+        1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+        2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+        3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R >> endobj
+        4 0 obj << /Length 44 >> stream
+        BT /F1 12 Tf 100 700 Td (GitHub Actions Test) Tj ET
+        endstream endobj
+        xref
+        0 5
+        0000000000 65535 f 
+        0000000009 00000 n 
+        0000000058 00000 n 
+        0000000115 00000 n 
+        0000000203 00000 n 
+        trailer << /Size 5 /Root 1 0 R >>
+        startxref
+        344
+        %%EOF
+        EOF
+        
+        # Convert PDF
+        pdf2htmlEX test.pdf
+        
+        # Verify output
+        test -f test.html || exit 1
+        grep -q "GitHub Actions Test" test.html || exit 1
+    
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.os }}
+        path: |
+          *.html
+          *.pdf
+          /tmp/pdf2htmlex-*
+    
+    - name: Cleanup
+      if: always()
+      run: |
+        brew uninstall pdf2htmlex || true

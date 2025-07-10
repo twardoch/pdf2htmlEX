@@ -1,0 +1,139 @@
+name: Release pdf2htmlEX Bottle
+
+on:
+  push:
+    tags:
+      - 'v2.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 0.18.8.rc1)'
+        required: true
+
+jobs:
+  build-bottles:
+    strategy:
+      matrix:
+        include:
+          - os: macos-12
+            arch: monterey
+          - os: macos-13
+            arch: ventura
+          - os: macos-14
+            arch: sonoma
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set version
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION="${GITHUB_REF#refs/tags/v2.}"
+        fi
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Building version: $VERSION"
+    
+    - name: Update formula version
+      run: |
+        cd v2
+        ./scripts/update-version.sh pdf2htmlex "${{ env.VERSION }}"
+    
+    - name: Set up Homebrew
+      run: |
+        brew update
+        brew --version
+    
+    - name: Install dependencies
+      run: |
+        brew install cmake ninja pkg-config
+        brew install cairo fontconfig freetype gettext glib
+        brew install libpng libtiff libxml2 pango harfbuzz
+        brew install little-cms2 openjpeg openjdk
+    
+    - name: Build bottle
+      run: |
+        cd v2
+        
+        # Install from source
+        brew install --build-from-source --verbose Formula/pdf2htmlex.rb
+        
+        # Create bottle
+        brew bottle --json --root-url="https://github.com/${{ github.repository }}/releases/download/v2.${{ env.VERSION }}" pdf2htmlex
+        
+        # Get bottle filename
+        BOTTLE_FILE=$(ls pdf2htmlex--*.bottle.*.tar.gz)
+        echo "BOTTLE_FILE=$BOTTLE_FILE" >> $GITHUB_ENV
+        
+        # Get bottle JSON
+        BOTTLE_JSON=$(ls pdf2htmlex--*.bottle.json)
+        echo "BOTTLE_JSON=$BOTTLE_JSON" >> $GITHUB_ENV
+    
+    - name: Test bottle
+      run: |
+        # Uninstall source build
+        brew uninstall pdf2htmlex
+        
+        # Install from bottle
+        brew install v2/${{ env.BOTTLE_FILE }}
+        
+        # Test installed binary
+        pdf2htmlEX --version
+        brew test pdf2htmlex
+    
+    - name: Upload bottle
+      uses: actions/upload-artifact@v4
+      with:
+        name: bottle-${{ matrix.arch }}
+        path: |
+          v2/${{ env.BOTTLE_FILE }}
+          v2/${{ env.BOTTLE_JSON }}
+    
+    - name: Upload bottle to release
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: v2/${{ env.BOTTLE_FILE }}
+        asset_name: ${{ env.BOTTLE_FILE }}
+        asset_content_type: application/gzip
+
+  update-formula:
+    needs: build-bottles
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Download all bottles
+      uses: actions/download-artifact@v4
+      with:
+        path: bottles
+    
+    - name: Update formula with bottle SHAs
+      run: |
+        # This would parse the bottle JSON files and update the formula
+        # with the bottle do...end block containing all the SHAs
+        echo "TODO: Implement formula bottle block update"
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: "Update pdf2htmlEX formula bottles for v2.${{ env.VERSION }}"
+        body: |
+          This PR updates the pdf2htmlEX formula with bottle SHAs for version v2.${{ env.VERSION }}.
+          
+          Bottles built for:
+          - macOS Monterey (12)
+          - macOS Ventura (13)
+          - macOS Sonoma (14)
+        branch: update-bottles-v2-${{ env.VERSION }}
+        commit-message: "Update pdf2htmlEX bottles for v2.${{ env.VERSION }}"

@@ -9,280 +9,294 @@ Project Structure:
 │   │   ├── 📄 security.yml
 │   │   └── 📄 test.yml
 │   └── 📄 pull_request_template.md
-├── 📁 v1
-│   ├── 📁 archive
-│   │   ├── 📁 fontforge
-│   │   │   ├── 📁 .github
-│   │   │   │   └── 📁 workflows
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 cmake
-│   │   │   │   ├── 📁 backports
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 packages
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   └── 📁 scripts
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 fontforge
-│   │   │   ├── 📁 fontforgeexe
-│   │   │   ├── 📁 gdraw
-│   │   │   ├── 📁 gutils
-│   │   │   ├── 📁 inc
-│   │   │   ├── 📁 po
-│   │   │   ├── 📁 pyhook
-│   │   │   ├── 📁 share
-│   │   │   └── 📁 Unicode
-│   │   │       └── 📁 data
-│   │   │           └── ... (depth limit reached)
-│   │   ├── 📁 pdf2htmlEX
-│   │   │   ├── 📁 .github
-│   │   │   │   └── 📁 workflows
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 archive
-│   │   │   │   └── 📁 debian
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 buildScripts
-│   │   │   ├── 📁 patches
-│   │   │   └── 📁 pdf2htmlEX
-│   │   │       ├── 📁 3rdparty
-│   │   │       │   └── ... (depth limit reached)
-│   │   │       ├── 📁 logo
-│   │   │       │   └── ... (depth limit reached)
-│   │   │       ├── 📁 share
-│   │   │       │   └── ... (depth limit reached)
-│   │   │       ├── 📁 src
-│   │   │       │   └── ... (depth limit reached)
-│   │   │       └── 📁 test
-│   │   │           └── ... (depth limit reached)
-│   │   └── 📁 reports
-│   ├── 📁 bin
-│   ├── 📁 build_temp_test_script
-│   │   ├── 📁 poppler-24.01.0
-│   │   │   ├── 📁 cmake
-│   │   │   │   └── 📁 modules
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 cpp
-│   │   │   │   └── 📁 tests
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 fofi
-│   │   │   ├── 📁 glib
-│   │   │   │   ├── 📁 demo
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 reference
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   └── 📁 tests
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 goo
-│   │   │   ├── 📁 hooks
-│   │   │   ├── 📁 poppler
-│   │   │   ├── 📁 qt5
-│   │   │   │   ├── 📁 demos
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 src
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   └── 📁 tests
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 qt6
-│   │   │   │   ├── 📁 demos
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 src
-│   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   └── 📁 tests
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 splash
-│   │   │   ├── 📁 test
-│   │   │   │   └── 📁 goostring-format-checker
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   └── 📁 utils
-│   │   └── 📁 staging
+├── 📁 archive
 │   ├── 📁 fontforge
-│   ├── 📁 Formula
-│   │   ├── 📁 archive
-│   │   │   ├── 📁 pdf2htmlex01
-│   │   │   ├── 📁 pdf2htmlex04
-│   │   │   ├── 📁 pdf2htmlex05
-│   │   │   ├── 📁 pdf2htmlex06
-│   │   │   ├── 📁 pdf2htmlex07
-│   │   │   ├── 📁 pdf2htmlex09
-│   │   │   └── 📁 pdf2htmlex10
-│   │   ├── 📁 template
-│   │   │   └── 📄 pdf2htmlex.rb
-│   │   ├── 📄 buildall.sh
-│   │   └── 📄 pdf2htmlex.rb
-│   ├── 📁 issues
-│   ├── 📁 patches
-│   │   └── 📄 pdf2htmlEX-poppler24.patch
-│   ├── 📁 pdf2htmlEX
-│   │   └── 📁 src
-│   │       └── 📄 pdf2htmlEX.cc
-│   ├── 📁 pdf2htmlEX-0.18.8.rc1
-│   │   └── 📁 pdf2htmlEX
-│   ├── 📁 pdf2htmlEX-src
 │   │   ├── 📁 .github
-│   │   │   └── 📄 FUNDING.yml
+│   │   │   └── 📁 workflows
+│   │   │       └── 📁 scripts
+│   │   │           └── ... (depth limit reached)
+│   │   ├── 📁 cmake
+│   │   │   ├── 📁 backports
+│   │   │   │   └── 📁 3.15.7
+│   │   │   │       └── ... (depth limit reached)
+│   │   │   ├── 📁 packages
+│   │   │   └── 📁 scripts
+│   │   ├── 📁 fontforge
+│   │   ├── 📁 fontforgeexe
+│   │   ├── 📁 gdraw
+│   │   ├── 📁 gutils
+│   │   ├── 📁 inc
+│   │   ├── 📁 po
+│   │   ├── 📁 pyhook
+│   │   ├── 📁 share
+│   │   └── 📁 Unicode
+│   │       └── 📁 data
+│   ├── 📁 pdf2htmlEX
+│   │   ├── 📁 .github
+│   │   │   └── 📁 workflows
 │   │   ├── 📁 archive
 │   │   │   └── 📁 debian
 │   │   │       └── 📁 source
 │   │   │           └── ... (depth limit reached)
 │   │   ├── 📁 buildScripts
-│   │   │   ├── 📄 buildFontforge
-│   │   │   ├── 📄 buildInstallLocallyAlpine
-│   │   │   ├── 📄 buildInstallLocallyApt
-│   │   │   ├── 📄 buildInstallLocallyDnf
-│   │   │   ├── 📄 buildPdf2htmlEX
-│   │   │   ├── 📄 buildPoppler
-│   │   │   ├── 📄 createAlpineTarFile
-│   │   │   ├── 📄 createAppImage
-│   │   │   ├── 📄 createContainerAlpineImageFromTarFile
-│   │   │   ├── 📄 createContainerUbuntuImageFromDeb
-│   │   │   ├── 📄 createDebianPackage
-│   │   │   ├── 📄 createImagesAlpine
-│   │   │   ├── 📄 createImagesApt
-│   │   │   ├── 📄 getBuildToolsAlpine
-│   │   │   ├── 📄 getBuildToolsApt
-│   │   │   ├── 📄 getBuildToolsDnf
-│   │   │   ├── 📄 getDevLibrariesAlpine
-│   │   │   ├── 📄 getDevLibrariesApt
-│   │   │   ├── 📄 getDevLibrariesDnf
-│   │   │   ├── 📄 getFontforge
-│   │   │   ├── 📄 getPoppler
-│   │   │   ├── 📄 installPdf2htmlEX
-│   │   │   ├── 📄 listFilesByChangeTime
-│   │   │   ├── 📄 Readme.md
-│   │   │   ├── 📄 reportEnvs
-│   │   │   ├── 📄 runTests
-│   │   │   ├── 📄 travisLinuxDoItAll
-│   │   │   ├── 📄 uploadContainerImage
-│   │   │   ├── 📄 uploadGitHubRelease
-│   │   │   ├── 📄 uploadGitHubReleaseDSL
-│   │   │   ├── 📄 uploadGitHubReleaseMessage
-│   │   │   ├── 📄 uploadImages
-│   │   │   └── 📄 versionEnvs
 │   │   ├── 📁 patches
-│   │   │   ├── 📄 fontforge-20170731-fixGDraw.patch
-│   │   │   └── 📄 fontforge-20170731-fixGitVersion.patch
-│   │   ├── 📁 pdf2htmlEX
-│   │   │   ├── 📁 3rdparty
-│   │   │   │   ├── 📁 closure-compiler
+│   │   └── 📁 pdf2htmlEX
+│   │       ├── 📁 3rdparty
+│   │       │   ├── 📁 closure-compiler
+│   │       │   │   └── ... (depth limit reached)
+│   │       │   ├── 📁 PDF.js
+│   │       │   │   └── ... (depth limit reached)
+│   │       │   └── 📁 yuicompressor
+│   │       │       └── ... (depth limit reached)
+│   │       ├── 📁 logo
+│   │       ├── 📁 share
+│   │       ├── 📁 src
+│   │       │   ├── 📁 BackgroundRenderer
+│   │       │   │   └── ... (depth limit reached)
+│   │       │   ├── 📁 HTMLRenderer
+│   │       │   │   └── ... (depth limit reached)
+│   │       │   └── 📁 util
+│   │       │       └── ... (depth limit reached)
+│   │       └── 📁 test
+│   │           ├── 📁 browser_tests
+│   │           │   └── ... (depth limit reached)
+│   │           ├── 📁 old
+│   │           │   └── ... (depth limit reached)
+│   │           └── 📁 test_output
+│   │               └── ... (depth limit reached)
+│   └── 📁 reports
+├── 📁 bin
+├── 📁 fontforge
+├── 📁 Formula
+│   ├── 📁 archive
+│   │   ├── 📁 pdf2htmlex01
+│   │   ├── 📁 pdf2htmlex04
+│   │   ├── 📁 pdf2htmlex05
+│   │   ├── 📁 pdf2htmlex06
+│   │   ├── 📁 pdf2htmlex07
+│   │   ├── 📁 pdf2htmlex09
+│   │   └── 📁 pdf2htmlex10
+│   ├── 📁 template
+│   │   └── 📄 pdf2htmlex.rb
+│   ├── 📄 buildall.sh
+│   └── 📄 pdf2htmlex.rb
+├── 📁 issues
+├── 📁 pdf2htmlEX
+│   └── 📁 src
+│       └── 📄 pdf2htmlEX.cc
+├── 📁 pdf2htmlEX-0.18.8.rc1
+│   └── 📁 pdf2htmlEX
+├── 📁 pdf2htmlEX-src
+│   ├── 📁 .github
+│   │   └── 📄 FUNDING.yml
+│   ├── 📁 archive
+│   │   └── 📁 debian
+│   │       └── 📁 source
+│   ├── 📁 buildScripts
+│   │   ├── 📄 buildFontforge
+│   │   ├── 📄 buildInstallLocallyAlpine
+│   │   ├── 📄 buildInstallLocallyApt
+│   │   ├── 📄 buildInstallLocallyDnf
+│   │   ├── 📄 buildPdf2htmlEX
+│   │   ├── 📄 buildPoppler
+│   │   ├── 📄 createAlpineTarFile
+│   │   ├── 📄 createAppImage
+│   │   ├── 📄 createContainerAlpineImageFromTarFile
+│   │   ├── 📄 createContainerUbuntuImageFromDeb
+│   │   ├── 📄 createDebianPackage
+│   │   ├── 📄 createImagesAlpine
+│   │   ├── 📄 createImagesApt
+│   │   ├── 📄 getBuildToolsAlpine
+│   │   ├── 📄 getBuildToolsApt
+│   │   ├── 📄 getBuildToolsDnf
+│   │   ├── 📄 getDevLibrariesAlpine
+│   │   ├── 📄 getDevLibrariesApt
+│   │   ├── 📄 getDevLibrariesDnf
+│   │   ├── 📄 getFontforge
+│   │   ├── 📄 getPoppler
+│   │   ├── 📄 installPdf2htmlEX
+│   │   ├── 📄 listFilesByChangeTime
+│   │   ├── 📄 Readme.md
+│   │   ├── 📄 reportEnvs
+│   │   ├── 📄 runTests
+│   │   ├── 📄 travisLinuxDoItAll
+│   │   ├── 📄 uploadContainerImage
+│   │   ├── 📄 uploadGitHubRelease
+│   │   ├── 📄 uploadGitHubReleaseDSL
+│   │   ├── 📄 uploadGitHubReleaseMessage
+│   │   ├── 📄 uploadImages
+│   │   └── 📄 versionEnvs
+│   ├── 📁 patches
+│   │   ├── 📄 fontforge-20170731-fixGDraw.patch
+│   │   └── 📄 fontforge-20170731-fixGitVersion.patch
+│   ├── 📁 pdf2htmlEX
+│   │   ├── 📁 3rdparty
+│   │   │   ├── 📁 closure-compiler
+│   │   │   │   ├── 📄 COPYING
+│   │   │   │   └── 📄 README
+│   │   │   ├── 📁 PDF.js
+│   │   │   │   ├── 📄 build.sh
+│   │   │   │   ├── 📄 compatibility.js
+│   │   │   │   ├── 📄 compatibility.min.js
+│   │   │   │   └── 📄 LICENSE
+│   │   │   └── 📁 yuicompressor
+│   │   │       └── 📄 LICENSE.TXT
+│   │   ├── 📁 logo
+│   │   │   ├── 📄 LICENSE
+│   │   │   ├── 📄 LICENSE_CC-BY-3.0
+│   │   │   └── 📄 update_png.sh
+│   │   ├── 📁 share
+│   │   │   ├── 📄 base.css.in
+│   │   │   ├── 📄 build_css.sh
+│   │   │   ├── 📄 build_js.sh
+│   │   │   ├── 📄 fancy.css.in
+│   │   │   ├── 📄 LICENSE
+│   │   │   ├── 📄 manifest
+│   │   │   └── 📄 pdf2htmlEX.js.in
+│   │   ├── 📁 src
+│   │   │   ├── 📁 BackgroundRenderer
+│   │   │   │   ├── 📄 BackgroundRenderer.cc
+│   │   │   │   ├── 📄 BackgroundRenderer.h
+│   │   │   │   ├── 📄 CairoBackgroundRenderer.cc
+│   │   │   │   ├── 📄 CairoBackgroundRenderer.h
+│   │   │   │   ├── 📄 SplashBackgroundRenderer.cc
+│   │   │   │   └── 📄 SplashBackgroundRenderer.h
+│   │   │   ├── 📁 HTMLRenderer
+│   │   │   │   ├── 📄 draw.cc
+│   │   │   │   ├── 📄 font.cc
+│   │   │   │   ├── 📄 form.cc
+│   │   │   │   ├── 📄 general.cc
+│   │   │   │   ├── 📄 HTMLRenderer.h
+│   │   │   │   ├── 📄 image.cc
+│   │   │   │   ├── 📄 link.cc
+│   │   │   │   ├── 📄 outline.cc
+│   │   │   │   ├── 📄 state.cc
+│   │   │   │   └── 📄 text.cc
+│   │   │   ├── 📁 util
+│   │   │   │   ├── 📄 const.cc
+│   │   │   │   ├── 📄 const.h
+│   │   │   │   ├── 📄 css_const.h.in
+│   │   │   │   ├── 📄 encoding.cc
+│   │   │   │   ├── 📄 encoding.h
+│   │   │   │   ├── 📄 ffw.c
+│   │   │   │   ├── 📄 ffw.h
+│   │   │   │   ├── 📄 math.cc
+│   │   │   │   ├── 📄 math.h
+│   │   │   │   ├── 📄 mingw.cc
+│   │   │   │   ├── 📄 mingw.h
+│   │   │   │   ├── 📄 misc.cc
+│   │   │   │   ├── 📄 misc.h
+│   │   │   │   ├── 📄 namespace.h
+│   │   │   │   ├── 📄 path.cc
+│   │   │   │   ├── 📄 path.h
+│   │   │   │   ├── 📄 SignalHandler.cc
+│   │   │   │   ├── 📄 SignalHandler.h
+│   │   │   │   ├── 📄 unicode.cc
+│   │   │   │   └── 📄 unicode.h
+│   │   │   ├── 📄 ArgParser.cc
+│   │   │   ├── 📄 ArgParser.h
+│   │   │   ├── 📄 Base64Stream.cc
+│   │   │   ├── 📄 Base64Stream.h
+│   │   │   ├── 📄 Color.cc
+│   │   │   ├── 📄 Color.h
+│   │   │   ├── 📄 CoveredTextDetector.cc
+│   │   │   ├── 📄 CoveredTextDetector.h
+│   │   │   ├── 📄 DrawingTracer.cc
+│   │   │   ├── 📄 DrawingTracer.h
+│   │   │   ├── 📄 HTMLState.h
+│   │   │   ├── 📄 HTMLTextLine.cc
+│   │   │   ├── 📄 HTMLTextLine.h
+│   │   │   ├── 📄 HTMLTextPage.cc
+│   │   │   ├── 📄 HTMLTextPage.h
+│   │   │   ├── 📄 Param.h
+│   │   │   ├── 📄 pdf2htmlEX-config.h.in
+│   │   │   ├── 📄 pdf2htmlEX.cc
+│   │   │   ├── 📄 Preprocessor.cc
+│   │   │   ├── 📄 Preprocessor.h
+│   │   │   ├── 📄 StateManager.h
+│   │   │   ├── 📄 StringFormatter.cc
+│   │   │   ├── 📄 StringFormatter.h
+│   │   │   ├── 📄 TmpFiles.cc
+│   │   │   └── 📄 TmpFiles.h
+│   │   ├── 📁 test
+│   │   │   ├── 📁 browser_tests
+│   │   │   │   ├── 📁 basic_text
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 PDF.js
+│   │   │   │   ├── 📁 fontfile3_opentype
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   └── 📁 yuicompressor
-│   │   │   │       └── ... (depth limit reached)
-│   │   │   ├── 📁 logo
-│   │   │   │   ├── 📄 LICENSE
-│   │   │   │   ├── 📄 LICENSE_CC-BY-3.0
-│   │   │   │   └── 📄 update_png.sh
-│   │   │   ├── 📁 share
-│   │   │   │   ├── 📄 base.css.in
-│   │   │   │   ├── 📄 build_css.sh
-│   │   │   │   ├── 📄 build_js.sh
-│   │   │   │   ├── 📄 fancy.css.in
-│   │   │   │   ├── 📄 LICENSE
-│   │   │   │   ├── 📄 manifest
-│   │   │   │   └── 📄 pdf2htmlEX.js.in
-│   │   │   ├── 📁 src
-│   │   │   │   ├── 📁 BackgroundRenderer
+│   │   │   │   ├── 📁 geneve_1564
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 HTMLRenderer
+│   │   │   │   ├── 📁 invalid_unicode_issue477
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 util
+│   │   │   │   ├── 📁 svg_background_with_page_rotation_issue402
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📄 ArgParser.cc
-│   │   │   │   ├── 📄 ArgParser.h
-│   │   │   │   ├── 📄 Base64Stream.cc
-│   │   │   │   ├── 📄 Base64Stream.h
-│   │   │   │   ├── 📄 Color.cc
-│   │   │   │   ├── 📄 Color.h
-│   │   │   │   ├── 📄 CoveredTextDetector.cc
-│   │   │   │   ├── 📄 CoveredTextDetector.h
-│   │   │   │   ├── 📄 DrawingTracer.cc
-│   │   │   │   ├── 📄 DrawingTracer.h
-│   │   │   │   ├── 📄 HTMLState.h
-│   │   │   │   ├── 📄 HTMLTextLine.cc
-│   │   │   │   ├── 📄 HTMLTextLine.h
-│   │   │   │   ├── 📄 HTMLTextPage.cc
-│   │   │   │   ├── 📄 HTMLTextPage.h
-│   │   │   │   ├── 📄 Param.h
-│   │   │   │   ├── 📄 pdf2htmlEX-config.h.in
-│   │   │   │   ├── 📄 pdf2htmlEX.cc
-│   │   │   │   ├── 📄 Preprocessor.cc
-│   │   │   │   ├── 📄 Preprocessor.h
-│   │   │   │   ├── 📄 StateManager.h
-│   │   │   │   ├── 📄 StringFormatter.cc
-│   │   │   │   ├── 📄 StringFormatter.h
-│   │   │   │   ├── 📄 TmpFiles.cc
-│   │   │   │   └── 📄 TmpFiles.h
-│   │   │   ├── 📁 test
-│   │   │   │   ├── 📁 browser_tests
+│   │   │   │   ├── 📁 test_fail
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 old
+│   │   │   │   ├── 📁 text_visibility
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📁 test_output
+│   │   │   │   ├── 📁 with_form
 │   │   │   │   │   └── ... (depth limit reached)
-│   │   │   │   ├── 📄 browser_tests.py
-│   │   │   │   ├── 📄 compareTestImages
-│   │   │   │   ├── 📄 fancy.min.css
-│   │   │   │   ├── 📄 installAutomaticTestSoftwareApt
-│   │   │   │   ├── 📄 installAutomaticTestSoftwareDnf
-│   │   │   │   ├── 📄 installManualTestSoftware
-│   │   │   │   ├── 📄 produceHtmlForBrowserTests
-│   │   │   │   ├── 📄 README.md
-│   │   │   │   ├── 📄 regenerateTest
-│   │   │   │   ├── 📄 runLocalBrowserTests
-│   │   │   │   ├── 📄 runLocalTestsPython
-│   │   │   │   ├── 📄 runLocalTestsShell
-│   │   │   │   ├── 📄 test.py.in
-│   │   │   │   ├── 📄 test_local_browser.py
-│   │   │   │   ├── 📄 test_output.py
-│   │   │   │   ├── 📄 test_remote_browser.py
-│   │   │   │   └── 📄 testOutput
-│   │   │   └── 📄 pdf2htmlEX.1.in
-│   │   ├── 📄 .gitignore
-│   │   ├── 📄 AUTHORS
-│   │   ├── 📄 ChangeLog
-│   │   ├── 📄 CONTRIBUTING.md
-│   │   ├── 📄 INSTALL
-│   │   ├── 📄 LICENSE
-│   │   ├── 📄 LICENSE_GPLv3
-│   │   ├── 📄 PopplerReleases.md
-│   │   ├── 📄 README.md
-│   │   └── 📄 TODO
-│   ├── 📁 scripts
-│   │   ├── 📄 build-bottle.sh
-│   │   ├── 📄 check-dependencies.sh
-│   │   ├── 📄 setup-tap.sh
-│   │   ├── 📄 test-build.sh
-│   │   ├── 📄 test-formula.sh
-│   │   └── 📄 update-version.sh
-│   ├── 📁 tests
-│   │   ├── 📁 fixtures
-│   │   │   ├── 📄 create-test-pdfs.sh
-│   │   │   └── 📄 README.md
-│   │   └── 📁 integration
-│   │       └── 📄 test_conversions.sh
-│   ├── 📄 AGENTS.md
-│   ├── 📄 build.sh
-│   ├── 📄 CHANGELOG.md
-│   ├── 📄 CLAUDE.md
+│   │   │   │   ├── 📄 basic_text.tex
+│   │   │   │   └── 📄 test_fail.tex
+│   │   │   ├── 📁 old
+│   │   │   │   ├── 📄 convert_to_woff.fontforge
+│   │   │   │   └── 📄 test.py
+│   │   │   ├── 📁 test_output
+│   │   │   ├── 📄 browser_tests.py
+│   │   │   ├── 📄 compareTestImages
+│   │   │   ├── 📄 fancy.min.css
+│   │   │   ├── 📄 installAutomaticTestSoftwareApt
+│   │   │   ├── 📄 installAutomaticTestSoftwareDnf
+│   │   │   ├── 📄 installManualTestSoftware
+│   │   │   ├── 📄 produceHtmlForBrowserTests
+│   │   │   ├── 📄 README.md
+│   │   │   ├── 📄 regenerateTest
+│   │   │   ├── 📄 runLocalBrowserTests
+│   │   │   ├── 📄 runLocalTestsPython
+│   │   │   ├── 📄 runLocalTestsShell
+│   │   │   ├── 📄 test.py.in
+│   │   │   ├── 📄 test_local_browser.py
+│   │   │   ├── 📄 test_output.py
+│   │   │   ├── 📄 test_remote_browser.py
+│   │   │   └── 📄 testOutput
+│   │   └── 📄 pdf2htmlEX.1.in
+│   ├── 📄 .gitignore
+│   ├── 📄 AUTHORS
+│   ├── 📄 ChangeLog
 │   ├── 📄 CONTRIBUTING.md
-│   ├── 📄 GEMINI.md
-│   ├── 📄 Makefile
-│   ├── 📄 pdf2htmlex-cmake.patch
-│   ├── 📄 PLAN.md
+│   ├── 📄 INSTALL
+│   ├── 📄 LICENSE
+│   ├── 📄 LICENSE_GPLv3
+│   ├── 📄 PopplerReleases.md
 │   ├── 📄 README.md
-│   ├── 📄 SECURITY.md
-│   ├── 📄 testpatch.diff
-│   ├── 📄 TODO.md
-│   ├── 📄 TOTHINK.md
-│   └── 📄 WORK.md
-├── 📁 v2
+│   └── 📄 TODO
+├── 📁 scripts
+│   ├── 📄 build-bottle.sh
+│   ├── 📄 check-dependencies.sh
+│   ├── 📄 setup-tap.sh
+│   ├── 📄 test-build.sh
+│   ├── 📄 test-formula.sh
+│   └── 📄 update-version.sh
+├── 📁 tests
+│   ├── 📁 fixtures
+│   │   ├── 📄 create-test-pdfs.sh
+│   │   └── 📄 README.md
+│   └── 📁 integration
+│       └── 📄 test_conversions.sh
 ├── 📄 .gitignore
 ├── 📄 AGENTS.md
+├── 📄 build.sh
+├── 📄 CHANGELOG.md
 ├── 📄 CLAUDE.md
+├── 📄 CONTRIBUTING.md
 ├── 📄 GEMINI.md
-├── 📄 ORIG_BUILDING.md
+├── 📄 Makefile
+├── 📄 pdf2htmlex-cmake.patch
 ├── 📄 PLAN.md
-└── 📄 README.md
+├── 📄 README.md
+├── 📄 SECURITY.md
+├── 📄 testpatch.diff
+└── 📄 TODO.md
 
 
 <documents>
@@ -908,721 +922,7 @@ yarn-error.log
 </document>
 
 <document index="8">
-<source>ORIG_BUILDING.md</source>
-<document_content>
-https://github.com/pdf2htmlEX/pdf2htmlEX/wiki/Building :
-
-# Building pdf2htmlEX
-
-Because of its intimate use of *specific* versions of both 
-[Poppler](https://poppler.freedesktop.org/) and 
-[FontForge](https://fontforge.org/en-US/),
-cleanly building `pdf2htmlEX` is rather more complex than 
-normal. 
-
-The (shell) scripts in the [`buildScripts` directory](https://github.com/pdf2htmlEX/pdf2htmlEX/tree/master/buildScripts) help automate this mutli-stage process. 
-
-For all but the most experienced programmers, we *strongly* encourage you 
-to use these scripts to build `pdf2htmlEX`. 
-
-### Downloading precompiled versions
-
-For most users, you *probably really want to simply* download one of the 
-[precompiled versions of 
-`pdf2htmlEX`](https://github.com/pdf2htmlEX/pdf2htmlEX/releases): 
-
-- As a [Debian archive](Download-Debian-Archive)
-- As an [Alpine tar archive](Download-Alpine-Tar-Archive)
-- As an [AppImage](Download-AppImage)
-- As a [Docker image](Download-Docker-Image)
-
-# Environment
-
-pdf2htmlEX can be built in any Unix-like environment:
-* **GNU/Linux:**
-  `pdf2htmlEX` is currently built and released inside Ubuntu
-  (Bionic, Eoan, and Focal), Alpine 3.12 docker containers,
-  as well as Ubuntu-Bionic on Travis, so `pdf2htmlEX` is
-  *known* to build on any Debian based distribution.
-
-  The current `buildScripts` assume the use of either `apt` 
-  (Debian) or `apk` (Alpine) for (automatic) installation of
-  all required dependencies. These scripts should be easily 
-  modified for other distributions.
-* **macOS**:
-  While it should in principle be possible to build on macOS,
-  unfortunately we currently have no access to a development/testing
-  environment with which to ensure the `buildScripts` are
-  adequately tuned to build on macOS.
-
-  **NOTE** that the existing [`homebrew`](https://brew.sh/)
-  [build script](https://github.com/Homebrew/homebrew-core/blob/master/Formula/pdf2htmlex.rb)
-  is *not* up to date and will fail.
-
-  *Offers of help and/or temporary access to development/testing
-  machines would be greatly appreciated.*
-
-* **Windows 10 with the [Windows Subsystem
-  for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)**:
-
-  The Debian(Apt) versions of our build scripts should build `pdf2htmlEX` (untested).
-
-  The AppImage or Debian archive binary release objects *are* reputed to work.
-
-* **Android**: Have a look at [Vilius Sutkus](https://github.com/ViliusSutkus89)'s [pdf2htmlEX-Android](https://github.com/ViliusSutkus89/pdf2htmlEX-Android).
-
-# Building yourself
-
-To build `pdf2htmlEX` on a Debian/Apt related machine, inside the root 
-directory of a fresh clone of the 
-[pdf2htmlEX/pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX) 
-repository, type: 
-
-```
-    ./buildScripts/buildInstallLocallyApt
-```
-
-This will automatically install all required development tools and 
-libraries, and then proceed to download and statically compile the 
-required versions of both Poppler and FontForge before compiling and 
-installing `pdf2htmlEX` into `/usr/local/bin`. 
-
-**NOTE:** at the moment this will **only** work on machines with a 
-[Debian](https://www.debian.org/) based distribution. such as 
-[Ubuntu](https://ubuntu.com/), [Linux Mint](https://linuxmint.com/), etc. 
-
-**NOTE:** there is currently an *experimental* build script, 
-`./buildScripts/buildInstallLocallyAlpine`, for builds in Alpine 
-environments. 
-
-## Dependencies
-
-The definitive list of build dependencies can be found in the following scripts:
-
-1. [getBuildToolsAlpine](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsAlpine) for Alpine Linux
-2. [getBuildToolsApt](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsApt) for Debian based systems
-3. [getDevLibrariesAlpine](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsAlpine) for Alpine Linux
-4. [getDevLibrariesApt](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/getBuildToolsApt) for Debian based systems
-
-## Build options
-
-To build `pdf2htmlEX` you require static versions of the Poppler and FontForge libraries in specific 'well-known' locations.
-
-An automatic build uses `cmake` to build all of Poppler, FontForge and `pdf2htmlEX`.
-
-The definitive list of cmake build options can be found in the following scripts:
-
-1. [buildFontforge](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/buildFontforge)
-2. [buildPdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/buildPdf2htmlEX)
-3. [buildPoppler](https://github.com/pdf2htmlEX/pdf2htmlEX/blob/master/buildScripts/buildPoppler)
-
-# Why such a complex build system?
-
-## The problem
-
-To provide its full functionality, the `pdf2htmlEX` sources make direct 
-use of source code and unexposed methods from both the Poppler and 
-FontForge projects. Unfortunately the source code in the Poppler and 
-FontForge projects that the `pdf2htmlEX` uses changes regularly.
-
-This means that the `pdf2htmlEX` souce code *must* be updated regularly to 
-match *specific releases* of both Poppler and FontForge. 
-
-Unfortunately, the installed versions of both Poppler and FontForge in 
-most Linux distributions, lag the official releases of both of these 
-projects. Even worse few distributions install the same versions.
-
-This means that it is nearly impossible for the `pdf2htmlEX` code to 
-'predict' which version of Poppler or FontForge will be installed on a 
-given user's machine. 
-
-## Our solution
-
-While we *could* keep multiple versions of the `pdf2htmlEX` source code, 
-each version matched to a particular distribution's installed versions of 
-Poppler and FontForge, this would be a logistic and testing 'nightmare'. 
-
-Instead, when building `pdf2htmlEX`, we download specific versions of both 
-the Poppler and FontForge sources (usually the most recent), and then 
-compile *static* versions of the Poppler and FontForge libraries which are 
-then *statically* linked into the `pdf2htmlEX` binary. 
-
-This means that the `pdf2htmlEX` binary is completely independent of any 
-locally installed versions of either Poppler or FontForge.
-
-However, to get the matched versions of Poppler and FontForge and then 
-compile them statically, *our* build process becomes much more complex 
-than a "simple", `configure, make, make install` cycle. 
-
-Hence there are a large number of shell scripts in the [`buildScripts`
-directory](https://github.com/pdf2htmlEX/pdf2htmlEX/tree/master/buildScripts)
-each of which automates one 'simple' step in the overall build process. 
-
-## The gory details
-
-# Building pdf2htmlEX
-
-Because of its intimate use of *specific* versions of both Poppler and 
-FontForge, cleanly building `pdf2htmlEX` is rather more complex than 
-normal. 
-
-The (shell) scripts in this directory help automate this mutli-stage 
-process. 
-
-For all but the most experienced programmers, we *strongly* encourage you 
-to use these scripts to build `pdf2htmlEX`. 
-
----
-
-**Table of contents**
-
-- [TL;DR ...](#tldr-)
-  - [Downloading precompiled versions](#downloading-precompiled-versions-downloads)
-  - [Building yourself](#building-yourself)
-- [The problem](#the-problem)
-- [Our solution](#our-solution)
-- [The gory details ...](#the-gory-details-)
-  - [Top-level scripts](#top-level-scripts)
-  - [Individual steps](#individual-steps)
-  - [Helper files and scripts](#helper-files-and-scripts)
-- [Yet more details?](#yet-more-details)
-
----
-
-## TL;DR ...
-
-### Downloading precompiled versions
-
-For most users, you probably really want to simply download one of the 
-[precompiled versions of 
-`pdf2htmlEX`](https://github.com/pdf2htmlEX/pdf2htmlEX/releases): 
-
-- [Debian archive](https://en.wikipedia.org/wiki/Dpkg) : Download, 
-  [apt](https://en.wikipedia.org/wiki/APT_(software)) install locally, 
-  and run... 
-
-  This will work on any [Debian](https://www.debian.org/) based and most 
-  recent Windows 10 machines. 
-
-  Experienced users of Linux, may be able to repackage the `*.deb` we 
-  provide for use with their favourite package management tool. 
-
-- [AppImage](https://appimage.org/) : Download, make executable, and 
-  run... 
-
-  This will work on most Linuxes, and most recent Windows 10.
-  
-  (It will not currently work on MacOS or Alpine based machines).
-
-- [OCI](https://opencontainers.org/) Image from the [`pdf2htmlEX` Docker 
-  hub](https://hub.docker.com/orgs/pdf2htmlex/repositories). 
-
-  This will work on any machine with an OCI Container system (such as 
-  Docker, Podman, CRI-O, Kubernetes) installed. 
-
-  (Note: that *advanced* use of `pdf2htmlEX` requires careful attention to 
-  the configuration of various tools, such as fontconfig, iconv and your 
-  locally available fonts use by the poppler and fontforge libraries. The 
-  OCI container images created by the pdf2htmlEX team might not be as well 
-  configured for *your needs* as an OCI container created and configured 
-  by you) 
-
-### Building yourself
-
-To build `pdf2htmlEX` on a Debian/Apt related machine, inside the root 
-directory of a fresh clone of the 
-[pdf2htmlEX/pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX) 
-repository, type: 
-
-```
-    ./buildScripts/buildInstallLocallyApt
-```
-
-This will automatically install all required development tools and 
-libraries, and then proceed to download and statically compile the 
-required versions of both Poppler and FontForge before compiling and 
-installing `pdf2htmlEX` into /usr/local/bin. 
-
-**NOTE:** at the moment this will **only** work on machines with a 
-[Debian](https://www.debian.org/) based distribution. such as 
-[Ubuntu](https://ubuntu.com/), [Linux Mint](https://linuxmint.com/), etc. 
-
-**NOTE:** there is currently an *experimental* build script, 
-`./buildScripts/buildInstallLocallyAlpine`, for builds in Alpine 
-environments. 
-
-## The problem
-
-To provide its full functionality, the `pdf2htmlEX` sources make direct 
-use of source code and unexposed methods from both the Poppler and 
-FontForge projects. Unfortunately the source code in the Poppler and 
-FontForge projects that the `pdf2htmlEX` uses changes regularly.
-
-This means that the `pdf2htmlEX` souce code *must* be updated regularly to 
-match *specific releases* of both Poppler and FontForge. 
-
-Unfortunately, the installed versions of both Poppler and FontForge in 
-most Linux distributions, lag the official releases of both of these 
-projects. Even worse few distributions install the same versions.
-
-This means that it is nearly impossible for the `pdf2htmlEX` code to 
-'predict' which version of Poppler or FontForge will be installed on a 
-given user's machine. 
-
-## Our solution
-
-While we *could* keep multiple versions of the `pdf2htmlEX` source code, 
-each version matched to a particular distribution's installed versions of 
-Poppler and FontForge, this would be a logistic and testing 'nightmare'. 
-
-Instead, when building `pdf2htmlEX`, we download specific versions of both 
-the Poppler and FontForge sources (usually the most recent), and then 
-compile *static* versions of the Poppler and FontForge libraries which are 
-then *statically* linked into the `pdf2htmlEX` binary. 
-
-This means that the `pdf2htmlEX` binary is completely independent of any 
-locally installed versions of either Poppler or FontForge.
-
-However, to get the matched versions of Poppler and FontForge and then 
-compile them statically, *our* build process becomes much more complex 
-than a "simple", `configure, make, make install` cycle. 
-
-Hence this directory has a large number of shell scripts each of which 
-automate one simple step in the overall our build process. 
-
-## The gory details ...
-
-The shell scripts in this directory automate the download, build, install, 
-test and upload steps required to provide a complete build/test/release 
-cycle of `pdf2htmlEX`. 
-
-Each script can be used individually to re-run a particular step if needed.
-
-### Top-level scripts
-
-Typically, most users, will run one of the following "top-level" scripts: 
-
-1. **`buildInstallLocallyApt`** (**`buildInstallLocallyAlpine`**)
-
-   This will automate:
-
-     1. the installation of all required development tools 
-        and libraries,
-  
-     2. download and statically compile the required versions of both 
-        Poppler and FontForge, 
-
-     3. compile and install `pdf2htmlEX`.
-
-   The `*Apt` script will build on any machine which uses the 
-   `apt`/`apt-get` command. 
-
-   The `*Alpine` script will build on any machine which uses the 
-   `apk` command (Alpine). 
-
-2. **`createImagesApt`** (**`createImagesAlpine`**)
-
-   Following a successful `buildInstallLocallyApt`, the `createImagesApt` 
-   shell script will create the following images: 
-
-     1. AppImage
-
-     2. OCI Container image
-
-     3. Debian archive
-
-   Following a successful `buildInstallLocallyAlpine`, the 
-   `createImagesAlpine` shell script will create the following images: 
-
-     1. Alpine tar file
-
-     2. OCI Container image
-
-3. **`runTests`**
-
-   Following a successful `buildInstallLocallyApt` (or 
-   `buildInstallLocallyAlpine` ), the `runTests` shell script will run the 
-   various 'local' tests reporting errors as they occur. 
-
-   When run in [Travis-ci](https://travis-ci.org/), failing browser tests 
-   will *not* fail the overall Travis build, but will instead upload the 
-   test results to the GitHub Release page for later review. 
-
-4. **`uploadImages`**
-
-   Following successful `buildInstallLocally`, `createImages` and 
-   `runTests`, this will automate the upload of the various artefacts to 
-   the `pdf2htmlEX` releases page, and docker hub repository. 
-
-   **Note** that this step requires the user to enter passwords for each 
-   of the respective services. *Most* users will not need (or be able) to 
-   run this step. 
-
-5. **`travisLinuxDoItAll`**
-
-   This script is used by the `.travis.yml` configuration to build, test 
-   and upload a complete `pdf2htmlEX` release cycle. It is essentially a 
-   compendium of all of the build scripts in the correct order. 
-
-### Individual steps
-
-- **`buildFontforge`**: Compiles a *static* version of `libfontforge` for 
-  use by `pdf2htmlEX`.
-
-  Statically linking `libfontforge` into `phd2htmlEX` ensures that any 
-  versions of FontForge already installed by the user, are not broken by 
-  the user's installation of `pdf2htmlEX`. 
-
-- **`buildPdf2htmlEX`**: Compiles and links `pdf2htmlEX`. 
-
-- **`buildPoppler`**: Compiles a *static* version of `libpoppler` and 
-  `libpopper-glib` for use by `pdf2htmlEX`. 
-
-  Statically linking `libpoppler` and `libpoppler-glib` into `phd2htmlEX` 
-  ensures that any versions of Poppler already installed by the user, are 
-  not broken by the user's installation of `pdf2htmlEX`. 
-
-- **`createAlpineTarFile`**: Using an already compiled version of `pdf2htmlEX`, 
-  installs it and `popper-data` into a tar file suitable for use in any 
-  Alpine environment. 
-
-- **`createAppImage`**: Using an already compiled version of `pdf2htmlEX`, 
-  installs it and `popper-data` into an AppImage.
-
-- **`createDebianPackage`**: Using an already compiled version of 
-  `pdf2htmlEX`, installs it and `poppler-data` into a Debian archive 
-  (`*.deb`). 
-
-- **`createContainerAlpineImageFromTarFile`**: Installs the Alpine tar file 
-  archive of `pdf2htmlEX` created by `createAlpineTarFile` into an Alpine 
-  Container. 
-
-- **`createContainerUbuntuImageFromDeb`**: Installs the Debian archive of 
-  `pdf2htmlEX` created by `createDebianPackage` into a Container. 
-
-- **`getBuildToolsAlpine`**: Locally `apk` installs all development 
-  *tools* required to build `pdf2htmlEX`. 
-
-- **`getBuildToolsApt`**: Locally `apt` installs all development *tools* 
-  required to build `pdf2htmlEX`. 
-
-- **`getDevLibrariesAlpine`**: Locally `apk` installs all development 
-  *libraries* required to build `pdf2htmlEX`.
-
-- **`getDevLibrariesApt`**: Locally `apt` installs all development 
-  *libraries* required to build `pdf2htmlEX`.
-
-  This script provides a definitive list of all libraries required to run 
-  `pdf2htmlEX`. 
-
-  This script provides a definitive list of all libraries required to run 
-  `pdf2htmlEX`. 
-
-- **`getFontforge`**: Downloads and unpacks the version of FontForge specified in the 
-  `FONTFORGE_VERSION` environment variable into the 
-  `pdf2htmlEX/fontoforge` directory.
-
-  The `FONTFORGE_VERSION` variable is specified in the `versionEnvs` 
-  script. 
-
-- **`getPoppler`**:  Downloads and unpacks the version of Poppler specified in the 
-  `POPPLER_VERSION` environment variable into the `pdf2htmlEX/poppler` 
-  directory.
-
-  The `POPPLER_VERSION` variable is specified in the `versionEnvs` script. 
-
-  The `getPoppler` script also downloads and unpacks the most recent 
-  version of `poppler-data`. Since `poppler-data` does not change very 
-  often, the correct version of `poppler-data` is specified in the 
-  `getPoppler` script itself. 
-
-- **`installPdf2htmlEX`**: Installs an already compiled version of 
-  `pdf2htmlEX` and `poppler-data` into the location specified by the 
-  `PDF2HTMLEX_PREFIX` environment variable.
-
-  The `PDF2HTMLEX_PREFIX` variable is specified in the `versionEnvs` 
-  script. 
-
-- **`runTests`**: Runs the tests located in the 
-  `pdf2htmlEX/pdf2htmlEX/test` directory. See the 
-  `pdf2htmlEX/pdf2htmlEx/test` directory's Readme file for details. 
-
-- **`uploadContainerImage`**: Upload the `pdf2htmlEX` Container image to 
-  Docker hub repository associated to the docker hub users specified in 
-  the `DOCKER_HUB_USERNAME` environement variable.
-
-  Unless the `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PASSWORD` environment 
-  variables are pre-defined, this script will prompt the user for the 
-  respective values. 
-
-- **`uploadGitHubRelease`**: Upload the `pdf2htmlEX` artefacts (AppImage, 
-  Debian archive, test results, etc) to the *continuous* section of the 
-  release page associated with the `TRAVIS_REPO_SLUG` (user/project) 
-  environment variable.
-
-  Unless the `GITHUB_USERNAME`, `GITHUB_TOKEN`, and `TRAVIS_REPO_SLUG` 
-  (user/project) environment variables are pre-defined, this script will 
-  prompt the user for the respective values. 
-
-### Helper files and scripts
-
-- **`versionEnvs`**: Specifies all of the evnironment variables required 
-  for a standard build of `pdf2htmlEX`. Changes in this script effect 
-  *all* of the other build scripts. 
-
-- **`reSourceVersionEnvs`**: This shell script is automatically generated 
-  by the build scripts as they are run. It records the values of all 
-  important environment variables required by the buildScripts. It is 
-  typcically `source`d by each script before it preforms any actions. 
-
-- **`reportEnvs`**: Echos all important enviroment variables to the 
-  console. This script is used by the top-level scripts to ensure the 
-  current environment variables are listed before each build. 
-
-- **`uploadGitHubReleaseDSL`**: A collection of shell functions used by the 
-  `uploadGitHubRelease` script to automate the upload of release artefacts.
-
-- **`uploadGitHubReleaseMessage`**: The contents of this *text* file is 
-  used by the `uploadGitHubRelease` script as the contents of the release 
-  message, as visible to the user, for the 'continuous' release section. 
-
-- **`listFilesByChangeTime`**: A simple shell script which lists the files 
-  in the buildScripts directory by most recently changed files first. 
-
-- **`Readme.md`**: This read me file.
-
-## Yet more details?
-
-The various shell script files are meant to be fairly readable. They 
-contain additional comments about what each step is meant to be doing. 
-
-</document_content>
-</document>
-
-<document index="9">
-<source>PLAN.md</source>
-<document_content>
-# V2 Plan: A Detailed Blueprint for a Resilient pdf2htmlEX Homebrew Formula
-
-This document provides a detailed, actionable plan for creating a stable and maintainable Homebrew formula for `pdf2htmlEX` on macOS. It synthesizes the lessons from the `v1` attempt and the strategic insights from all `v2` planning documents.
-
-## 1. Executive Summary: The Path to Success
-
-The `v1` attempt correctly identified the core strategy—vendoring specific versions of `Poppler` and `FontForge`—but failed on a specific compilation issue (`DCTStream` error) due to disabling JPEG support in Poppler.
-
-The `v2` strategy corrects this by building upon the `v1` foundation with two key improvements:
-
-1.  **Re-enable JPEG Support**: We will vendor and statically build `libjpeg-turbo`, allowing `Poppler` to compile correctly without disabling its core features. This fixes the root cause of the `v1` failure.
-2.  **Adopt an In-Source Build Pattern**: Instead of complex patching of `pdf2htmlEX`'s `CMakeLists.txt`, we will create the exact directory structure it expects. This simplifies the build process, making it more robust and easier to maintain.
-
-The result will be a self-contained, universal binary that works reliably across modern Intel and Apple Silicon Macs.
-
-## 2. The V2 Homebrew Formula: A Technical Deep Dive
-
-The new formula, `v2/Formula/pdf2htmlex.rb`, will be structured as follows. This is a near-complete implementation, heavily commented to explain the rationale behind each decision.
-
-```ruby
-# typed: false
-# frozen_string_literal: true
-
-class Pdf2htmlex < Formula
-  desc "Convert PDF to HTML without losing text or format"
-  homepage "https://github.com/pdf2htmlEX/pdf2htmlEX"
-  url "https://github.com/pdf2htmlEX/pdf2htmlEX/archive/v0.18.8.rc1.tar.gz"
-  sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
-  license "GPL-3.0-or-later"
-  version "0.18.8.rc1"
-
-  # ==> V2 Strategy: Add jpeg-turbo as a resource to fix Poppler build
-  resource "jpeg-turbo" do
-    url "https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.2.tar.gz"
-    sha256 "b248932c275a39395a55434385d83442b25d6894435511c333a74991c1aeba5f"
-  end
-
-  resource "poppler" do
-    url "https://poppler.freedesktop.org/poppler-24.01.0.tar.xz"
-    sha256 "c7def693a7a492830f49d497a80cc6b9c85cb57b15e9be2d2d615153b79cae08"
-  end
-
-  resource "fontforge" do
-    url "https://github.com/fontforge/fontforge/archive/20230101.tar.gz"
-    sha256 "ab0c4be41be15ce46a1be1482430d8e15201846269de89df67db32c7de4343f1"
-  end
-
-  depends_on "cmake" => :build
-  depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
-  depends_on "openjdk" => :build
-
-  depends_on "cairo"
-  depends_on "fontconfig"
-  depends_on "freetype"
-  depends_on "gettext"
-  depends_on "glib"
-  depends_on "libpng"
-  depends_on "libtiff"
-  depends_on "libxml2"
-  depends_on "pango"
-  depends_on "harfbuzz"
-  depends_on "little-cms2"
-  depends_on "openjpeg"
-
-  def install
-    ENV.cxx11
-    # Staging prefix for all our compiled static libraries
-    staging_prefix = buildpath/"staging"
-    # Universal binary architecture
-    archs = "x86_64;arm64"
-
-    # Set up environment for build
-    ENV.prepend_path "PKG_CONFIG_PATH", "#{staging_prefix}/lib/pkgconfig"
-    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
-
-    # --- Stage 1: Build jpeg-turbo (static) ---
-    ohai "Building static jpeg-turbo"
-    resource("jpeg-turbo").stage do
-      system "cmake", "-S", ".", "-B", "build",
-             "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
-             "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-             "-DENABLE_SHARED=OFF",
-             "-DENABLE_STATIC=ON",
-             *std_cmake_args
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
-    end
-
-    # --- Stage 2: Build Poppler (static) ---
-    ohai "Building static Poppler"
-    resource("poppler").stage do
-      # Create a placeholder to prevent CMake test data error
-      (buildpath/"test").mkdir
-      
-      poppler_args = %W[
-        -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
-        -DCMAKE_OSX_ARCHITECTURES=#{archs}
-        -DBUILD_SHARED_LIBS=OFF
-        -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
-        -DENABLE_GLIB=ON
-        -DENABLE_UTILS=OFF
-        -DENABLE_CPP=OFF
-        -DENABLE_QT5=OFF
-        -DENABLE_QT6=OFF
-        -DENABLE_LIBOPENJPEG=openjpeg2
-        -DENABLE_CMS=lcms2
-        -DWITH_JPEG=ON
-        -DENABLE_DCTDECODER=libjpeg
-        -DENABLE_LIBJPEG=ON
-      ]
-      
-      system "cmake", "-S", ".", "-B", "build", *poppler_args, *std_cmake_args
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
-    end
-
-    # --- Stage 3: Build FontForge (static) ---
-    ohai "Building static FontForge"
-    resource("fontforge").stage do
-      # Disable failing translation builds
-      inreplace "po/CMakeLists.txt", "add_custom_target(pofiles ALL", "add_custom_target(pofiles"
-
-      fontforge_args = %W[
-        -DCMAKE_INSTALL_PREFIX=#{staging_prefix}
-        -DCMAKE_OSX_ARCHITECTURES=#{archs}
-        -DBUILD_SHARED_LIBS=OFF
-        -DENABLE_GUI=OFF
-        -DENABLE_NATIVE_SCRIPTING=ON
-        -DENABLE_PYTHON_SCRIPTING=OFF
-      ]
-
-      system "cmake", "-S", ".", "-B", "build", *fontforge_args, *std_cmake_args
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
-    end
-
-    # --- Stage 4: Build pdf2htmlEX (linking against staged libs) ---
-    ohai "Building pdf2htmlEX"
-    
-    # ==> V2 Strategy: In-source build pattern
-    # Move the compiled dependencies into the directory structure that
-    # pdf2htmlEX's CMakeLists.txt expects. This avoids complex patching.
-    (buildpath/"poppler").install Pathname.glob("#{staging_prefix}/*")
-    (buildpath/"fontforge").install Pathname.glob("#{staging_prefix}/*")
-
-    # Create a build directory inside the source tree
-    mkdir "build" do
-      # No more inreplace needed! CMake will find deps in ../poppler and ../fontforge
-      system "cmake", "..", *std_cmake_args
-      system "make"
-      system "make", "install"
-    end
-  end
-
-  test do
-    system bin/"pdf2htmlEX", "--version"
-    # ... more comprehensive tests from v1 ...
-  end
-end
-```
-
-## 4. Phased Implementation and Validation Plan
-
-This plan breaks the work into manageable, verifiable stages.
-
-#### **Phase 1: Local Build Validation**
-*   **Task**: Create a `v2/scripts/build.sh` script that automates the four-stage build process locally, outside of Homebrew.
-*   **Goal**: Prove that the build logic is sound and produces a working, universal binary.
-*   **Validation**:
-    1.  The script completes without errors.
-    2.  The final `pdf2htmlEX` binary is created in a `dist/` directory.
-    3.  `file dist/bin/pdf2htmlEX` reports `Mach-O universal binary with 2 architectures: [x86_64:..., arm64:...]`.
-    4.  `otool -L dist/bin/pdf2htmlEX` shows linkage only to system libraries (e.g., `libSystem.B.dylib`, `libc++.1.dylib`), not to Homebrew-installed versions of `libpoppler` or `libfontforge`.
-    5.  Run the binary on a test PDF with a JPEG image and verify that the image is present in the output HTML.
-
-#### **Phase 2: Homebrew Formula Integration**
-*   **Task**: Port the successful logic from `build.sh` into the `install` block of `v2/Formula/pdf2htmlex.rb`.
-*   **Goal**: A working Homebrew formula that can be installed from source.
-*   **Validation**:
-    1.  `brew install --build-from-source v2/Formula/pdf2htmlex.rb` completes successfully.
-    2.  `brew test pdf2htmlex` passes.
-    3.  `brew audit --strict` passes with no major errors.
-
-#### **Phase 3: CI/CD and Bottling**
-*   **Task**: Adapt the GitHub Actions workflows from `v1` to the `v2` formula.
-*   **Goal**: A fully automated CI/CD pipeline for testing, bottling, and releasing.
-*   **Validation**:
-    1.  The `test.yml` workflow passes on `macos-12`, `macos-13`, and `macos-14` for both Intel and Apple Silicon architectures.
-    2.  The `release.yml` workflow successfully builds and uploads bottles for all target platforms when a new version is tagged.
-    3.  The `security.yml` workflow runs without errors.
-
-## 5. Risk Mitigation and Fallback Strategies
-
-*   **Risk**: New versions of dependencies introduce breaking changes.
-    *   **Mitigation**: The formula pins exact versions via URL and SHA256. Updates will require careful testing. The `v2/scripts/update-version.sh` script will be used to manage this process.
-*   **Risk**: The in-source build pattern fails due to subtle path issues.
-    *   **Mitigation**: Revert to the `v1` strategy of patching `CMakeLists.txt` with `inreplace`, which is more complex but proven to work for path redirection.
-*   **Risk**: Native compilation proves too fragile or time-consuming for CI.
-    *   **Mitigation (Fallback Plan)**: Adopt the **Docker-first strategy** outlined in `v2/PLANS/plan4.md`. This involves shipping a lightweight wrapper script that executes `pdf2htmlEX` inside a pre-built Docker container. This guarantees functionality at the cost of a Docker runtime dependency.
-
-This detailed plan provides a clear and robust path forward, addressing the specific technical blockers of the past while building on its successes.
-</document_content>
-</document>
-
-<document index="10">
-<source>README.md</source>
-<document_content>
-
-# v2 attempt to make pdf2htmlEX work on macOS
-
-- `v1/` contains an extensive v1 attempt to make pdf2htmlEX work on macOS. Ultimately this was unsuccessful. 
-- `v2/` is there we need to start a new: 
-    - Read `ORIG_BUILDING.md` 
-    - Analyze `v1/` or the full codebase snapshot in `llms.txt` 
-    - Into `PLAN.md` write detailed extensive insights, and a strong strategic plan on how to overcome the failure. We need a systemmatic future-proof solid approach. 
-</document_content>
-</document>
-
-<document index="11">
-<source>v1/AGENTS.md</source>
+<source>AGENTS.md</source>
 <document_content>
 # === USER INSTRUCTIONS ===
 # pdf2htmlEX Homebrew Formula
@@ -2057,8 +1357,8 @@ $END$
 </document_content>
 </document>
 
-<document index="12">
-<source>v1/CHANGELOG.md</source>
+<document index="9">
+<source>CHANGELOG.md</source>
 <document_content>
 # Changelog
 
@@ -2174,8 +1474,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 </document_content>
 </document>
 
-<document index="13">
-<source>v1/CLAUDE.md</source>
+<document index="10">
+<source>CLAUDE.md</source>
 <document_content>
 # === USER INSTRUCTIONS ===
 # pdf2htmlEX Homebrew Formula
@@ -2610,8 +1910,8 @@ $END$
 </document_content>
 </document>
 
-<document index="14">
-<source>v1/CONTRIBUTING.md</source>
+<document index="11">
+<source>CONTRIBUTING.md</source>
 <document_content>
 # Contributing to pdf2htmlEX Homebrew Formula
 
@@ -2773,8 +2073,8 @@ Thank you for contributing! 🎉
 </document_content>
 </document>
 
-<document index="15">
-<source>v1/Formula/buildall.sh</source>
+<document index="12">
+<source>Formula/buildall.sh</source>
 <document_content>
 #!/usr/bin/env bash
 cd $(dirname "$0")
@@ -2820,8 +2120,8 @@ echo "All formula variants have been processed."
 </document_content>
 </document>
 
-<document index="16">
-<source>v1/Formula/pdf2htmlex.rb</source>
+<document index="13">
+<source>Formula/pdf2htmlex.rb</source>
 <document_content>
 # typed: false
 # frozen_string_literal: true
@@ -2833,11 +2133,6 @@ class Pdf2htmlex < Formula
   sha256 "a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
   license "GPL-3.0-or-later"
   version "0.18.8.rc1"
-
-  patch do
-    url "file:///Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/patches/pdf2htmlEX-poppler24.patch"
-    sha256 "ae78b70b8d0458985f49027b95474c09ae7b4c6d99ea802126b10d2e6582abf1"
-  end
 
   bottle do
     # Bottles will be added after successful builds
@@ -3218,8 +2513,8 @@ __END__
 </document_content>
 </document>
 
-<document index="17">
-<source>v1/Formula/template/pdf2htmlex.rb</source>
+<document index="14">
+<source>Formula/template/pdf2htmlex.rb</source>
 <document_content>
 # typed: false
 # frozen_string_literal: true
@@ -3416,8 +2711,8 @@ end
 </document_content>
 </document>
 
-<document index="18">
-<source>v1/GEMINI.md</source>
+<document index="15">
+<source>GEMINI.md</source>
 <document_content>
 # === USER INSTRUCTIONS ===
 # pdf2htmlEX Homebrew Formula
@@ -3852,8 +3147,8 @@ $END$
 </document_content>
 </document>
 
-<document index="19">
-<source>v1/Makefile</source>
+<document index="16">
+<source>Makefile</source>
 <document_content>
 # Makefile for pdf2htmlEX Homebrew Formula
 
@@ -3994,8 +3289,8 @@ info:
 </document_content>
 </document>
 
-<document index="20">
-<source>v1/PLAN.md</source>
+<document index="17">
+<source>PLAN.md</source>
 <document_content>
 # pdf2htmlEX Homebrew Formula: Implementation Plan
 
@@ -4141,8 +3436,8 @@ The path is clear: implement the complete vendored formula with the exact versio
 </document_content>
 </document>
 
-<document index="21">
-<source>v1/README.md</source>
+<document index="18">
+<source>README.md</source>
 <document_content>
 # pdf2htmlEX Homebrew Formula
 
@@ -4467,8 +3762,8 @@ The foundation is solid. Future work should focus on resolving the final compila
 </document_content>
 </document>
 
-<document index="22">
-<source>v1/SECURITY.md</source>
+<document index="19">
+<source>SECURITY.md</source>
 <document_content>
 # Security Policy
 
@@ -4580,8 +3875,8 @@ For security-related questions that don't need to be private, use the Security D
 </document_content>
 </document>
 
-<document index="23">
-<source>v1/TODO.md</source>
+<document index="20">
+<source>TODO.md</source>
 <document_content>
 # TODO: pdf2htmlEX Homebrew Formula Implementation
 
@@ -4630,8 +3925,8 @@ For security-related questions that don't need to be private, use the Security D
 </document_content>
 </document>
 
-<document index="24">
-<source>v1/build.sh</source>
+<document index="21">
+<source>build.sh</source>
 <document_content>
 #!/usr/bin/env bash
 cd "$(dirname "$0")"
@@ -4664,107 +3959,7 @@ brew install --formula --build-from-source --verbose ./Formula/pdf2htmlex.rb
 </document_content>
 </document>
 
-<document index="25">
-<source>v1/patches/pdf2htmlEX-poppler24.patch</source>
-<document_content>
-diff --git a/pdf2htmlEX/src/HTMLRenderer/outline.cc b/pdf2htmlEX/src/HTMLRenderer/outline.cc
---- a/pdf2htmlEX/src/HTMLRenderer/outline.cc
-+++ b/pdf2htmlEX/src/HTMLRenderer/outline.cc
-@@ -50,8 +50,7 @@ void HTMLRenderer::process_outline_items(const std::vector<OutlineItem*> * items
-        // check kids
-        item->open();
-        if(item->hasKids())
-        {
-            process_outline_items(item->getKids());
-        }
--       item->close();
-        f_outline.fs << "</li>";
-    }
-
-diff --git a/pdf2htmlEX/src/HTMLRenderer/text.cc b/pdf2htmlEX/src/HTMLRenderer/text.cc
---- a/pdf2htmlEX/src/HTMLRenderer/text.cc
-+++ b/pdf2htmlEX/src/HTMLRenderer/text.cc
-@@ -95,7 +95,7 @@ void HTMLRenderer::drawString(GfxState * state, const GooString * s)
-            char buf[2];
-            buf[0] = (code >> 8) & 0xff;
-            buf[1] = (code & 0xff);
--            width = ((GfxCIDFont *)font)->getWidth(buf, 2);
-+            width = ((GfxCIDFont *)font.get())->getWidth(buf, 2);
-        } else {
--            width = ((Gfx8BitFont *)font)->getWidth(code);
-+            width = ((Gfx8BitFont *)font.get())->getWidth(code);
-        }
-@@ -153,7 +153,7 @@ void HTMLRenderer::drawString(GfxState * state, const GooString * s)
-                    uu = check_unicode(u, uLen, code, font.get());
-@@ -157,7 +157,7 @@ void HTMLRenderer::drawString(GfxState * state, const GooString * s)
-                    uu = unicode_from_font(code, font.get());
-
-diff --git a/pdf2htmlEX/src/HTMLRenderer/form.cc b/pdf2htmlEX/src/HTMLRenderer/form.cc
---- a/pdf2htmlEX/src/HTMLRenderer/form.cc
-+++ b/pdf2htmlEX/src/HTMLRenderer/form.cc
-@@ -25,7 +25,7 @@ void HTMLRenderer::process_form(ofstream & out)
--    FormPageWidgets * widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
-+    auto widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
-
-diff --git a/pdf2htmlEX/src/HTMLRenderer/link.cc b/pdf2htmlEX/src/HTMLRenderer/link.cc
---- a/pdf2htmlEX/src/HTMLRenderer/link.cc
-+++ b/pdf2htmlEX/src/HTMLRenderer/link.cc
-@@ -149,7 +149,7 @@ string HTMLRenderer::get_linkaction_str(
-                    std::unique_ptr<LinkDest> dest = nullptr;
-                    if(auto _ = real_action->getDest())
--                        dest = std::unique_ptr<LinkDest>( _->copy() );
-+                        dest = std::unique_ptr<LinkDest>( _->clone() );
-                    else if (auto _ = real_action->getNamedDest())
-                        dest = cur_catalog->findDest(_);
-
-diff --git a/pdf2htmlEX/src/HTMLRenderer/state.cc b/pdf2htmlEX/src/HTMLRenderer/state.cc
---- a/pdf2htmlEX/src/HTMLRenderer/state.cc
-+++ b/pdf2htmlEX/src/HTMLRenderer/state.cc
-@@ -210,7 +210,7 @@ void HTMLRenderer::check_state_change(GfxState * state)
--        const FontInfo * new_font_info = install_font(state->getFont());
-+        const FontInfo * new_font_info = install_font(state->getFont().get());
-
-diff --git a/pdf2htmlEX/src/HTMLRenderer/font.cc b/pdf2htmlEX/src/HTMLRenderer/font.cc
---- a/pdf2htmlEX/src/HTMLRenderer/font.cc
-+++ b/pdf2htmlEX/src/HTMLRenderer/font.cc
-@@ -204,7 +204,7 @@ string HTMLRenderer::dump_type3_font (GfxFont * font, FontInfo & info)
--    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
-+    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref).get();
-@@ -489,7 +489,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
-+                if(auto fftt = FoFiTrueType::load((char*)filepath.c_str()))
-@@ -556,7 +556,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
-+                if(auto fftt = FoFiTrueType::load((char*)filepath.c_str()))
-@@ -881,7 +881,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--            << (font->getName() ? font->getName()->toStr() : "")
-+            << (font->getName() ? font->getName()->getCString() : "")
-@@ -913,7 +913,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--    if(auto * font_loc = font->locateFont(xref, nullptr))
-+    if(auto font_loc = font->locateFont(xref, nullptr))
-@@ -958,7 +958,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--    string fontname(font->getName()->toStr());
-+    string fontname(font->getName()->getCString());
-@@ -968,7 +968,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--    GfxFontLoc * localfontloc = font->locateFont(xref, nullptr);
-+    auto localfontloc = font->locateFont(xref, nullptr);
-@@ -974,7 +974,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--            embed_font(string(localfontloc->path->toStr()), font, info);
-+            embed_font(string(localfontloc->path->getCString()), font, info);
-@@ -990,7 +990,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
--        embed_font(string(localfontloc->path->toStr()), font, info, true);
-+        embed_font(string(localfontloc->path->getCString()), font, info, true);
-
-diff --git a/pdf2htmlEX/src/pdf2htmlEX.cc b/pdf2htmlEX/src/pdf2htmlEX.cc
---- a/pdf2htmlEX/src/pdf2htmlEX.cc
-+++ b/pdf2htmlEX/src/pdf2htmlEX.cc
-@@ -424,7 +424,7 @@ int main(int argc, char **argv)
--            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW);
-+            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW ? std::optional<GooString>(*ownerPW) : std::nullopt, userPW ? std::optional<GooString>(*userPW) : std::nullopt);
-</document_content>
-</document>
-
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX/src/pdf2htmlEX.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX/src/pdf2htmlEX.cc
 # Language: cpp
 
 #include #include <cstdio>
@@ -4795,8 +3990,8 @@ diff --git a/pdf2htmlEX/src/pdf2htmlEX.cc b/pdf2htmlEX/src/pdf2htmlEX.cc
 #include #include "util/mingw.h"
 
 
-<document index="26">
-<source>v1/pdf2htmlEX-src/.github/FUNDING.yml</source>
+<document index="22">
+<source>pdf2htmlEX-src/.github/FUNDING.yml</source>
 <document_content>
 # These are supported funding model platforms
 
@@ -4805,8 +4000,8 @@ github: [stephengaito]
 </document_content>
 </document>
 
-<document index="27">
-<source>v1/pdf2htmlEX-src/.gitignore</source>
+<document index="23">
+<source>pdf2htmlEX-src/.gitignore</source>
 <document_content>
 imageBuild
 poppler-data
@@ -4844,8 +4039,8 @@ pdf2htmlEX/test/geckodriver.log
 </document_content>
 </document>
 
-<document index="28">
-<source>v1/pdf2htmlEX-src/AUTHORS</source>
+<document index="24">
+<source>pdf2htmlEX-src/AUTHORS</source>
 <document_content>
 pdf2htmlEX is created and maintained by
 Lu Wang <coolwanglu@gmail.com>
@@ -4884,8 +4079,8 @@ Hongliang Tian <tatetian@gmail.com>
 </document_content>
 </document>
 
-<document index="29">
-<source>v1/pdf2htmlEX-src/CONTRIBUTING.md</source>
+<document index="25">
+<source>pdf2htmlEX-src/CONTRIBUTING.md</source>
 <document_content>
 This is a general guide if you want to report bugs, ask questions,
 request features or submitting patches.
@@ -5034,8 +4229,8 @@ license your work under the same license as that used by the project.
 </document_content>
 </document>
 
-<document index="30">
-<source>v1/pdf2htmlEX-src/ChangeLog</source>
+<document index="26">
+<source>pdf2htmlEX-src/ChangeLog</source>
 <document_content>
 v0.14.6
 2015.07.22
@@ -5233,8 +4428,8 @@ v0.1
 </document_content>
 </document>
 
-<document index="31">
-<source>v1/pdf2htmlEX-src/INSTALL</source>
+<document index="27">
+<source>pdf2htmlEX-src/INSTALL</source>
 <document_content>
 For instructions of building the source code, visit:
 https://github.com/pdf2htmlEX/pdf2htmlEX/wiki/Building
@@ -5243,8 +4438,8 @@ https://github.com/pdf2htmlEX/pdf2htmlEX/wiki/Building
 </document_content>
 </document>
 
-<document index="32">
-<source>v1/pdf2htmlEX-src/LICENSE</source>
+<document index="28">
+<source>pdf2htmlEX-src/LICENSE</source>
 <document_content>
 pdf2htmlEX (https://github.com/pdf2htmlEX/pdf2htmlEX)
 Copyright (c) 2012-2014 Lu Wang <coolwanglu@gmail.com> and other contributors
@@ -5275,8 +4470,8 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 </document_content>
 </document>
 
-<document index="33">
-<source>v1/pdf2htmlEX-src/LICENSE_GPLv3</source>
+<document index="29">
+<source>pdf2htmlEX-src/LICENSE_GPLv3</source>
 <document_content>
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -5956,8 +5151,8 @@ Public License instead of this License.  But first, please read
 </document_content>
 </document>
 
-<document index="34">
-<source>v1/pdf2htmlEX-src/PopplerReleases.md</source>
+<document index="30">
+<source>pdf2htmlEX-src/PopplerReleases.md</source>
 <document_content>
 # pdf2htmlEX and Poppler releases
 
@@ -5992,8 +5187,8 @@ This table lists the (recent) pdf2htmlEX releases which work for a given
 </document_content>
 </document>
 
-<document index="35">
-<source>v1/pdf2htmlEX-src/README.md</source>
+<document index="31">
+<source>pdf2htmlEX-src/README.md</source>
 <document_content>
 # ![](https://pdf2htmlEX.github.io/pdf2htmlEX/images/pdf2htmlEX-64x64.png) pdf2htmlEX 
 
@@ -6084,8 +5279,8 @@ pdf2htmlEX is inspired by the following projects:
 </document_content>
 </document>
 
-<document index="36">
-<source>v1/pdf2htmlEX-src/TODO</source>
+<document index="32">
+<source>pdf2htmlEX-src/TODO</source>
 <document_content>
 Redesign textline
 
@@ -6142,8 +5337,8 @@ Not enough motivation/Lazy
 </document_content>
 </document>
 
-<document index="37">
-<source>v1/pdf2htmlEX-src/buildScripts/Readme.md</source>
+<document index="33">
+<source>pdf2htmlEX-src/buildScripts/Readme.md</source>
 <document_content>
 # Building pdf2htmlEX
 
@@ -6485,8 +5680,8 @@ contain additional comments about what each step is meant to be doing.
 </document_content>
 </document>
 
-<document index="38">
-<source>v1/pdf2htmlEX-src/buildScripts/buildFontforge</source>
+<document index="34">
+<source>pdf2htmlEX-src/buildScripts/buildFontforge</source>
 <document_content>
 #!/bin/sh
 
@@ -6584,8 +5779,8 @@ make $MAKE_PARALLEL
 </document_content>
 </document>
 
-<document index="39">
-<source>v1/pdf2htmlEX-src/buildScripts/buildInstallLocallyAlpine</source>
+<document index="35">
+<source>pdf2htmlEX-src/buildScripts/buildInstallLocallyAlpine</source>
 <document_content>
 #!/bin/sh
 
@@ -6640,8 +5835,8 @@ set -ev
 </document_content>
 </document>
 
-<document index="40">
-<source>v1/pdf2htmlEX-src/buildScripts/buildInstallLocallyApt</source>
+<document index="36">
+<source>pdf2htmlEX-src/buildScripts/buildInstallLocallyApt</source>
 <document_content>
 #!/bin/sh
 
@@ -6696,8 +5891,8 @@ set -ev
 </document_content>
 </document>
 
-<document index="41">
-<source>v1/pdf2htmlEX-src/buildScripts/buildInstallLocallyDnf</source>
+<document index="37">
+<source>pdf2htmlEX-src/buildScripts/buildInstallLocallyDnf</source>
 <document_content>
 #!/bin/sh
 
@@ -6752,8 +5947,8 @@ set -ev
 </document_content>
 </document>
 
-<document index="42">
-<source>v1/pdf2htmlEX-src/buildScripts/buildPdf2htmlEX</source>
+<document index="38">
+<source>pdf2htmlEX-src/buildScripts/buildPdf2htmlEX</source>
 <document_content>
 #!/bin/sh
 
@@ -6782,8 +5977,8 @@ make $MAKE_PARALLEL
 </document_content>
 </document>
 
-<document index="43">
-<source>v1/pdf2htmlEX-src/buildScripts/buildPoppler</source>
+<document index="39">
+<source>pdf2htmlEX-src/buildScripts/buildPoppler</source>
 <document_content>
 #!/bin/sh
 
@@ -6892,8 +6087,8 @@ make $MAKE_PARALLEL
 </document_content>
 </document>
 
-<document index="44">
-<source>v1/pdf2htmlEX-src/buildScripts/createAlpineTarFile</source>
+<document index="40">
+<source>pdf2htmlEX-src/buildScripts/createAlpineTarFile</source>
 <document_content>
 #!/bin/sh 
 
@@ -6980,8 +6175,8 @@ chmod a+r $ALPINE_NAME.tar.gz
 </document_content>
 </document>
 
-<document index="45">
-<source>v1/pdf2htmlEX-src/buildScripts/createAppImage</source>
+<document index="41">
+<source>pdf2htmlEX-src/buildScripts/createAppImage</source>
 <document_content>
 #!/bin/sh 
 
@@ -7068,8 +6263,8 @@ export OUTPUT=$APPIMAGE_NAME
 </document_content>
 </document>
 
-<document index="46">
-<source>v1/pdf2htmlEX-src/buildScripts/createContainerAlpineImageFromTarFile</source>
+<document index="42">
+<source>pdf2htmlEX-src/buildScripts/createContainerAlpineImageFromTarFile</source>
 <document_content>
 #!/bin/sh 
 
@@ -7152,8 +6347,8 @@ docker build -t $CONTAINER_NAME containerDir
 </document_content>
 </document>
 
-<document index="47">
-<source>v1/pdf2htmlEX-src/buildScripts/createContainerUbuntuImageFromDeb</source>
+<document index="43">
+<source>pdf2htmlEX-src/buildScripts/createContainerUbuntuImageFromDeb</source>
 <document_content>
 #!/bin/sh 
 
@@ -7237,8 +6432,8 @@ docker build -t $CONTAINER_NAME containerDir
 </document_content>
 </document>
 
-<document index="48">
-<source>v1/pdf2htmlEX-src/buildScripts/createDebianPackage</source>
+<document index="44">
+<source>pdf2htmlEX-src/buildScripts/createDebianPackage</source>
 <document_content>
 #!/bin/sh 
 
@@ -7356,8 +6551,8 @@ dpkg --build debianDir $DPKG_NAME
 </document_content>
 </document>
 
-<document index="49">
-<source>v1/pdf2htmlEX-src/buildScripts/createImagesAlpine</source>
+<document index="45">
+<source>pdf2htmlEX-src/buildScripts/createImagesAlpine</source>
 <document_content>
 #!/bin/sh
 
@@ -7379,8 +6574,8 @@ fi
 </document_content>
 </document>
 
-<document index="50">
-<source>v1/pdf2htmlEX-src/buildScripts/createImagesApt</source>
+<document index="46">
+<source>pdf2htmlEX-src/buildScripts/createImagesApt</source>
 <document_content>
 #!/bin/sh
 
@@ -7404,8 +6599,8 @@ fi
 </document_content>
 </document>
 
-<document index="51">
-<source>v1/pdf2htmlEX-src/buildScripts/getBuildToolsAlpine</source>
+<document index="47">
+<source>pdf2htmlEX-src/buildScripts/getBuildToolsAlpine</source>
 <document_content>
 #!/bin/sh
 
@@ -7442,8 +6637,8 @@ sudo apk add   \
 </document_content>
 </document>
 
-<document index="52">
-<source>v1/pdf2htmlEX-src/buildScripts/getBuildToolsApt</source>
+<document index="48">
+<source>pdf2htmlEX-src/buildScripts/getBuildToolsApt</source>
 <document_content>
 #!/bin/sh
 
@@ -7484,8 +6679,8 @@ sudo apt-get $UNATTENDED install \
 </document_content>
 </document>
 
-<document index="53">
-<source>v1/pdf2htmlEX-src/buildScripts/getBuildToolsDnf</source>
+<document index="49">
+<source>pdf2htmlEX-src/buildScripts/getBuildToolsDnf</source>
 <document_content>
 #!/bin/sh
 
@@ -7526,8 +6721,8 @@ sudo dnf $UNATTENDED install  \
 </document_content>
 </document>
 
-<document index="54">
-<source>v1/pdf2htmlEX-src/buildScripts/getDevLibrariesAlpine</source>
+<document index="50">
+<source>pdf2htmlEX-src/buildScripts/getDevLibrariesAlpine</source>
 <document_content>
 #!/bin/sh
 
@@ -7561,8 +6756,8 @@ sudo apk add        \
 </document_content>
 </document>
 
-<document index="55">
-<source>v1/pdf2htmlEX-src/buildScripts/getDevLibrariesApt</source>
+<document index="51">
+<source>pdf2htmlEX-src/buildScripts/getDevLibrariesApt</source>
 <document_content>
 #!/bin/sh
 
@@ -7591,8 +6786,8 @@ sudo apt-get $UNATTENDED install \
 </document_content>
 </document>
 
-<document index="56">
-<source>v1/pdf2htmlEX-src/buildScripts/getDevLibrariesDnf</source>
+<document index="52">
+<source>pdf2htmlEX-src/buildScripts/getDevLibrariesDnf</source>
 <document_content>
 #!/bin/sh
 
@@ -7621,8 +6816,8 @@ sudo dnf $UNATTENDED install \
 </document_content>
 </document>
 
-<document index="57">
-<source>v1/pdf2htmlEX-src/buildScripts/getFontforge</source>
+<document index="53">
+<source>pdf2htmlEX-src/buildScripts/getFontforge</source>
 <document_content>
 #!/bin/sh
 
@@ -7654,8 +6849,8 @@ mv fontforge-$FONTFORGE_VERSION fontforge
 </document_content>
 </document>
 
-<document index="58">
-<source>v1/pdf2htmlEX-src/buildScripts/getPoppler</source>
+<document index="54">
+<source>pdf2htmlEX-src/buildScripts/getPoppler</source>
 <document_content>
 #!/bin/sh
 
@@ -7698,8 +6893,8 @@ mv poppler-data-0.4.9 poppler-data
 </document_content>
 </document>
 
-<document index="59">
-<source>v1/pdf2htmlEX-src/buildScripts/installPdf2htmlEX</source>
+<document index="55">
+<source>pdf2htmlEX-src/buildScripts/installPdf2htmlEX</source>
 <document_content>
 #!/bin/sh
 
@@ -7737,8 +6932,8 @@ sudo make install                             \
 </document_content>
 </document>
 
-<document index="60">
-<source>v1/pdf2htmlEX-src/buildScripts/listFilesByChangeTime</source>
+<document index="56">
+<source>pdf2htmlEX-src/buildScripts/listFilesByChangeTime</source>
 <document_content>
 #!/bin/sh
 
@@ -7753,8 +6948,8 @@ find . -type f -print0 |		\
 </document_content>
 </document>
 
-<document index="61">
-<source>v1/pdf2htmlEX-src/buildScripts/reportEnvs</source>
+<document index="57">
+<source>pdf2htmlEX-src/buildScripts/reportEnvs</source>
 <document_content>
 #!/bin/sh
 
@@ -7803,8 +6998,8 @@ echo ""
 </document_content>
 </document>
 
-<document index="62">
-<source>v1/pdf2htmlEX-src/buildScripts/runTests</source>
+<document index="58">
+<source>pdf2htmlEX-src/buildScripts/runTests</source>
 <document_content>
 #!/bin/sh
 
@@ -7843,8 +7038,8 @@ zip -r imageBuild/$TEST_RESULTS_NAME /tmp/pdf2htmlEX/html /tmp/pdf2htmlEX/png
 </document_content>
 </document>
 
-<document index="63">
-<source>v1/pdf2htmlEX-src/buildScripts/travisLinuxDoItAll</source>
+<document index="59">
+<source>pdf2htmlEX-src/buildScripts/travisLinuxDoItAll</source>
 <document_content>
 #!/bin/sh
 
@@ -7889,8 +7084,8 @@ export DEBIAN_FRONTEND=noninteractive
 </document_content>
 </document>
 
-<document index="64">
-<source>v1/pdf2htmlEX-src/buildScripts/uploadContainerImage</source>
+<document index="60">
+<source>pdf2htmlEX-src/buildScripts/uploadContainerImage</source>
 <document_content>
 #!/bin/sh
 
@@ -7949,8 +7144,8 @@ fi
 </document_content>
 </document>
 
-<document index="65">
-<source>v1/pdf2htmlEX-src/buildScripts/uploadGitHubRelease</source>
+<document index="61">
+<source>pdf2htmlEX-src/buildScripts/uploadGitHubRelease</source>
 <document_content>
 #!/bin/sh
 
@@ -8048,8 +7243,8 @@ uploadAnAsset $upload_url $DPKG_NAME               "application/x-debian-package
 </document_content>
 </document>
 
-<document index="66">
-<source>v1/pdf2htmlEX-src/buildScripts/uploadGitHubReleaseDSL</source>
+<document index="62">
+<source>pdf2htmlEX-src/buildScripts/uploadGitHubReleaseDSL</source>
 <document_content>
 #!/usr/bin/env sh
 
@@ -8263,8 +7458,8 @@ function uploadAnAsset {
 </document_content>
 </document>
 
-<document index="67">
-<source>v1/pdf2htmlEX-src/buildScripts/uploadGitHubReleaseMessage</source>
+<document index="63">
+<source>pdf2htmlEX-src/buildScripts/uploadGitHubReleaseMessage</source>
 <document_content>
 This is the most recent release of the pdf2htmlEX project.
 
@@ -8305,8 +7500,8 @@ current full names of the corresponding binary artifacts.
 </document_content>
 </document>
 
-<document index="68">
-<source>v1/pdf2htmlEX-src/buildScripts/uploadImages</source>
+<document index="64">
+<source>pdf2htmlEX-src/buildScripts/uploadImages</source>
 <document_content>
 #!/bin/sh
 
@@ -8329,8 +7524,8 @@ set -ev
 </document_content>
 </document>
 
-<document index="69">
-<source>v1/pdf2htmlEX-src/buildScripts/versionEnvs</source>
+<document index="65">
+<source>pdf2htmlEX-src/buildScripts/versionEnvs</source>
 <document_content>
 #!/bin/sh
 
@@ -8436,8 +7631,8 @@ echo "export LINUX_DEPLOY_URL=\"$LINUX_DEPLOY_URL\""     >> buildScripts/reSourc
 </document_content>
 </document>
 
-<document index="70">
-<source>v1/pdf2htmlEX-src/patches/fontforge-20170731-fixGDraw.patch</source>
+<document index="66">
+<source>pdf2htmlEX-src/patches/fontforge-20170731-fixGDraw.patch</source>
 <document_content>
 diff --git a/gdraw/drawboxborder.c b/gdraw/drawboxborder.c
 index 629968608..0b00e9dd5 100644
@@ -8475,8 +7670,8 @@ index 5e58b6208..099e41bbd 100644
 </document_content>
 </document>
 
-<document index="71">
-<source>v1/pdf2htmlEX-src/patches/fontforge-20170731-fixGitVersion.patch</source>
+<document index="67">
+<source>pdf2htmlEX-src/patches/fontforge-20170731-fixGitVersion.patch</source>
 <document_content>
 fontforge-config.h
 --- a/inc/fontforge-config.h	2019-11-23 06:38:36.632042953 +0000
@@ -8495,8 +7690,8 @@ fontforge-config.h
 </document_content>
 </document>
 
-<document index="72">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/LICENSE</source>
+<document index="68">
+<source>pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/LICENSE</source>
 <document_content>
 
                                  Apache License
@@ -8680,8 +7875,8 @@ fontforge-config.h
 </document_content>
 </document>
 
-<document index="73">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/build.sh</source>
+<document index="69">
+<source>pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/build.sh</source>
 <document_content>
 #!/bin/sh
 # Compile and optimize JS code
@@ -8710,20 +7905,20 @@ cat "$INPUT" > "$OUTPUT")
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/compatibility.js
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/compatibility.js
 # Language: javascript
 
 function changeList((element, itemName, add, remove))
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/compatibility.min.js
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/3rdparty/PDF.js/compatibility.min.js
 # Language: javascript
 
 function b((a,b,e,f))
 
 
-<document index="74">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/closure-compiler/COPYING</source>
+<document index="70">
+<source>pdf2htmlEX-src/pdf2htmlEX/3rdparty/closure-compiler/COPYING</source>
 <document_content>
 
                                  Apache License
@@ -8931,8 +8126,8 @@ function b((a,b,e,f))
 </document_content>
 </document>
 
-<document index="75">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/closure-compiler/README</source>
+<document index="71">
+<source>pdf2htmlEX-src/pdf2htmlEX/3rdparty/closure-compiler/README</source>
 <document_content>
 /*
  * Copyright 2009 The Closure Compiler Authors.
@@ -9230,8 +8425,8 @@ Local Modifications: None
 </document_content>
 </document>
 
-<document index="76">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/3rdparty/yuicompressor/LICENSE.TXT</source>
+<document index="72">
+<source>pdf2htmlEX-src/pdf2htmlEX/3rdparty/yuicompressor/LICENSE.TXT</source>
 <document_content>
 YUI Compressor Copyright License Agreement (BSD License)
 
@@ -9291,8 +8486,8 @@ The modified versions of these files are distributed under the MPL v 1.1
 </document_content>
 </document>
 
-<document index="77">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/logo/LICENSE</source>
+<document index="73">
+<source>pdf2htmlEX-src/pdf2htmlEX/logo/LICENSE</source>
 <document_content>
 pdf2htmlEX logo
 Copyright (c) 2013 Lu Wang <coolwanglu@gmail.com> 
@@ -9326,8 +8521,8 @@ The best way to do that is with a link to http://creativecommons.org/licenses/by
 </document_content>
 </document>
 
-<document index="78">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/logo/LICENSE_CC-BY-3.0</source>
+<document index="74">
+<source>pdf2htmlEX-src/pdf2htmlEX/logo/LICENSE_CC-BY-3.0</source>
 <document_content>
 Creative Commons Attribution 3.0 Unported
 
@@ -9668,8 +8863,8 @@ Creative Commons may be contacted at http://creativecommons.org/.
 </document_content>
 </document>
 
-<document index="79">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/logo/update_png.sh</source>
+<document index="75">
+<source>pdf2htmlEX-src/pdf2htmlEX/logo/update_png.sh</source>
 <document_content>
 #!/bin/sh -ex
 
@@ -9683,8 +8878,8 @@ mv pdf2htmlEX-64x64-nq8.png ../share/pdf2htmlEX-64x64.png
 </document_content>
 </document>
 
-<document index="80">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/pdf2htmlEX.1.in</source>
+<document index="76">
+<source>pdf2htmlEX-src/pdf2htmlEX/pdf2htmlEX.1.in</source>
 <document_content>
 .TH pdf2htmlEX 1 "pdf2htmlEX @PDF2HTMLEX_VERSION@"
 .SH NAME
@@ -10059,8 +9254,8 @@ https://github.com/pdf2htmlEX/pdf2htmlEX/wiki
 </document_content>
 </document>
 
-<document index="81">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/LICENSE</source>
+<document index="77">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/LICENSE</source>
 <document_content>
 Files: *
 Copyright (c) 2012,2013 Lu Wang <coolwanglu@gmail.com> and other contributors
@@ -10091,8 +9286,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </document_content>
 </document>
 
-<document index="82">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/base.css.in</source>
+<document index="78">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/base.css.in</source>
 <document_content>
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab filetype=css: */
 /*! 
@@ -10305,8 +9500,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </document_content>
 </document>
 
-<document index="83">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/build_css.sh</source>
+<document index="79">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/build_css.sh</source>
 <document_content>
 #!/bin/sh -ex
 # Compile and optimize CSS code
@@ -10337,8 +9532,8 @@ build "fancy.css" "fancy.min.css"
 </document_content>
 </document>
 
-<document index="84">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/build_js.sh</source>
+<document index="80">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/build_js.sh</source>
 <document_content>
 #!/bin/sh -ex
 # Compile and optimize JS code
@@ -10371,8 +9566,8 @@ cat "$INPUT" > "$OUTPUT")
 </document_content>
 </document>
 
-<document index="85">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/fancy.css.in</source>
+<document index="81">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/fancy.css.in</source>
 <document_content>
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab filetype=css: */
 /*! 
@@ -10466,8 +9661,8 @@ cat "$INPUT" > "$OUTPUT")
 </document_content>
 </document>
 
-<document index="86">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/manifest</source>
+<document index="82">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/manifest</source>
 <document_content>
 # pdf2htmlEX manifest 
 # Copyright (C) 2012,2013 Lu Wang <coolwanglu@gmail.com>
@@ -10605,8 +9800,8 @@ $pages
 </document_content>
 </document>
 
-<document index="87">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/share/pdf2htmlEX.js.in</source>
+<document index="83">
+<source>pdf2htmlEX-src/pdf2htmlEX/share/pdf2htmlEX.js.in</source>
 <document_content>
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab filetype=javascript : */
 /** 
@@ -11580,8 +10775,8 @@ pdf2htmlEX['Viewer'] = Viewer;
 </document_content>
 </document>
 
-<document index="88">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/ArgParser.cc</source>
+<document index="84">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/ArgParser.cc</source>
 <document_content>
 /*
  * A wrapper of getopt
@@ -11763,8 +10958,8 @@ const int ArgParser::arg_col_width = 31;
 </document_content>
 </document>
 
-<document index="89">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/ArgParser.h</source>
+<document index="85">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/ArgParser.h</source>
 <document_content>
 /*
  * A wrapper of getopt
@@ -11989,7 +11184,7 @@ void ArgParser::ArgEntry<T, Tv>::show_usage(std::ostream & out) const
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.cc
 # Language: cpp
 
 #include #include <poppler-config.h>
@@ -12003,8 +11198,8 @@ namespace  {
 }
 
 
-<document index="90">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.h</source>
+<document index="86">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.h</source>
 <document_content>
 /*
  * Background renderer
@@ -12062,7 +11257,7 @@ private:
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/CairoBackgroundRenderer.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/CairoBackgroundRenderer.cc
 # Language: cpp
 
 #include #include <string>
@@ -12076,8 +11271,8 @@ namespace  {
 }
 
 
-<document index="91">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/CairoBackgroundRenderer.h</source>
+<document index="87">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/CairoBackgroundRenderer.h</source>
 <document_content>
 /*
  * Cairo Background renderer
@@ -12158,8 +11353,8 @@ private:
 </document_content>
 </document>
 
-<document index="92">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/SplashBackgroundRenderer.cc</source>
+<document index="88">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/SplashBackgroundRenderer.cc</source>
 <document_content>
 /*
  * SplashBackgroundRenderer.cc
@@ -12414,8 +11609,8 @@ void SplashBackgroundRenderer::dump_image(const char * filename, int x1, int y1,
 </document_content>
 </document>
 
-<document index="93">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/SplashBackgroundRenderer.h</source>
+<document index="89">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/BackgroundRenderer/SplashBackgroundRenderer.h</source>
 <document_content>
 /*
  * Splash Background renderer
@@ -12486,8 +11681,8 @@ protected:
 </document_content>
 </document>
 
-<document index="94">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/Base64Stream.cc</source>
+<document index="90">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/Base64Stream.cc</source>
 <document_content>
 #include "Base64Stream.h"
 
@@ -12535,8 +11730,8 @@ const char * Base64Stream::base64_encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
 </document_content>
 </document>
 
-<document index="95">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/Base64Stream.h</source>
+<document index="91">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/Base64Stream.h</source>
 <document_content>
 /*
  * Base64 Encoding
@@ -12576,7 +11771,7 @@ std::ostream & operator << (std::ostream & out, Base64Stream bs)
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/Color.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/Color.cc
 # Language: cpp
 
 #include #include <cmath>
@@ -12587,8 +11782,8 @@ namespace  {
 }
 
 
-<document index="96">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/Color.h</source>
+<document index="92">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/Color.h</source>
 <document_content>
 /*
  * Header file for Color 
@@ -12632,7 +11827,7 @@ std::ostream & operator << (std::ostream & out, const Color & color);
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/CoveredTextDetector.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/CoveredTextDetector.cc
 # Language: cpp
 
 #include #include "CoveredTextDetector.h"
@@ -12643,8 +11838,8 @@ namespace  {
 }
 
 
-<document index="97">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/CoveredTextDetector.h</source>
+<document index="93">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/CoveredTextDetector.h</source>
 <document_content>
 /*
  * CoveredTextDetector.h
@@ -12718,7 +11913,7 @@ private:
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/DrawingTracer.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/DrawingTracer.cc
 # Language: cpp
 
 #include #include "GfxFont.h"
@@ -12729,8 +11924,8 @@ namespace  {
 }
 
 
-<document index="98">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/DrawingTracer.h</source>
+<document index="94">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/DrawingTracer.h</source>
 <document_content>
 /*
  * DrawingTracer.h
@@ -12820,8 +12015,8 @@ private:
 </document_content>
 </document>
 
-<document index="99">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/HTMLRenderer.h</source>
+<document index="95">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/HTMLRenderer.h</source>
 <document_content>
 /*
  * HTMLRenderer.h
@@ -13213,7 +12408,7 @@ protected:
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/draw.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/draw.cc
 # Language: cpp
 
 #include #include <algorithm>
@@ -13230,7 +12425,7 @@ namespace  {
 }
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/font.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/font.cc
 # Language: cpp
 
 #include #include <iostream>
@@ -13267,7 +12462,7 @@ namespace  {
 }
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/form.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/form.cc
 # Language: cpp
 
 #include #include <iostream>
@@ -13281,8 +12476,8 @@ namespace  {
 }
 
 
-<document index="100">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/general.cc</source>
+<document index="96">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/general.cc</source>
 <document_content>
 /*
  * general.cc
@@ -13900,7 +13095,7 @@ const std::string HTMLRenderer::MANIFEST_FILENAME = "manifest";
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/image.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/image.cc
 # Language: cpp
 
 #include #include "HTMLRenderer.h"
@@ -13910,7 +13105,7 @@ namespace  {
 }
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/link.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/link.cc
 # Language: cpp
 
 #include #include <iostream>
@@ -13928,7 +13123,7 @@ namespace  {
 }
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/outline.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/outline.cc
 # Language: cpp
 
 #include #include <iostream>
@@ -13941,7 +13136,7 @@ namespace  {
 }
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/state.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/state.cc
 # Language: cpp
 
 #include #include <cmath>
@@ -13954,7 +13149,7 @@ namespace  {
 }
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/text.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLRenderer/text.cc
 # Language: cpp
 
 #include #include <algorithm>
@@ -13966,8 +13161,8 @@ namespace  {
 }
 
 
-<document index="101">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLState.h</source>
+<document index="97">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/HTMLState.h</source>
 <document_content>
 /*
  * Header file for HTMLState
@@ -14055,8 +13250,8 @@ struct HTMLClipState
 </document_content>
 </document>
 
-<document index="102">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextLine.cc</source>
+<document index="98">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextLine.cc</source>
 <document_content>
 /*
  * HTMLTextLine.cc
@@ -14798,8 +13993,8 @@ const char * const HTMLTextLine::State::css_class_names [] = {
 </document_content>
 </document>
 
-<document index="103">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextLine.h</source>
+<document index="99">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextLine.h</source>
 <document_content>
 /*
  * Header file for HTMLTextLine
@@ -14939,7 +14134,7 @@ private:
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextPage.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextPage.cc
 # Language: cpp
 
 #include #include "HTMLTextPage.h"
@@ -14949,8 +14144,8 @@ namespace  {
 }
 
 
-<document index="104">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextPage.h</source>
+<document index="100">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/HTMLTextPage.h</source>
 <document_content>
 /*
  * Header file for HTMLTextPage
@@ -15022,8 +14217,8 @@ private:
 </document_content>
 </document>
 
-<document index="105">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/Param.h</source>
+<document index="101">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/Param.h</source>
 <document_content>
 /*
  * Parameters
@@ -15122,7 +14317,7 @@ struct Param
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/Preprocessor.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/Preprocessor.cc
 # Language: cpp
 
 #include #include <cstring>
@@ -15138,8 +14333,8 @@ namespace  {
 }
 
 
-<document index="106">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/Preprocessor.h</source>
+<document index="102">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/Preprocessor.h</source>
 <document_content>
 /*
  * Preprocessor.h
@@ -15211,8 +14406,8 @@ protected:
 </document_content>
 </document>
 
-<document index="107">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/StateManager.h</source>
+<document index="103">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/StateManager.h</source>
 <document_content>
 /*
  * StateManager.h
@@ -15659,7 +14854,7 @@ struct AllStateManager
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/StringFormatter.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/StringFormatter.cc
 # Language: cpp
 
 #include #include <cstdarg>
@@ -15671,8 +14866,8 @@ namespace  {
 }
 
 
-<document index="108">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/StringFormatter.h</source>
+<document index="104">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/StringFormatter.h</source>
 <document_content>
 /*
  * Buffer reusing string formatter
@@ -15721,7 +14916,7 @@ private:
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/TmpFiles.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/TmpFiles.cc
 # Language: cpp
 
 #include #include <iostream>
@@ -15736,8 +14931,8 @@ namespace  {
 }
 
 
-<document index="109">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/TmpFiles.h</source>
+<document index="105">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/TmpFiles.h</source>
 <document_content>
 #ifndef TMPFILES_H__
 #define TMPFILES_H__
@@ -15771,8 +14966,8 @@ private:
 </document_content>
 </document>
 
-<document index="110">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/pdf2htmlEX-config.h.in</source>
+<document index="106">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/pdf2htmlEX-config.h.in</source>
 <document_content>
 /*
  * config.h
@@ -15802,7 +14997,7 @@ static const std::string PDF2HTMLEX_DATA_PATH = "@CMAKE_INSTALL_PREFIX@""/share/
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/pdf2htmlEX.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/pdf2htmlEX.cc
 # Language: cpp
 
 #include #include <cstdio>
@@ -15833,8 +15028,8 @@ static const std::string PDF2HTMLEX_DATA_PATH = "@CMAKE_INSTALL_PREFIX@""/share/
 #include #include "util/mingw.h"
 
 
-<document index="111">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/SignalHandler.cc</source>
+<document index="107">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/SignalHandler.cc</source>
 <document_content>
 /*
  * SignalHandler.cc
@@ -16059,8 +15254,8 @@ int main(int argc, const char* argv[]) {
 </document_content>
 </document>
 
-<document index="112">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/SignalHandler.h</source>
+<document index="108">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/SignalHandler.h</source>
 <document_content>
 #ifndef SIGNAL_HANDLER_H
 #define SIGNAL_HANDLER_H
@@ -16087,8 +15282,8 @@ void setupSignalHandler(
 </document_content>
 </document>
 
-<document index="113">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/const.cc</source>
+<document index="109">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/const.cc</source>
 <document_content>
 /*
  * Constants
@@ -16147,8 +15342,8 @@ const std::map<std::string, std::string> FORMAT_MIME_TYPE_MAP({
 </document_content>
 </document>
 
-<document index="114">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/const.h</source>
+<document index="110">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/const.h</source>
 <document_content>
 /*
  * Constants
@@ -16200,8 +15395,8 @@ extern const std::map<std::string, std::string> FORMAT_MIME_TYPE_MAP;
 </document_content>
 </document>
 
-<document index="115">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/css_const.h.in</source>
+<document index="111">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/css_const.h.in</source>
 <document_content>
 /* vim: set filetype=cpp : */
 /*
@@ -16274,7 +15469,7 @@ const char * const RADIO_CHECKED_CN    = "@CSS_RADIO_CHECKED_CN@";
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/util/encoding.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/util/encoding.cc
 # Language: cpp
 
 #include #include <cstring>
@@ -16285,8 +15480,8 @@ namespace  {
 }
 
 
-<document index="116">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/encoding.h</source>
+<document index="112">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/encoding.h</source>
 <document_content>
 /*
  * Encodings used in HTML
@@ -16333,8 +15528,8 @@ void writeAttribute(std::ostream & out, const std::string & s);
 </document_content>
 </document>
 
-<document index="117">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/ffw.c</source>
+<document index="113">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/ffw.c</source>
 <document_content>
 /*
  * ffw.c: Fontforge wrapper
@@ -16919,8 +16114,8 @@ void ffw_override_fstype(void)
 </document_content>
 </document>
 
-<document index="118">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/ffw.h</source>
+<document index="114">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/ffw.h</source>
 <document_content>
 /*
  * ffw.h : Fontforge Wrapper
@@ -17005,7 +16200,7 @@ void ffw_override_fstype(void);
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/util/math.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/util/math.cc
 # Language: cpp
 
 #include #include <cstring>
@@ -17017,8 +16212,8 @@ namespace  {
 }
 
 
-<document index="119">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/math.h</source>
+<document index="115">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/math.h</source>
 <document_content>
 /*
  * Math functions
@@ -17083,7 +16278,7 @@ bool bbox_intersect(const double * bbox1, const double * bbox2, double * result 
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/util/mingw.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/util/mingw.cc
 # Language: cpp
 
 #include #include <string>
@@ -17098,8 +16293,8 @@ namespace  {
 }
 
 
-<document index="120">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/mingw.h</source>
+<document index="116">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/mingw.h</source>
 <document_content>
 /*
  * Win32 specific functions
@@ -17134,7 +16329,7 @@ namespace pdf2htmlEX {
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/util/misc.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/util/misc.cc
 # Language: cpp
 
 #include #include <map>
@@ -17144,8 +16339,8 @@ namespace  {
 }
 
 
-<document index="121">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/misc.h</source>
+<document index="117">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/misc.h</source>
 <document_content>
 /*
  * Help classes and Functions
@@ -17190,8 +16385,8 @@ std::ostream & operator << (std::ostream & out, const GfxRGB & rgb);
 </document_content>
 </document>
 
-<document index="122">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/namespace.h</source>
+<document index="118">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/namespace.h</source>
 <document_content>
 /*
  * namespace.h
@@ -17218,7 +16413,7 @@ using std::ofstream;
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/util/path.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/util/path.cc
 # Language: cpp
 
 #include #include <errno.h>
@@ -17232,8 +16427,8 @@ namespace  {
 }
 
 
-<document index="123">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/path.h</source>
+<document index="119">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/path.h</source>
 <document_content>
 /*
  * Function handling filenames and paths
@@ -17272,7 +16467,7 @@ bool sanitize_filename(std::string & filename);
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/src/util/unicode.cc
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/src/util/unicode.cc
 # Language: cpp
 
 #include #include <iostream>
@@ -17284,8 +16479,8 @@ namespace  {
 }
 
 
-<document index="124">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/src/util/unicode.h</source>
+<document index="120">
+<source>pdf2htmlEX-src/pdf2htmlEX/src/util/unicode.h</source>
 <document_content>
 /*
  * Unicode manipulation functions
@@ -17382,8 +16577,8 @@ Unicode check_unicode(Unicode const * u, int len, CharCode code, GfxFont * font)
 </document_content>
 </document>
 
-<document index="125">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/README.md</source>
+<document index="121">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/README.md</source>
 <document_content>
 # pdf2htmlEX tests
 
@@ -17513,8 +16708,8 @@ be installed using the command:
 </document_content>
 </document>
 
-<document index="126">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/browser_tests/basic_text.tex</source>
+<document index="122">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/browser_tests/basic_text.tex</source>
 <document_content>
 \documentclass{article}
 \begin{document}
@@ -17556,8 +16751,8 @@ Horizontal\hspace{10pt}Scale \\
 </document_content>
 </document>
 
-<document index="127">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/browser_tests/test_fail.tex</source>
+<document index="123">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/browser_tests/test_fail.tex</source>
 <document_content>
 \documentclass{article}
 \begin{document}
@@ -17572,7 +16767,7 @@ The quick brown fox jumps over the lazy dog
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/browser_tests.py
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/browser_tests.py
 # Language: python
 
 import os
@@ -17614,15 +16809,15 @@ def test_svg_background_with_page_rotation_issue402((self)):
 def test_fontfile3_opentype((self)):
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/compareTestImages
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/compareTestImages
 # Language: python
 
 import os
 import sys
 
 
-<document index="128">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/fancy.min.css</source>
+<document index="124">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/fancy.min.css</source>
 <document_content>
 /* CSS for test cases */
 #page-container {
@@ -17632,8 +16827,8 @@ import sys
 </document_content>
 </document>
 
-<document index="129">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/installAutomaticTestSoftwareApt</source>
+<document index="125">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/installAutomaticTestSoftwareApt</source>
 <document_content>
 #!/bin/sh
 
@@ -17678,8 +16873,8 @@ pip3 install \
 </document_content>
 </document>
 
-<document index="130">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/installAutomaticTestSoftwareDnf</source>
+<document index="126">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/installAutomaticTestSoftwareDnf</source>
 <document_content>
 #!/bin/sh
 
@@ -17724,8 +16919,8 @@ pip3 install \
 </document_content>
 </document>
 
-<document index="131">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/installManualTestSoftware</source>
+<document index="127">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/installManualTestSoftware</source>
 <document_content>
 #!/bin/sh
 
@@ -17744,8 +16939,8 @@ sudo apt -y install                 \
 </document_content>
 </document>
 
-<document index="132">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/old/convert_to_woff.fontforge</source>
+<document index="128">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/old/convert_to_woff.fontforge</source>
 <document_content>
 Open($1);
 Generate($1:r+".woff");
@@ -17754,15 +16949,15 @@ Quit(0);
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/old/test.py
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/old/test.py
 # Language: python
 
 import os
 import sys
 
 
-<document index="133">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/produceHtmlForBrowserTests</source>
+<document index="129">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/produceHtmlForBrowserTests</source>
 <document_content>
 #!/bin/sh
 
@@ -17879,7 +17074,7 @@ cp $PDF2HTMLEX_TMPDIR/* $PDF2HTMLEX_PREDIR
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/regenerateTest
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/regenerateTest
 # Language: python
 
 import os
@@ -17887,8 +17082,8 @@ import sys
 import shutil
 
 
-<document index="134">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/runLocalBrowserTests</source>
+<document index="130">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/runLocalBrowserTests</source>
 <document_content>
 #!/bin/sh
 
@@ -17955,8 +17150,8 @@ exit 0
 </document_content>
 </document>
 
-<document index="135">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/runLocalTestsPython</source>
+<document index="131">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/runLocalTestsPython</source>
 <document_content>
 #!/bin/sh
 
@@ -17969,8 +17164,8 @@ python3 test_output.py
 </document_content>
 </document>
 
-<document index="136">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/runLocalTestsShell</source>
+<document index="132">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/runLocalTestsShell</source>
 <document_content>
 #!/bin/sh
 
@@ -17983,7 +17178,7 @@ set -ev
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/test.py.in
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/test.py.in
 # Language: python
 
 import unittest
@@ -18005,8 +17200,8 @@ def run_pdf2htmlEX((self, args)):
     """ Execute the pdf2htmlEX with the specified arguments...."""
 
 
-<document index="137">
-<source>v1/pdf2htmlEX-src/pdf2htmlEX/test/testOutput</source>
+<document index="133">
+<source>pdf2htmlEX-src/pdf2htmlEX/test/testOutput</source>
 <document_content>
 #!/bin/sh
 
@@ -18218,7 +17413,7 @@ fi
 </document_content>
 </document>
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/test_local_browser.py
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/test_local_browser.py
 # Language: python
 
 import unittest
@@ -18239,7 +17434,7 @@ def tearDownClass((cls)):
 def generate_image((self, html_file, png_file, page_must_load=True)):
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/test_output.py
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/test_output.py
 # Language: python
 
 import unittest
@@ -18324,7 +17519,7 @@ def test_generate_single_html_name_specified_format_characters_percent_percent((
 def test_issue501((self)):
 
 
-# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v1/pdf2htmlEX-src/pdf2htmlEX/test/test_remote_browser.py
+# File: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/pdf2htmlEX-src/pdf2htmlEX/test/test_remote_browser.py
 # Language: python
 
 import unittest
@@ -18355,8 +17550,8 @@ def generate_image((self, html_file, png_file)):
 def generate_classes(()):
 
 
-<document index="138">
-<source>v1/pdf2htmlex-cmake.patch</source>
+<document index="134">
+<source>pdf2htmlex-cmake.patch</source>
 <document_content>
 --- a/pdf2htmlEX/CMakeLists.txt
 +++ b/pdf2htmlEX/CMakeLists.txt
@@ -18397,8 +17592,8 @@ def generate_classes(()):
 </document_content>
 </document>
 
-<document index="139">
-<source>v1/scripts/build-bottle.sh</source>
+<document index="135">
+<source>scripts/build-bottle.sh</source>
 <document_content>
 #!/bin/bash
 # build-bottle.sh - Build bottles for pdf2htmlEX formula
@@ -18574,8 +17769,8 @@ echo "   brew install --force-bottle $FORMULA_NAME"
 </document_content>
 </document>
 
-<document index="140">
-<source>v1/scripts/check-dependencies.sh</source>
+<document index="136">
+<source>scripts/check-dependencies.sh</source>
 <document_content>
 #!/bin/bash
 # check-dependencies.sh - Check and verify pdf2htmlEX dependencies
@@ -18796,8 +17991,8 @@ fi
 </document_content>
 </document>
 
-<document index="141">
-<source>v1/scripts/setup-tap.sh</source>
+<document index="137">
+<source>scripts/setup-tap.sh</source>
 <document_content>
 #!/bin/bash
 # setup-tap.sh - Set up a proper Homebrew tap for pdf2htmlEX
@@ -18897,8 +18092,8 @@ echo ""
 </document_content>
 </document>
 
-<document index="142">
-<source>v1/scripts/test-build.sh</source>
+<document index="138">
+<source>scripts/test-build.sh</source>
 <document_content>
 #!/bin/bash
 set -ex
@@ -18911,7 +18106,7 @@ mkdir -p "$BUILD_TEMP_DIR_NAME"
 cd "$BUILD_TEMP_DIR_NAME"
 echo "Working in temporary build directory: $(pwd)"
 
-ARCHS="x86_64;arm64"            # For CMAKE_OSX_ARCHITECTURES
+ARCHS="x86_64;arm64" # For CMAKE_OSX_ARCHITECTURES
 INSTALL_PREFIX="$(pwd)/staging" # Install dependencies into staging area within the temp build dir
 mkdir -p "$INSTALL_PREFIX"
 
@@ -18922,10 +18117,9 @@ echo "Using Homebrew Prefix: $HOMEBREW_PREFIX_VAL"
 echo "If this is incorrect, ensure 'brew' is in your PATH or set HOMEBREW_PREFIX_VAL manually in the script."
 
 # Ensure paths to Homebrew-installed libraries are discoverable
-# Prepend jpeg-turbo paths to PKG_CONFIG_PATH and CMAKE_PREFIX_PATH
-JPEG_TURBO_PREFIX="$HOMEBREW_PREFIX_VAL/opt/jpeg-turbo"
-export PKG_CONFIG_PATH="$JPEG_TURBO_PREFIX/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/share/pkgconfig:/usr/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
-export CMAKE_PREFIX_PATH="$JPEG_TURBO_PREFIX:$HOMEBREW_PREFIX_VAL${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
+# Append existing PKG_CONFIG_PATH and CMAKE_PREFIX_PATH to avoid overwriting them
+export PKG_CONFIG_PATH="$HOMEBREW_PREFIX_VAL/lib/pkgconfig:$HOMEBREW_PREFIX_VAL/share/pkgconfig:/usr/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+export CMAKE_PREFIX_PATH="$HOMEBREW_PREFIX_VAL${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 export PATH="$HOMEBREW_PREFIX_VAL/bin:$PATH"
 
 # --- Build Poppler (Static) ---
@@ -18974,7 +18168,7 @@ cmake .. \
     -DENABLE_QT5=OFF \
     -DENABLE_QT6=OFF \
     -DENABLE_LIBOPENJPEG="none" \
-    -DENABLE_DCTDECODER="unmaintained" \
+    -DENABLE_DCTDECODER="libjpeg" \
     -DENABLE_CMS="none" \
     -DENABLE_LCMS=OFF \
     -DENABLE_LIBCURL=OFF \
@@ -18991,9 +18185,7 @@ cmake .. \
     -DEXTRA_WARN=OFF \
     -DWITH_JPEG=ON \
     -DWITH_PNG=ON \
-    -DWITH_Cairo=ON \
-    -DJPEG_INCLUDE_DIR="$JPEG_TURBO_PREFIX/include" \
-    -DJPEG_LIBRARY="$JPEG_TURBO_PREFIX/lib/libjpeg.dylib"
+    -DWITH_Cairo=ON
 
 ninja install
 cd ../..
@@ -19075,7 +18267,7 @@ cd ../..
 # --- Build pdf2htmlEX ---
 echo "Building pdf2htmlEX..."
 
-PDF2HTMLEX_CHECKOUT_ROOT="$ORIG_PWD"  # This is the root of the git checkout
+PDF2HTMLEX_CHECKOUT_ROOT="$ORIG_PWD" # This is the root of the git checkout
 PDF2HTMLEX_SOURCE_SUBDIR="pdf2htmlEX" # The sources are in a subdirectory
 
 # Check if the source directory exists
@@ -19106,8 +18298,8 @@ else
 fi
 
 if [ -n "$JAVA_HOME" ]; then
-    export PATH="$JAVA_HOME/bin:$PATH"
-    echo "Using JAVA_HOME: $JAVA_HOME"
+  export PATH="$JAVA_HOME/bin:$PATH"
+  echo "Using JAVA_HOME: $JAVA_HOME"
 fi
 
 mkdir -p pdf2htmlEX_builddir
@@ -19121,7 +18313,7 @@ cmake "$PDF2HTMLEX_CHECKOUT_ROOT/$PDF2HTMLEX_SOURCE_SUBDIR" \
     -DPOPPLER_STATIC=ON \
     -DFONTFORGE_STATIC=ON \
     -DCMAKE_PREFIX_PATH="$INSTALL_PREFIX${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}" \ # Prepend our static deps
--DCMAKE_FIND_FRAMEWORK=NEVER \
+    -DCMAKE_FIND_FRAMEWORK=NEVER \
     -DCMAKE_FIND_APPBUNDLE=NEVER
 
 ninja install
@@ -19143,8 +18335,8 @@ echo "Universal binary expected at $INSTALL_PREFIX/final/bin/pdf2htmlEX"
 </document_content>
 </document>
 
-<document index="143">
-<source>v1/scripts/test-formula.sh</source>
+<document index="139">
+<source>scripts/test-formula.sh</source>
 <document_content>
 #!/bin/bash
 # test-formula.sh - Test the pdf2htmlEX formula locally
@@ -19377,8 +18569,8 @@ fi
 </document_content>
 </document>
 
-<document index="144">
-<source>v1/scripts/update-version.sh</source>
+<document index="140">
+<source>scripts/update-version.sh</source>
 <document_content>
 #!/bin/bash
 # update-version.sh - Update pdf2htmlEX version in the formula
@@ -19604,8 +18796,8 @@ fi
 </document_content>
 </document>
 
-<document index="145">
-<source>v1/testpatch.diff</source>
+<document index="141">
+<source>testpatch.diff</source>
 <document_content>
 --- a/po/CMakeLists.txt
 +++ b/po/CMakeLists.txt
@@ -19615,8 +18807,8 @@ fi
 </document_content>
 </document>
 
-<document index="146">
-<source>v1/tests/fixtures/README.md</source>
+<document index="142">
+<source>tests/fixtures/README.md</source>
 <document_content>
 # Test Fixtures
 
@@ -19636,8 +18828,8 @@ Test PDFs can be created using the `create-test-pdfs.sh` script in this director
 </document_content>
 </document>
 
-<document index="147">
-<source>v1/tests/fixtures/create-test-pdfs.sh</source>
+<document index="143">
+<source>tests/fixtures/create-test-pdfs.sh</source>
 <document_content>
 #!/bin/bash
 # create-test-pdfs.sh - Create test PDF files for pdf2htmlEX testing
@@ -19683,8 +18875,8 @@ echo "Created simple.pdf"
 </document_content>
 </document>
 
-<document index="148">
-<source>v1/tests/integration/test_conversions.sh</source>
+<document index="144">
+<source>tests/integration/test_conversions.sh</source>
 <document_content>
 #!/bin/bash
 # test_conversions.sh - Integration tests for pdf2htmlEX conversions

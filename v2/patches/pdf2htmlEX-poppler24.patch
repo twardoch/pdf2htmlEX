@@ -1,0 +1,94 @@
+diff --git a/pdf2htmlEX/src/HTMLRenderer/outline.cc b/pdf2htmlEX/src/HTMLRenderer/outline.cc
+--- a/pdf2htmlEX/src/HTMLRenderer/outline.cc
++++ b/pdf2htmlEX/src/HTMLRenderer/outline.cc
+@@ -50,8 +50,7 @@ void HTMLRenderer::process_outline_items(const std::vector<OutlineItem*> * items
+        // check kids
+        item->open();
+        if(item->hasKids())
+        {
+            process_outline_items(item->getKids());
+        }
+-       item->close();
+        f_outline.fs << "</li>";
+    }
+
+diff --git a/pdf2htmlEX/src/HTMLRenderer/text.cc b/pdf2htmlEX/src/HTMLRenderer/text.cc
+--- a/pdf2htmlEX/src/HTMLRenderer/text.cc
++++ b/pdf2htmlEX/src/HTMLRenderer/text.cc
+@@ -95,7 +95,7 @@ void HTMLRenderer::drawString(GfxState * state, const GooString * s)
+            char buf[2];
+            buf[0] = (code >> 8) & 0xff;
+            buf[1] = (code & 0xff);
+-            width = ((GfxCIDFont *)font)->getWidth(buf, 2);
++            width = ((GfxCIDFont *)font.get())->getWidth(buf, 2);
+        } else {
+-            width = ((Gfx8BitFont *)font)->getWidth(code);
++            width = ((Gfx8BitFont *)font.get())->getWidth(code);
+        }
+@@ -153,7 +153,7 @@ void HTMLRenderer::drawString(GfxState * state, const GooString * s)
+                    uu = check_unicode(u, uLen, code, font.get());
+@@ -157,7 +157,7 @@ void HTMLRenderer::drawString(GfxState * state, const GooString * s)
+                    uu = unicode_from_font(code, font.get());
+
+diff --git a/pdf2htmlEX/src/HTMLRenderer/form.cc b/pdf2htmlEX/src/HTMLRenderer/form.cc
+--- a/pdf2htmlEX/src/HTMLRenderer/form.cc
++++ b/pdf2htmlEX/src/HTMLRenderer/form.cc
+@@ -25,7 +25,7 @@ void HTMLRenderer::process_form(ofstream & out)
+-    FormPageWidgets * widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
++    auto widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
+
+diff --git a/pdf2htmlEX/src/HTMLRenderer/link.cc b/pdf2htmlEX/src/HTMLRenderer/link.cc
+--- a/pdf2htmlEX/src/HTMLRenderer/link.cc
++++ b/pdf2htmlEX/src/HTMLRenderer/link.cc
+@@ -149,7 +149,7 @@ string HTMLRenderer::get_linkaction_str(
+                    std::unique_ptr<LinkDest> dest = nullptr;
+                    if(auto _ = real_action->getDest())
+-                        dest = std::unique_ptr<LinkDest>( _->copy() );
++                        dest = std::unique_ptr<LinkDest>( _->clone() );
+                    else if (auto _ = real_action->getNamedDest())
+                        dest = cur_catalog->findDest(_);
+
+diff --git a/pdf2htmlEX/src/HTMLRenderer/state.cc b/pdf2htmlEX/src/HTMLRenderer/state.cc
+--- a/pdf2htmlEX/src/HTMLRenderer/state.cc
++++ b/pdf2htmlEX/src/HTMLRenderer/state.cc
+@@ -210,7 +210,7 @@ void HTMLRenderer::check_state_change(GfxState * state)
+-        const FontInfo * new_font_info = install_font(state->getFont());
++        const FontInfo * new_font_info = install_font(state->getFont().get());
+
+diff --git a/pdf2htmlEX/src/HTMLRenderer/font.cc b/pdf2htmlEX/src/HTMLRenderer/font.cc
+--- a/pdf2htmlEX/src/HTMLRenderer/font.cc
++++ b/pdf2htmlEX/src/HTMLRenderer/font.cc
+@@ -204,7 +204,7 @@ string HTMLRenderer::dump_type3_font (GfxFont * font, FontInfo & info)
+-    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
++    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref).get();
+@@ -489,7 +489,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
++                if(auto fftt = FoFiTrueType::load((char*)filepath.c_str()))
+@@ -556,7 +556,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
++                if(auto fftt = FoFiTrueType::load((char*)filepath.c_str()))
+@@ -881,7 +881,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-            << (font->getName() ? font->getName()->toStr() : "")
++            << (font->getName() ? font->getName()->getCString() : "")
+@@ -913,7 +913,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-    if(auto * font_loc = font->locateFont(xref, nullptr))
++    if(auto font_loc = font->locateFont(xref, nullptr))
+@@ -958,7 +958,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-    string fontname(font->getName()->toStr());
++    string fontname(font->getName()->getCString());
+@@ -968,7 +968,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-    GfxFontLoc * localfontloc = font->locateFont(xref, nullptr);
++    auto localfontloc = font->locateFont(xref, nullptr);
+@@ -974,7 +974,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-            embed_font(string(localfontloc->path->toStr()), font, info);
++            embed_font(string(localfontloc->path->getCString()), font, info);
+@@ -990,7 +990,7 @@ void HTMLRenderer::embed_font(const string & filepath, GfxFont * font, FontInfo
+-        embed_font(string(localfontloc->path->toStr()), font, info, true);
++        embed_font(string(localfontloc->path->getCString()), font, info, true);
+
+diff --git a/pdf2htmlEX/src/pdf2htmlEX.cc b/pdf2htmlEX/src/pdf2htmlEX.cc
+--- a/pdf2htmlEX/src/pdf2htmlEX.cc
++++ b/pdf2htmlEX/src/pdf2htmlEX.cc
+@@ -424,7 +424,7 @@ int main(int argc, char **argv)
+-            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW);
++            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW ? std::optional<GooString>(*ownerPW) : std::nullopt, userPW ? std::optional<GooString>(*userPW) : std::nullopt);
