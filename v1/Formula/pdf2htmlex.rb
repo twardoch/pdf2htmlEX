@@ -262,6 +262,82 @@ class Pdf2htmlex < Formula
     mkdir_p "pdf2htmlEX/test"
     File.write("pdf2htmlEX/test/test.py.in", "")
 
+    # Apply Poppler 24 compatibility patches
+    cd "pdf2htmlEX" do
+      # Fix font.cc for Poppler 24 API changes
+      inreplace "src/HTMLRenderer/font.cc" do |s|
+        # Fix FoFiTrueType::load() usage - returns unique_ptr now
+        s.gsub!(/if\(FoFiTrueType\s*\*\s*fftt\s*=\s*FoFiTrueType::load\((.*?)\)\)/, 
+                'if(auto fftt = FoFiTrueType::load(\1))')
+        
+        # Fix font->getName() - returns std::optional<std::string> now
+        s.gsub!(/font->getName\(\)->toStr\(\)/, 
+                'font->getName().value_or("")')
+        s.gsub!(/\(\s*font->getName\(\)\s*\?\s*font->getName\(\)->toStr\(\)\s*:\s*""\s*\)/, 
+                'font->getName().value_or("")')
+        
+        # Fix font->locateFont() - returns std::optional<GfxFontLoc> now
+        s.gsub!(/if\(auto\s*\*\s*font_loc\s*=\s*font->locateFont\(([^)]*)\)\)/, 
+                'auto font_loc = font->locateFont(\1);\n    if(font_loc.has_value())')
+        s.gsub!(/GfxFontLoc\s*\*\s*localfontloc\s*=\s*font->locateFont\(([^)]*)\);/, 
+                'auto localfontloc = font->locateFont(\1);')
+        
+        # Fix GfxFontLoc access - switch from pointer to optional
+        s.gsub!(/font_loc\s*->\s*locType/, 
+                'font_loc.value().locType')
+        s.gsub!(/localfontloc\s*->\s*path\s*->\s*toStr\(\)/, 
+                'localfontloc.value().path')
+        s.gsub!(/font_loc\s*->\s*path\s*->\s*toStr\(\)/, 
+                'font_loc.value().path')
+        
+        # Fix localfontloc conditional patterns
+        s.gsub!(/if\(localfontloc\s*&&\s*localfontloc\s*->\s*locType/, 
+                'if(localfontloc.has_value() && localfontloc.value().locType')
+        s.gsub!(/if\(localfontloc\)/, 
+                'if(localfontloc.has_value())')
+        s.gsub!(/localfontloc\s*->\s*locType/, 
+                'localfontloc.value().locType')
+        
+        # Fix getCodeToGIDMap usage with unique_ptr
+        s.gsub!(/code2GID\s*=\s*font_8bit->getCodeToGIDMap\(fftt\);/, 
+                'code2GID = font_8bit->getCodeToGIDMap(fftt.get());')
+        s.gsub!(/code2GID\s*=\s*_font->getCodeToGIDMap\(fftt,\s*&code2GID_len\);/, 
+                'code2GID = _font->getCodeToGIDMap(fftt.get(), &code2GID_len);')
+      end
+      
+      # Apply other necessary patches from v2
+      inreplace "src/HTMLRenderer/state.cc" do |s|
+        s.gsub!(/install_font\(state->getFont\(\)\)/, 
+                'install_font(state->getFont().get())')
+      end
+      
+      inreplace "src/HTMLRenderer/text.cc" do |s|
+        s.gsub!(/\(\(GfxCIDFont\s*\*\)font\)->/, 
+                '((GfxCIDFont *)font.get())->')
+        s.gsub!(/\(\(Gfx8BitFont\s*\*\)font\)->/, 
+                '((Gfx8BitFont *)font.get())->')
+      end
+      
+      inreplace "src/HTMLRenderer/form.cc" do |s|
+        s.gsub!(/FormPageWidgets\s*\*\s*widgets\s*=/, 
+                'auto widgets =')
+      end
+      
+      inreplace "src/HTMLRenderer/link.cc" do |s|
+        s.gsub!(/dest\s*=\s*std::unique_ptr<LinkDest>\(\s*_->copy\(\)\s*\);/, 
+                'dest = std::unique_ptr<LinkDest>( _->clone() );')
+      end
+      
+      inreplace "src/HTMLRenderer/outline.cc" do |s|
+        s.gsub!(/item->close\(\);/, '// item->close(); // removed in newer Poppler')
+      end
+      
+      inreplace "src/pdf2htmlEX.cc" do |s|
+        s.gsub!(/doc\s*=\s*PDFDocFactory\(\)\.createPDFDoc\(fileName,\s*ownerPW,\s*userPW\);/, 
+                'doc = PDFDocFactory().createPDFDoc(fileName, ownerPW ? std::optional<GooString>(*ownerPW) : std::nullopt, userPW ? std::optional<GooString>(*userPW) : std::nullopt);')
+      end
+    end
+
 
 
     # Change to the pdf2htmlEX subdirectory where CMakeLists.txt is located

@@ -61,9 +61,9 @@ PDF2HTML_VERSION="0.18.8.rc1"
 PDF2HTML_URL="https://github.com/pdf2htmlEX/pdf2htmlEX/archive/refs/tags/v${PDF2HTML_VERSION}.tar.gz"
 PDF2HTML_SHA256="a1d320f155eaffe78e4af88e288ed5e8217e29031acf6698d14623c59a7c5641"
 
-LIBPNG_VERSION="1.6.40"
+LIBPNG_VERSION="1.6.43"
 LIBPNG_URL="https://downloads.sourceforge.net/project/libpng/libpng16/${LIBPNG_VERSION}/libpng-${LIBPNG_VERSION}.tar.xz"
-LIBPNG_SHA256="535b479b2467ff231a3ec6d92a525906fb8ef27978be4f66dbe05d3f3a01b3a1"
+LIBPNG_SHA256="6a5ca0652392a2d7c9db2ae5b40210843c0bbc081cbd410825ab00cc59f14a6c"
 
 OPENJPEG_VERSION="2.5.0"
 OPENJPEG_URL="https://github.com/uclouvain/openjpeg/archive/refs/tags/v${OPENJPEG_VERSION}.tar.gz"
@@ -83,7 +83,11 @@ LIBWEBP_SHA256="2a499607df669e40258e53d0ade8035ba4ec0175244869d1025d460562aa09b4
 
 LIBDEFLATE_VERSION="1.18"
 LIBDEFLATE_URL="https://github.com/ebiggers/libdeflate/archive/refs/tags/v${LIBDEFLATE_VERSION}.tar.gz"
-LIBDEFLATE_SHA256="4c34b3ac533324e5453858063494336801e2438c6548201f9e1b141563e0739d"
+LIBDEFLATE_SHA256="225d982bcaf553221c76726358d2ea139bb34913180b20823c782cede060affd"
+
+LIBGIF_VERSION="5.2.2"
+LIBGIF_URL="https://sourceforge.net/projects/giflib/files/giflib-${LIBGIF_VERSION}.tar.gz"
+LIBGIF_SHA256="be7ffbd057cadebe2aa144542fd90c6838c6a083b5e8a9048b8ee3b66b29d5fb"
 
 NSS_VERSION="3.113.1"
 NSS_URL="https://archive.mozilla.org/pub/security/nss/releases/NSS_${NSS_VERSION//./_}_RTM/src/nss-${NSS_VERSION}.tar.gz"
@@ -198,9 +202,7 @@ cmake_build_install() {
 
   mkdir -p "$build_dir"
   pushd "$build_dir" >/dev/null
-  cmake -G Ninja -DCMAKE_BUILD_TYPE=Release "${cmake_opts[@]}" "$src_dir" \
-    -DCMAKE_C_FLAGS="-D_Float16=float" \
-    -DCMAKE_CXX_FLAGS="-D_Float16=float"
+  cmake -G Ninja -DCMAKE_BUILD_TYPE=Release "${cmake_opts[@]}" "$src_dir"
   ninja
   ninja install
   popd >/dev/null
@@ -293,9 +295,98 @@ if [[ ! -f "${STAGING_DIR}/lib/libpng.a" ]]; then
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
      -DPNG_SHARED=OFF \
      -DPNG_STATIC=ON \
-     -DPNG_INT_SUPPORTED=off
+     -DPNG_FRAMEWORK=OFF \
+     -DPNG_HARDWARE_OPTIMIZATIONS=ON \
+     -DPNG_ARM_NEON=ON \
+     -DPNG_ARM_NEON_OPT=2
 else
   log "libpng already built – skipping"
+fi
+
+# ----- 3.1.6 libgif -----------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libgif.a" ]]; then
+  log "Building libgif ${LIBGIF_VERSION} (static, universal) - Manual Compilation"
+  libgif_src=$(fetch_and_extract "$LIBGIF_URL" "$LIBGIF_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  # Compile each .c file for each architecture and then lipo them
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling libgif for ${arch}..."
+    obj_dir="${libgif_src}/obj-${arch}"
+    mkdir -p "$obj_dir"
+    
+    for c_file in $(find "$libgif_src" -maxdepth 1 -name "*.c"); do
+      obj_file="${obj_dir}/$(basename "${c_file%.c}.o")"
+      clang -c "$c_file" -o "$obj_file" -arch "$arch" -D_Float16=float -O2 -fPIC -Wall -Wno-format-truncation
+    done
+  done
+
+  # Lipo object files and create static library
+  all_obj_files=()
+  for c_file in $(find "$libgif_src" -maxdepth 1 -name "*.c"); do
+    base_name="$(basename "${c_file%.c}")"
+    lipo_obj="${libgif_src}/obj-${base_name}.o"
+    lipo -create "${libgif_src}/obj-x86_64/${base_name}.o" "${libgif_src}/obj-arm64/${base_name}.o" -output "$lipo_obj"
+    all_obj_files+=("$lipo_obj")
+  done
+
+  ar rcs "${STAGING_DIR}/lib/libgif.a" "${all_obj_files[@]}"
+  cp "${libgif_src}/gif_lib.h" "${STAGING_DIR}/include/"
+
+  log "libgif universal static libraries created"
+else
+  log "libgif already built – skipping"
+fi
+
+# ----- 3.1.7 libdeflate -------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libdeflate.a" ]]; then
+  log "Building libdeflate ${LIBDEFLATE_VERSION} (static, universal)"
+  libdeflate_src=$(fetch_and_extract "$LIBDEFLATE_URL" "$LIBDEFLATE_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+
+  # Build for the first architecture directly into STAGING_DIR
+  cmake_build_install "$libdeflate_src" "$libdeflate_src/build-${first_arch}" \
+     -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+     -DCMAKE_OSX_ARCHITECTURES="${first_arch}" \
+     -DBUILD_SHARED_LIBS=OFF
+
+  # If additional architectures are requested, build them into a temporary
+  # prefix and merge the resulting static libs using `lipo`.
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    log "Building libdeflate for ${arch} ..."
+
+    cmake_build_install "$libdeflate_src" "$libdeflate_src/build-${arch}" \
+       -DCMAKE_INSTALL_PREFIX="${temp_prefix}" \
+       -DCMAKE_OSX_ARCHITECTURES="${arch}" \
+       -DBUILD_SHARED_LIBS=OFF
+
+    # Merge *.a static libraries with the ones already in STAGING_DIR.
+    for lib in "${temp_prefix}/lib"/*.a; do
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+
+      if [[ -f "$universal_lib" ]]; then
+        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
+        mv "$universal_lib.universal" "$universal_lib"
+      else
+        # Library exists only in this architecture – copy it.
+        cp "$lib" "$universal_lib"
+      fi
+    done
+
+    # Clean up temp prefix to save space (headers are identical)
+    rm -rf "$temp_prefix"
+  done
+
+  log "libdeflate universal static libraries created"
+else
+  log "libdeflate already built – skipping"
 fi
 
 # ----- 3.1.5 libwebp ----------------------------------------------------------
@@ -349,32 +440,75 @@ else
   log "libwebp already built – skipping"
 fi
 
-# ----- 3.1.6 libdeflate -------------------------------------------------------
-
-if [[ ! -f "${STAGING_DIR}/lib/libdeflate.a" ]]; then
-  log "Building libdeflate ${LIBDEFLATE_VERSION} (static, universal)"
-  libdeflate_src=$(fetch_and_extract "$LIBDEFLATE_URL" "$LIBDEFLATE_SHA256" | tail -n1)
-  cmake_build_install "$libdeflate_src" "$libdeflate_src/build" \
-     -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
-     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
-     -DBUILD_SHARED_LIBS=OFF
-else
-  log "libdeflate already built – skipping"
-fi
-
 # ----- 3.1.3 libtiff ----------------------------------------------------------
 
 if [[ ! -f "${STAGING_DIR}/lib/libtiff.a" ]]; then
   log "Building libtiff ${LIBTIFF_VERSION} (static, universal)"
   libtiff_src=$(fetch_and_extract "$LIBTIFF_URL" "$LIBTIFF_SHA256" | tail -n1)
-  cmake_build_install "$libtiff_src" "$libtiff_src/build" \
+  
+  # Build libtiff with universal architecture support
+  # Use per-architecture build approach like we do for other libraries
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+
+  # Build for the first architecture directly into STAGING_DIR
+  cmake_build_install "$libtiff_src" "$libtiff_src/build-${first_arch}" \
      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
-     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+     -DCMAKE_OSX_ARCHITECTURES="${first_arch}" \
      -DBUILD_SHARED_LIBS=OFF \
-     -DWEBP_LIBRARY="${STAGING_DIR}/lib/libwebp.a" \
-     -DWEBP_INCLUDE_DIR="${STAGING_DIR}/include" \
+     -DWebP_LIBRARY="${STAGING_DIR}/lib/libwebp.a;${STAGING_DIR}/lib/libsharpyuv.a" \
+     -DWebP_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DDEFLATE_LIBRARY="${STAGING_DIR}/lib/libdeflate.a" \
-     -DDEFLATE_INCLUDE_DIR="${STAGING_DIR}/include"
+     -DDEFLATE_INCLUDE_DIR="${STAGING_DIR}/include" \
+     -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
+     -DJPEG_INCLUDE_DIR="${STAGING_DIR}/include" \
+     -DPNG_LIBRARY="${STAGING_DIR}/lib/libpng.a" \
+     -DPNG_INCLUDE_DIR="${STAGING_DIR}/include" \
+     -DGIF_LIBRARY="${STAGING_DIR}/lib/libgif.a" \
+     -DGIF_INCLUDE_DIR="${STAGING_DIR}/include" \
+     -DCMAKE_FIND_LIBRARY_SUFFIXES=.a
+
+  # If additional architectures are requested, build them into a temporary
+  # prefix and merge the resulting static libs using `lipo`.
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    log "Building libtiff for ${arch} ..."
+
+    cmake_build_install "$libtiff_src" "$libtiff_src/build-${arch}" \
+       -DCMAKE_INSTALL_PREFIX="${temp_prefix}" \
+       -DCMAKE_OSX_ARCHITECTURES="${arch}" \
+       -DBUILD_SHARED_LIBS=OFF \
+       -DWebP_LIBRARY="${STAGING_DIR}/lib/libwebp.a;${STAGING_DIR}/lib/libsharpyuv.a" \
+       -DWebP_INCLUDE_DIR="${STAGING_DIR}/include" \
+       -DDEFLATE_LIBRARY="${STAGING_DIR}/lib/libdeflate.a" \
+       -DDEFLATE_INCLUDE_DIR="${STAGING_DIR}/include" \
+       -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
+       -DJPEG_INCLUDE_DIR="${STAGING_DIR}/include" \
+       -DPNG_LIBRARY="${STAGING_DIR}/lib/libpng.a" \
+       -DPNG_INCLUDE_DIR="${STAGING_DIR}/include" \
+       -DGIF_LIBRARY="${STAGING_DIR}/lib/libgif.a" \
+       -DGIF_INCLUDE_DIR="${STAGING_DIR}/include" \
+       -DCMAKE_FIND_LIBRARY_SUFFIXES=.a
+
+    # Merge *.a static libraries with the ones already in STAGING_DIR.
+    for lib in "${temp_prefix}/lib"/*.a; do
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+
+      if [[ -f "$universal_lib" ]]; then
+        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
+        mv "$universal_lib.universal" "$universal_lib"
+      else
+        # Library exists only in this architecture – copy it.
+        cp "$lib" "$universal_lib"
+      fi
+    done
+
+    # Clean up temp prefix to save space (headers are identical)
+    rm -rf "$temp_prefix"
+  done
+
+  log "libtiff universal static libraries created"
 else
   log "libtiff already built – skipping"
 fi
