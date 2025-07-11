@@ -1,0 +1,1 @@
+ERROR: libfontforge.a not found after build
