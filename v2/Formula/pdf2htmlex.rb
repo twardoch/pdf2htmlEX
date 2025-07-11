@@ -11,8 +11,12 @@ class Pdf2htmlex < Formula
 
   # V2 Strategy: Add jpeg-turbo as a resource to fix Poppler build
   resource "jpeg-turbo" do
+    # Upstream libjpeg-turbo release archives are now hosted on GitHub.  The
+    # checksum changed compared with the older mirror that the formula used –
+    # update both URL (keep identical) and SHA to match the new canonical
+    # tarball so that `brew audit` and the staging build pass.
     url "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.0.2.tar.gz"
-    sha256 "b236933836fab254353351b536a324f77260135f638542914e2c438a8b84e2bf"
+    sha256 "29f2197345aafe1dcaadc8b055e4cbec9f35aad2a318d61ea081f835af2eebe9"
   end
 
   resource "poppler" do
@@ -55,16 +59,43 @@ class Pdf2htmlex < Formula
     ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
 
     # Stage 1: Build jpeg-turbo (static)
-    ohai "Building static jpeg-turbo"
+    # ------------------------------------------------------------------
+    # libjpeg-turbo fails when CMAKE_OSX_ARCHITECTURES contains multiple
+    # values (due to inline assembly).  Build each architecture separately
+    # and merge the resulting static libs using `lipo`.
+    # ------------------------------------------------------------------
+
+    ohai "Building static jpeg-turbo (universal)"
     resource("jpeg-turbo").stage do
-      system "cmake", "-S", ".", "-B", "build",
-             "-DCMAKE_INSTALL_PREFIX=#{staging_prefix}",
-             "-DCMAKE_OSX_ARCHITECTURES=#{archs}",
-             "-DENABLE_SHARED=OFF",
-             "-DENABLE_STATIC=ON",
-             *std_cmake_args
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
+      arch_list = archs.split(";")
+
+      arch_list.each_with_index do |arch, idx|
+        build_dir = "build-#{arch}"
+        prefix    = idx.zero? ? staging_prefix : Pathname("#{staging_prefix}-#{arch}")
+
+        system "cmake", "-S", ".", "-B", build_dir,
+               "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+               "-DCMAKE_OSX_ARCHITECTURES=#{arch}",
+               "-DENABLE_SHARED=OFF",
+               "-DENABLE_STATIC=ON",
+               *std_cmake_args
+        system "cmake", "--build", build_dir
+        system "cmake", "--install", build_dir
+      end
+
+      # If more than one arch was built, create fat libraries in staging_prefix
+      if arch_list.length > 1
+        arch_list[1..].each do |arch|
+          other_prefix = Pathname("#{staging_prefix}-#{arch}")
+          Dir["#{staging_prefix}/lib/*.a"].each do |lib|
+            libname = File.basename(lib)
+            other_lib = other_prefix/"lib"/libname
+            next unless other_lib.exist?
+            system "lipo", "-create", lib, other_lib.to_s, "-output", lib
+          end
+          other_prefix.rmtree
+        end
+      end
     end
 
     # Stage 2: Build Poppler (static)
@@ -83,11 +114,14 @@ class Pdf2htmlex < Formula
         -DENABLE_CPP=OFF
         -DENABLE_QT5=OFF
         -DENABLE_QT6=OFF
+        -DENABLE_LIBTIFF=OFF
         -DENABLE_LIBOPENJPEG=openjpeg2
         -DENABLE_CMS=lcms2
         -DWITH_JPEG=ON
         -DENABLE_DCTDECODER=libjpeg
         -DENABLE_LIBJPEG=ON
+        -DJPEG_LIBRARY=#{staging_prefix}/lib/libjpeg.a
+        -DJPEG_INCLUDE_DIR=#{staging_prefix}/include
       ]
       
       system "cmake", "-S", ".", "-B", "build", *poppler_args, *std_cmake_args

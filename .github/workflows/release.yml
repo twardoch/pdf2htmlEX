@@ -38,7 +38,6 @@ jobs:
       id: changelog
       run: |
         if [ -f "CHANGELOG.md" ]; then
-          # Extract latest version changes
           CHANGES=$(awk '/^## \[/ {if (p) exit; p=1; next} p' CHANGELOG.md)
           echo "changes<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGES" >> $GITHUB_OUTPUT
@@ -69,7 +68,7 @@ jobs:
           
           Or install directly from this repository:
           ```bash
-          brew install --build-from-source https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/Formula/pdf2htmlex.rb
+          brew install --build-from-source https://raw.githubusercontent.com/twardoch/pdf2htmlEX/main/v2/Formula/pdf2htmlex.rb
           ```
         draft: false
         prerelease: false
@@ -99,14 +98,10 @@ jobs:
     - name: Build bottle
       id: build
       run: |
-        brew install --build-bottle Formula/pdf2htmlex.rb
+        brew install --build-bottle v2/Formula/pdf2htmlex.rb
         brew bottle --json --no-rebuild pdf2htmlex
-        
-        # Get bottle filename
         BOTTLE_FILE=$(ls *.bottle.* | head -1)
         echo "bottle_file=$BOTTLE_FILE" >> $GITHUB_OUTPUT
-        
-        # Extract bottle info
         BOTTLE_JSON=$(brew bottle --json --no-rebuild pdf2htmlex | jq -r '.[].bottle.tags')
         echo "bottle_json=$BOTTLE_JSON" >> $GITHUB_OUTPUT
     
@@ -137,7 +132,7 @@ jobs:
     - name: Update formula with bottle SHAs
       run: |
         echo "::notice::Bottle SHAs need to be manually added to the formula"
-        echo "Please update Formula/pdf2htmlex.rb with the bottle block"
+        echo "Please update v2/Formula/pdf2htmlex.rb with the bottle block"
     
     - name: Create PR for bottle updates
       uses: peter-evans/create-pull-request@v5
@@ -146,6 +141,6 @@ jobs:
         body: |
           This PR updates the bottle SHAs for release ${{ needs.create-release.outputs.version }}.
           
-          Please manually update the bottle block in Formula/pdf2htmlex.rb with the SHAs from the release artifacts.
+          Please manually update the bottle block in v2/Formula/pdf2htmlex.rb with the SHAs from the release artifacts.
         branch: update-bottles-${{ needs.create-release.outputs.version }}
         commit-message: "Update bottle SHAs for ${{ needs.create-release.outputs.version }}"

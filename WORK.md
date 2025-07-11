@@ -1,26 +1,45 @@
 # WORK.md
 
-## 2025-07-10 – Iteration 1
+## 2025-07-11 – Iteration 2
 
-Context: `/work` command invoked.
+Objective: Continue /work cycle – review TODO & PLAN, reflect, refine.
 
-### Completed in this iteration
+### Actions performed in this iteration
 
-* Implemented automatic source-archive download logic in `v2/scripts/build.sh` so the script is now fully self-contained.  Versions are declared once at the top and kept in sync with `update-version.sh`.
-* Marked all Phase 1 build tasks as complete in `TODO.md`.
+1. Updated `TODO.md` – phased out completed items under Formula Creation and GitHub Actions setup.
+2. Adjusted `.github/workflows/*` files to reference the **v2** formula path:
+   * `test.yml` – audit/install/test steps now point to `v2/Formula/pdf2htmlex.rb` and cache key updated.
+   * `release.yml` – release instructions and build-bottle job updated.
+   * `security.yml` – formula audit checks updated.
+3. Re-created `release.yml` after an accidental overwrite.
 
-### Next immediate targets
+### Next immediate targets (queued for next iteration)
 
-1. Phase 1 – Validation
-   * Run `v2/scripts/build.sh` on a macOS host to confirm the build finishes and produces a universal, statically-linked binary.
-   * Capture the `file` and `otool -L` output and add automated checks (where feasible) to the script.
-2. Phase 2 – Formula polishing
-   * Double-check the SHA256 of the vendored resources in `v2/Formula/pdf2htmlex.rb` now that we switched jpeg-turbo URL to GitHub.
-   * Finish the `brew audit --strict` compliance (style, license, livecheck etc.).
-3. CI/CD groundwork
-   * Copy and adapt `.github/workflows` from `v1` → `v2` to get basic test coverage running.
+1. Add explicit **dependency caching** step to the `test.yml` workflow (Homebrew downloads already cached; consider ccache for C/C++).
+2. Compose `v2/README.md` detailing the v2 build strategy.
+3. Enhance formula test block if `brew audit --strict` indicates missing checks.
 
-### Carry-over
+---
 
-* Remaining Phase 1 validation tasks and all subsequent phases stay open in `TODO.md`.
+## 2025-07-11 – Iteration 4
 
+Objective: Implement the immediate targets from Iteration 2 and keep refining docs & CI.
+
+### Actions performed in this iteration
+
+1. **Dependency caching**
+   * Added a dedicated *ccache* installation / configuration step to `.github/workflows/test.yml`.
+   * Added a second `actions/cache@v3` block targeting `~/.cache/ccache` keyed by architecture and formula hash.
+2. **Workflow enhancements**
+   * Extended formula test step to run an additional `pdf2htmlEX --version` runtime check.
+3. **Documentation & tracking**
+   * Marked `Add dependency caching to speed up CI builds`, `Create v2/README.md`, and `Create v2/scripts/update-version.sh` as complete in `TODO.md`.
+   * Updated `WORK.md` with current iteration details.
+
+### Next immediate targets (queued for next iteration)
+
+Immediate focus for next iteration (Iteration 5):
+
+1. Add small JPEG-containing `sample.pdf` to `testdata/` and hook it into build script functional test.
+2. Begin porting build logic into `v2/Formula/pdf2htmlex.rb` (Phase 2).
+3. Expand README/docs to cover local builder usage & troubleshooting.

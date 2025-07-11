@@ -1,0 +1,8 @@
+Now /report and ensure that all the release steps are performed by the ./release.sh script and then /work on the abovementioned problems and other items from @PLAN.md and @TODO.md , then review reflect refine revise, and then continue to /work on @PLAN.md and @TODO.md until every single item and issue has been fixed. Iterate iterate iterate! Do not stop, do not ask for confirmation. Work!
+
+When you're finishing one task or item, say "Wait, but..." and go on to the next task/item. When you reach the end of the @PLAN.md and @TODO.md, review them again, reflect on what has been done, and then start over with the next iteration. Remember to keep the focus on quality, completeness, and correctness. If you find any issues or areas for improvement, document them in the appropriate files and address them in subsequent iterations.
+
+Ensure that all changes are committed and pushed to the repository, and that the documentation is updated accordingly. After completing the release steps, run tests to verify that everything is functioning as expected. If any issues arise during testing, address them immediately before proceeding with further tasks.
+
+Keep track of your progress in the @TODO.md file, and ensure that all items are addressed in a timely manner. Continue this process until all tasks are completed ─and the project is ready for the next phase of development or release.
+

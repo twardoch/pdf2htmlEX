@@ -9,10 +9,10 @@ class Pdf2htmlex < Formula
   license "GPL-3.0-or-later"
   version "0.18.8.rc1"
 
-  patch do
-    url "file:///Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/patches/pdf2htmlEX-poppler24.patch"
-    sha256 "ae78b70b8d0458985f49027b95474c09ae7b4c6d99ea802126b10d2e6582abf1"
-  end
+  # Upstream source requires a handful of minor patches for compatibility with
+  # newer Poppler releases.  A minimal CMakeLists adjustment is embedded under
+  # __END__.  Additional code-level patches have proven fragile across Poppler
+  # versions and are therefore omitted here.
 
   bottle do
     # Bottles will be added after successful builds

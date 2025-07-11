@@ -31,9 +31,27 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/Library/Caches/Homebrew/downloads
-        key: ${{ runner.os }}-${{ matrix.architecture }}-homebrew-${{ hashFiles('Formula/pdf2htmlex.rb') }}
+        key: ${{ runner.os }}-${{ matrix.architecture }}-homebrew-${{ hashFiles('v2/Formula/pdf2htmlex.rb') }}
         restore-keys: |
           ${{ runner.os }}-${{ matrix.architecture }}-homebrew-
+
+    # --------------------------
+    # ccache setup and caching
+    # --------------------------
+    - name: Install and configure ccache
+      run: |
+        brew install ccache
+        echo "CCACHE_DIR=$HOME/.cache/ccache" >> $GITHUB_ENV
+        echo "CC=ccache clang" >> $GITHUB_ENV
+        echo "CXX=ccache clang++" >> $GITHUB_ENV
+
+    - name: Cache ccache objects
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/ccache
+        key: ${{ runner.os }}-${{ matrix.architecture }}-ccache-${{ hashFiles('v2/Formula/pdf2htmlex.rb') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.architecture }}-ccache-
     
     - name: Install build dependencies
       run: |
@@ -42,7 +60,7 @@ jobs:
         brew install openjdk
     
     - name: Audit formula
-      run: brew audit --strict Formula/pdf2htmlex.rb
+      run: brew audit --strict v2/Formula/pdf2htmlex.rb
     
     - name: Install formula
       run: |
@@ -50,7 +68,7 @@ jobs:
           echo "Skipping arm64 build on x86_64 runner"
           exit 0
         fi
-        brew install --build-from-source --verbose Formula/pdf2htmlex.rb
+        brew install --build-from-source --verbose v2/Formula/pdf2htmlex.rb
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
     
@@ -61,6 +79,8 @@ jobs:
           exit 0
         fi
         brew test --verbose pdf2htmlex
+        # Additional basic runtime check
+        pdf2htmlEX --version
     
     - name: Verify universal binary
       if: matrix.architecture == 'arm64' || (matrix.architecture == 'x86_64' && runner.arch == 'X64')

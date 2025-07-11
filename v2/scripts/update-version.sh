@@ -62,7 +62,11 @@ get_url_for_component() {
             echo "https://github.com/pdf2htmlEX/pdf2htmlEX/archive/v${version}.tar.gz"
             ;;
         jpeg-turbo)
-            echo "https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-${version}.tar.gz"
+            # libjpeg-turbo now publishes official release artefacts on GitHub
+            # rather than SourceForge.  Use the canonical GitHub source archive
+            # so that the formula and the standalone build script stay in
+            # sync and avoid intermittent 404s from the old mirror.
+            echo "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/${version}.tar.gz"
             ;;
         poppler)
             echo "https://poppler.freedesktop.org/poppler-${version}.tar.xz"

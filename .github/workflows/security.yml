@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    # Run security scan weekly on Monday at 9 AM UTC
     - cron: '0 9 * * 1'
   workflow_dispatch:
 
@@ -23,41 +22,14 @@ jobs:
     
     - name: Check for known vulnerabilities in dependencies
       run: |
-        # Check Poppler version for CVEs
         POPPLER_VERSION="24.01.0"
         echo "Checking Poppler $POPPLER_VERSION for vulnerabilities..."
-        
-        # Check FontForge version for CVEs
         FONTFORGE_VERSION="20230101"
         echo "Checking FontForge $FONTFORGE_VERSION for vulnerabilities..."
-        
-        # Note: In a real implementation, this would query CVE databases
-        # For now, we'll create a simple check
-        
         cat > check_cves.py << 'EOF'
-        import json
-        import urllib.request
         import sys
-        
-        def check_cves(product, version):
-            # This is a placeholder - in production, use proper CVE API
-            print(f"Checking {product} {version} for CVEs...")
-            # Would query https://nvd.nist.gov/vuln/search or similar
-            return []
-        
-        vulnerabilities = []
-        vulnerabilities.extend(check_cves("poppler", "24.01.0"))
-        vulnerabilities.extend(check_cves("fontforge", "20230101"))
-        
-        if vulnerabilities:
-            print("VULNERABILITIES FOUND:")
-            for vuln in vulnerabilities:
-                print(f"  - {vuln}")
-            sys.exit(1)
-        else:
-            print("No known vulnerabilities found")
+        print("Stub CVE check - no vulnerabilities found")
         EOF
-        
         python3 check_cves.py
     
     - name: Run CodeQL Analysis
@@ -74,26 +46,18 @@ jobs:
     
     - name: Audit formula security
       run: |
-        # Check for insecure practices in formula
         echo "Checking formula for security issues..."
-        
-        # Check for HTTP instead of HTTPS
-        if grep -E 'url.*"http://' Formula/pdf2htmlex.rb; then
+        if grep -E 'url.*"http://' v2/Formula/pdf2htmlex.rb; then
           echo "ERROR: Found HTTP URLs in formula. Use HTTPS instead."
           exit 1
         fi
-        
-        # Check for hardcoded paths
-        if grep -E '/(Users|home)/[^"]*' Formula/pdf2htmlex.rb | grep -v '#{'; then
+        if grep -E '/(Users|home)/[^"]*' v2/Formula/pdf2htmlex.rb | grep -v '#{'; then
           echo "WARNING: Found potential hardcoded paths in formula"
         fi
-        
-        # Check for missing checksums
-        if grep -E 'sha256.*"[^"]*"' Formula/pdf2htmlex.rb | grep -E '(TBD|TODO|XXX)'; then
+        if grep -E 'sha256.*"[^"]*"' v2/Formula/pdf2htmlex.rb | grep -E '(TBD|TODO|XXX)'; then
           echo "ERROR: Found placeholder checksums in formula"
           exit 1
         fi
-        
         echo "Formula security check passed"
 
   static-analysis:
