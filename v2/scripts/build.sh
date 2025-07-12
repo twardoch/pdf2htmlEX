@@ -92,27 +92,27 @@ LIBGIF_SHA256="be7ffbd057cadebe2aa144542fd90c6838c6a083b5e8a9048b8ee3b66b29d5fb"
 
 BZIP2_VERSION="1.0.8"
 BZIP2_URL="https://sourceware.org/pub/bzip2/bzip2-${BZIP2_VERSION}.tar.gz"
-BZIP2_SHA256="ab5a031827779f6a1181219475d97a6e50cd3bc41b6b65bc4b0f839166559a4b"
+BZIP2_SHA256="ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
 
 BROTLI_VERSION="1.1.0"
 BROTLI_URL="https://github.com/google/brotli/archive/refs/tags/v${BROTLI_VERSION}.tar.gz"
-BROTLI_SHA256="f9e8d81d044590958807486585609906050981793714579867304f66f787576c"
+BROTLI_SHA256="e720a6ca29428b803f4ad165371771f5398faba397edf6778837a18599ea13ff"
 
 EXPAT_VERSION="2.6.2"
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-${EXPAT_VERSION}.tar.xz"
-EXPAT_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+EXPAT_SHA256="ee14b4c5d8908b1bec37ad937607eab183d4d9806a08adee472c3c3121d27364"
 
 HARFBUZZ_VERSION="8.3.0"
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/${HARFBUZZ_VERSION}/harfbuzz-${HARFBUZZ_VERSION}.tar.xz"
-HARFBUZZ_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+HARFBUZZ_SHA256="109501eaeb8bde3eadb25fab4164e993fbace29c3d775bcaa1c1e58e2f15f847"
 
 GETTEXT_VERSION="0.22.5"
 GETTEXT_URL="https://ftp.gnu.org/gnu/gettext/gettext-${GETTEXT_VERSION}.tar.xz"
-GETTEXT_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+GETTEXT_SHA256="fe10c37353213d78a5b83d48af231e005c4da84db5ce88037d88355938259640"
 
 GLIB_VERSION="2.80.0"
 GLIB_URL="https://download.gnome.org/sources/glib/2.80/glib-${GLIB_VERSION}.tar.xz"
-GLIB_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+GLIB_SHA256="8228a92f92a412160b139ae68b6345bd28f24434a7b5af150ebe21ff587a561d"
 
 NSS_VERSION="3.113.1"
 NSS_URL="https://archive.mozilla.org/pub/security/nss/releases/NSS_${NSS_VERSION//./_}_RTM/src/nss-${NSS_VERSION}.tar.gz"
@@ -197,25 +197,38 @@ fetch_and_extract() {
     exit 1
   fi
 
-  # Determine extraction dir name (first path component inside archive)
-  local top_dir
-  case "$filename" in
-    *.tar.gz|*.tgz)  top_dir=$(tar -tzf "$filename" | head -n1 | cut -f1 -d/);;
-    *.tar.xz)        top_dir=$(tar -tJf "$filename" | head -n1 | cut -f1 -d/);;
-    *) echo "Unsupported archive type: $filename" >&2; exit 1;;
-  esac
-
-  local dest="${SRC_DIR}/$top_dir"
-  if [[ ! -d "$dest" ]]; then
-    log "Extracting $(basename "$filename") …"
-    mkdir -p "$SRC_DIR"
+  # Determine extraction dir name
+  local top_dir dest
+  if [[ "$tar_opts" == *"--strip-components=1"* ]]; then
+    # When stripping components, extract to a directory based on the filename
+    top_dir=$(basename "$filename" | sed 's/\.\(tar\.\(gz\|xz\)\|tgz\)$//')
+    dest="${SRC_DIR}/$top_dir"
+    if [[ ! -d "$dest" ]]; then
+      log "Extracting $(basename "$filename") with --strip-components=1 …"
+      mkdir -p "$dest"
+      case "$filename" in
+        *.tar.gz|*.tgz) tar -xzf "$filename" -C "$dest" $tar_opts ;;
+        *.tar.xz)       tar -xJf "$filename" -C "$dest" $tar_opts ;;
+      esac
+    fi
+  else
+    # Determine extraction dir name (first path component inside archive)
     case "$filename" in
-      *.tar.gz|*.tgz) tar -xzf "$filename" -C "$SRC_DIR" $tar_opts ;;
-      *.tar.xz)       tar -xJf "$filename" -C "$SRC_DIR" $tar_opts ;;
+      *.tar.gz|*.tgz)  top_dir=$(tar -tzf "$filename" | head -n1 | cut -f1 -d/);;
+      *.tar.xz)        top_dir=$(tar -tJf "$filename" | head -n1 | cut -f1 -d/);;
+      *) echo "Unsupported archive type: $filename" >&2; exit 1;;
     esac
+    dest="${SRC_DIR}/$top_dir"
+    if [[ ! -d "$dest" ]]; then
+      log "Extracting $(basename "$filename") …"
+      mkdir -p "$SRC_DIR"
+      case "$filename" in
+        *.tar.gz|*.tgz) tar -xzf "$filename" -C "$SRC_DIR" $tar_opts ;;
+        *.tar.xz)       tar -xJf "$filename" -C "$SRC_DIR" $tar_opts ;;
+      esac
+    fi
   fi
   echo "$dest" # return path
-  return 0
   return 0
 }
 
@@ -242,7 +255,7 @@ done
 # 3.  Stage builds                    #
 #####################################
 
-export PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+export PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig:${STAGING_DIR}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
 export CMAKE_PREFIX_PATH="${STAGING_DIR}:${CMAKE_PREFIX_PATH:-}"
 
 # Provide Java for pdf2htmlEX CSS/JS build (ignored if absent)
@@ -422,23 +435,38 @@ if [[ ! -f "${STAGING_DIR}/lib/libbz2.a" ]]; then
     pushd "$bzip2_src" >/dev/null
     
     make clean
-    make -f Makefile-libbz2_so CFLAGS="-arch ${arch} -fPIC"
-    make install PREFIX="${STAGING_DIR}" CFLAGS="-arch ${arch} -fPIC"
+    make CFLAGS="-arch ${arch} -fPIC"
+    make install PREFIX="${STAGING_DIR}"
     
     popd >/dev/null
   done
 
   # Merge *.a static libraries with lipo
-  for arch in "${_arch_array[@]}"; do
-    temp_lib="${STAGING_DIR}/lib/libbz2.a"
-    if [[ -f "${bzip2_src}/libbz2.a" ]]; then
-      if [[ -f "$temp_lib" ]]; then
-        lipo -create "$temp_lib" "${bzip2_src}/libbz2.a" -output "${temp_lib}.universal"
-        mv "${temp_lib}.universal" "$temp_lib"
-      else
-        cp "${bzip2_src}/libbz2.a" "$temp_lib"
-      fi
+  # Merge *.a static libraries with lipo
+  for lib in "${STAGING_DIR}/lib"/*.a; do
+    libname="$(basename "$lib")"
+    universal_lib="${STAGING_DIR}/lib/${libname}"
+    if [[ -f "$universal_lib" ]]; then
+      lipo -create "$universal_lib" "${STAGING_DIR}-${first_arch}/lib/${libname}" -output "${universal_lib}.universal"
+      mv "${universal_lib}.universal" "$universal_lib"
+    else
+      cp "${STAGING_DIR}-${first_arch}/lib/${libname}" "$universal_lib"
     fi
+  done
+  rm -rf "${STAGING_DIR}-${first_arch}"
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    for lib in "${temp_prefix}/lib"/*.a; do
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      if [[ -f "$universal_lib" ]]; then
+        lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
+        mv "${universal_lib}.universal" "$universal_lib"
+      else
+        cp "$lib" "$universal_lib"
+      fi
+    done
+    rm -rf "$temp_prefix"
   done
 
   log "bzip2 universal static libraries created"
@@ -532,6 +560,196 @@ if [[ ! -f "${STAGING_DIR}/lib/libexpat.a" ]]; then
   log "expat universal static libraries created"
 else
   log "expat already built – skipping"
+fi
+
+# ----- 3.1.11 harfbuzz --------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libharfbuzz.a" ]]; then
+  log "Building harfbuzz ${HARFBUZZ_VERSION} (static, universal)"
+  harfbuzz_src=$(fetch_and_extract "$HARFBUZZ_URL" "$HARFBUZZ_SHA256" "--strip-components=1" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling harfbuzz for ${arch}..."
+    mkdir -p "${harfbuzz_src}/build-${arch}"
+    pushd "${harfbuzz_src}/build-${arch}" >/dev/null
+    
+    cmake "$harfbuzz_src" \
+      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+      -DCMAKE_OSX_ARCHITECTURES="${arch}" \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DHB_BUILD_TESTS=OFF \
+      -DHB_BUILD_BENCHMARKS=OFF \
+      -DHB_BUILD_TOOLS=OFF \
+      -DHB_ICU=OFF \
+      -DHB_OLD_ICU=OFF \
+      -DHB_DIRECTWRITE=OFF \
+      -DHB_UNISCRIBE=OFF \
+      -DHB_CORETEXT=ON \
+      -DHB_COCOA=ON \
+      -DHB_GDI=OFF \
+      -DHB_FREETYPE=ON \
+      -DHB_GRAPHITE2=OFF \
+      -DHB_CHAKRA=OFF \
+      -DHB_GLIB=OFF \
+      -DHB_CSHARP=OFF \
+      -DHB_JAVA=OFF \
+      -DHB_JS=OFF \
+      -DHB_PYTHON=OFF \
+      -DHB_UNIX=OFF
+    
+    cmake --build .
+    cmake --install .
+    
+    popd >/dev/null
+  done
+
+  # Merge *.a static libraries with lipo
+  for lib in "${STAGING_DIR}/lib"/*.a; do
+    libname="$(basename "$lib")"
+    universal_lib="${STAGING_DIR}/lib/${libname}"
+    if [[ -f "$universal_lib" ]]; then
+      lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
+      mv "${universal_lib}.universal" "$universal_lib"
+    fi
+  done
+
+  log "harfbuzz universal static libraries created"
+else
+  log "harfbuzz already built – skipping"
+fi
+
+# ----- 3.1.12 gettext ---------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libintl.a" ]]; then
+  log "Building gettext ${GETTEXT_VERSION} (static, universal)"
+  gettext_src=$(fetch_and_extract "$GETTEXT_URL" "$GETTEXT_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling gettext for ${arch}..."
+    pushd "$gettext_src" >/dev/null
+    
+    make clean 2>/dev/null || true
+    CFLAGS="-arch ${arch}" \
+    CXXFLAGS="-arch ${arch}" \
+    ./configure \
+      --prefix="${STAGING_DIR}" \
+      --enable-static \
+      --disable-shared \
+      --disable-java \
+      --disable-native-java \
+      --disable-csharp \
+      --disable-libasprintf \
+      --disable-curses \
+      --without-libiconv-prefix \
+      --without-libintl-prefix \
+      --host="${arch}-apple-darwin"
+    
+    make -j"$(sysctl -n hw.ncpu)"
+    make install
+    popd >/dev/null
+  done
+
+  # Merge *.a static libraries with lipo
+  for arch in "${_arch_array[@]}"; do
+    temp_lib="${STAGING_DIR}/lib/libintl.a"
+    if [[ -f "${STAGING_DIR}-${arch}/lib/libintl.a" ]]; then
+      if [[ -f "$temp_lib" ]]; then
+        lipo -create "$temp_lib" "${STAGING_DIR}-${arch}/lib/libintl.a" -output "${temp_lib}.universal"
+        mv "${temp_lib}.universal" "$temp_lib"
+      else
+        cp "${STAGING_DIR}-${arch}/lib/libintl.a" "$temp_lib"
+      fi
+    fi
+    rm -rf "${STAGING_DIR}-${arch}"
+  done
+
+  log "gettext universal static libraries created"
+else
+  log "gettext already built – skipping"
+fi
+
+# ----- 3.1.13 glib ------------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libglib-2.0.a" ]]; then
+  log "Building glib ${GLIB_VERSION} (static, universal)"
+  glib_src=$(fetch_and_extract "$GLIB_URL" "$GLIB_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling glib for ${arch}..."
+    mkdir -p "${glib_src}/build-${arch}"
+    pushd "${glib_src}/build-${arch}" >/dev/null
+    
+    # Create a temporary cross-file for universal macOS build
+    CROSS_FILE="${BUILD_DIR}/glib_cross_file.txt"
+    cat > "${CROSS_FILE}" << EOF
+[binaries]
+c = 'clang'
+cpp = 'clang++'
+ar = 'ar'
+strip = 'strip'
+pkgconfig = 'pkg-config'
+lipo = 'lipo'
+
+[host_machine]
+system = 'darwin'
+cpu_family = 'aarch64'
+cpu = 'arm64'
+
+[properties]
+c_args = ['-arch', 'x86_64', '-arch', 'arm64']
+cpp_args = ['-arch', 'x86_64', '-arch', 'arm64']
+EOF
+
+    meson setup . \
+      --prefix="${STAGING_DIR}" \
+      --default-library=static \
+      --buildtype=release \
+      --cross-file "${CROSS_FILE}" \
+      -Dinternal_pcre=true \
+      -Dlibmount=disabled \
+      -Dfam=disabled \
+      -Dgio_snprintf=false \
+      -Dbsd_functions=false \
+      -Dtests=false \
+      -Dinstalled_tests=false \
+      -Dselinux=disabled \
+      -Dgtk_doc=false \
+      -Dman=false \
+      -Dinstalled_update_resources=false \
+      -Dglib_assert=false \
+      -Dglib_debug=false \
+      -Dmem_profiler=false \
+      -Dsystemtap=disabled \
+      -Ddtrace=disabled \
+      -Dlibelf=disabled \
+      -Dlibiconv=enabled \
+      -Dlibintl=enabled
+    
+    meson compile -C . -j $(sysctl -n hw.ncpu)
+    meson install -C .
+    
+    popd >/dev/null
+  done
+
+  # Merge *.a static libraries with lipo
+  for lib in "${STAGING_DIR}/lib"/*.a; do
+    libname="$(basename "$lib")"
+    universal_lib="${STAGING_DIR}/lib/${libname}"
+    if [[ -f "$universal_lib" ]]; then
+      lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
+      mv "${universal_lib}.universal" "$universal_lib"
+    fi
+  done
+
+  log "glib universal static libraries created"
+else
+  log "glib already built – skipping"
 fi
 
 # ----- 3.1.7 libdeflate -------------------------------------------------------

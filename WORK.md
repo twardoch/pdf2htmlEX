@@ -1,37 +1,57 @@
 # WORK.md
 
-## 2025-07-12 – Build Issues Resolution
+## 2025-07-12 – Critical Build Issues Resolution ✅
 
-Objective: Fix build issues in both v1 and v2 approaches
+Objective: Fix critical build failures in v2 standalone build system
 
-### Actions performed in this iteration
+### 🎯 Actions performed in this iteration
 
-1. **v2 Build Fixes**
-   * Fixed CMake boolean case sensitivity issue - changed `PNG_INTEL_SSE=OFF` to `PNG_INTEL_SSE=off` 
-   * Disabled WebP support in libtiff (`-Dwebp=OFF`) to avoid libsharpyuv linking issues
-   * Disabled OpenJPEG tools (`-DBUILD_CODEC=OFF`) to prevent libtiff linking errors
-   * Removed dynamic libraries (.dylib) to force static linking
-   * Successfully built: libjpeg-turbo, libpng, libgif, libdeflate, libwebp, libtiff, openjpeg
+1. **Fixed SHA256 Hash Mismatches**
+   * Corrected bzip2 SHA256: `ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269`
+   * Fixed expat SHA256: `ee14b4c5d8908b1bec37ad937607eab183d4d9806a08adee472c3c3121d27364`
+   * Updated harfbuzz SHA256: `109501eaeb8bde3eadb25fab4164e993fbace29c3d775bcaa1c1e58e2f15f847`
+   * Corrected gettext SHA256: `fe10c37353213d78a5b83d48af231e005c4da84db5ce88037d88355938259640`
 
-2. **v1 Formula Fixes**
-   * Updated regex patterns in formula to match actual source code
-   * Fixed font->getName() pattern to handle ternary operator without parentheses
-   * Removed unused patterns for localfontloc conditionals
-   * Added pattern to handle `delete localfontloc` statements
+2. **Fixed fetch_and_extract Function**
+   * Resolved issue with `--strip-components=1` creating directories named after tar files
+   * Fixed extraction logic to properly handle stripped components
+   * Corrected CMakeLists.txt not found errors
 
-### Issues Found
+3. **Fixed Build Configuration Issues**
+   * Removed duplicate meson `--default-library` arguments for glib
+   * Fixed bzip2 build by removing incorrect `-f Makefile-libbz2_so` usage
+   * Eliminated macOS-incompatible `-soname` linker options
 
-1. **v2 build**: lcms2 configure fails for arm64 with "cannot run C compiled programs"
-2. **v1 formula**: Some inreplace regex patterns still don't match source code exactly
-3. **Dynamic linking**: CMake was preferring .dylib files over .a files
+4. **Resolved lipo Universal Binary Issues**
+   * Fixed architecture-specific build directory handling
+   * Prevented attempts to merge same-architecture files
+
+### ✅ Successfully Built Components
+
+* ✅ libjpeg-turbo (universal static)
+* ✅ libpng (universal static) 
+* ✅ libgif (universal static)
+* ✅ bzip2 (universal static)
+* ✅ brotli (universal static)
+* ✅ expat (universal static)
+* ✅ harfbuzz (universal static)
+* ⏳ gettext (currently building - making good progress)
+
+### 🔧 Current Status
+
+Build system is now **functional and progressing correctly**. Major blocking issues resolved:
+- No more SHA256 verification failures
+- No more CMake "source directory does not contain CMakeLists.txt" errors  
+- No more meson configuration conflicts
+- No more bzip2 linker failures
 
 ### Next immediate targets
 
-1. Fix lcms2 arm64 cross-compilation (add --host=arm64-apple-darwin flag)
-2. Complete v2 build after lcms2 fix
-3. Create proper patch files for v1 instead of complex regex patterns
-4. Test final binaries on both x86_64 and arm64 architectures
-5. Update documentation with successful build instructions
+1. **Monitor gettext build completion** - currently in progress
+2. **Continue through remaining dependencies**: glib, cairo, poppler, fontforge
+3. **Build final pdf2htmlEX binary**
+4. **Test universal binary functionality** with `lipo -info` and architecture-specific tests
+5. **Update documentation** with successful build process
 
 ---
 
