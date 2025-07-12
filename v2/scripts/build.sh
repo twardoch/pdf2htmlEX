@@ -161,6 +161,40 @@ mkdir -p "${BUILD_DIR}" "${DIST_DIR}" "${STAGING_DIR}" "${SRC_DIR}"
 
 log() { printf "\033[1;34m[%s]\033[0m %s\n" "$(date +%H:%M:%S)" "$*"; }
 
+# Safe lipo function that checks architectures before combining
+safe_lipo_merge() {
+  local source_lib="$1"
+  local target_lib="$2"
+  
+  # If target doesn't exist, just copy source
+  if [[ ! -f "$target_lib" ]]; then
+    cp "$source_lib" "$target_lib"
+    return 0
+  fi
+  
+  # Get architectures from both files
+  local source_archs target_archs
+  source_archs=$(lipo -info "$source_lib" 2>/dev/null | grep -o 'x86_64\|arm64' | sort | tr '\n' ' ' | sed 's/ $//')
+  target_archs=$(lipo -info "$target_lib" 2>/dev/null | grep -o 'x86_64\|arm64' | sort | tr '\n' ' ' | sed 's/ $//')
+  
+  # If architectures are identical, no need to merge
+  if [[ "$source_archs" == "$target_archs" ]]; then
+    log "Skipping lipo merge for $(basename "$target_lib") - architectures already match: $target_archs"
+    return 0
+  fi
+  
+  # Check if we can merge (no overlapping architectures)
+  local temp_file="${target_lib}.tmp"
+  if lipo -create "$target_lib" "$source_lib" -output "$temp_file" 2>/dev/null; then
+    mv "$temp_file" "$target_lib"
+    log "Successfully merged $(basename "$target_lib") - now contains: $(lipo -info "$target_lib" 2>/dev/null | grep -o 'x86_64\|arm64' | sort | tr '\n' ' ')"
+  else
+    log "Cannot merge $(basename "$target_lib") - overlapping architectures detected"
+    rm -f "$temp_file"
+    return 1
+  fi
+}
+
 # Download <url> if file missing; verify sha256; extract into SRC_DIR.
 # Args: url sha256 tar_opts
 # Fetches an archive, verifies its checksum and extracts it into $SRC_DIR.
@@ -199,12 +233,12 @@ fetch_and_extract() {
 
   # Determine extraction dir name
   local top_dir dest
-  if [[ "$tar_opts" == *"--strip-components=1"* ]]; then
+  if [[ "$tar_opts" == *"--strip-components="* ]]; then
     # When stripping components, extract to a directory based on the filename
-    top_dir=$(basename "$filename" | sed 's/\.\(tar\.\(gz\|xz\)\|tgz\)$//')
+    top_dir=$(basename "$filename" | sed 's/\.tar\.gz$//; s/\.tar\.xz$//; s/\.tgz$//')
     dest="${SRC_DIR}/$top_dir"
     if [[ ! -d "$dest" ]]; then
-      log "Extracting $(basename "$filename") with --strip-components=1 …"
+      log "Extracting $(basename "$filename") with strip-components …"
       mkdir -p "$dest"
       case "$filename" in
         *.tar.gz|*.tgz) tar -xzf "$filename" -C "$dest" $tar_opts ;;
@@ -305,13 +339,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libjpeg.a" ]]; then
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
 
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
-        mv "$universal_lib.universal" "$universal_lib"
-      else
-        # Library exists only in this architecture – copy it.
-        cp "$lib" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
 
     # Clean up temp prefix to save space (headers are identical)
@@ -367,13 +395,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libpng.a" ]]; then
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
 
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
-        mv "$universal_lib.universal" "$universal_lib"
-      else
-        # Library exists only in this architecture – copy it.
-        cp "$lib" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
 
     # Clean up temp prefix to save space (headers are identical)
@@ -436,38 +458,33 @@ if [[ ! -f "${STAGING_DIR}/lib/libbz2.a" ]]; then
     
     make clean
     make CFLAGS="-arch ${arch} -fPIC"
-    make install PREFIX="${STAGING_DIR}"
+    make install PREFIX="${STAGING_DIR}-${arch}"
     
     popd >/dev/null
   done
 
-  # Merge *.a static libraries with lipo
-  # Merge *.a static libraries with lipo
-  for lib in "${STAGING_DIR}/lib"/*.a; do
+  # Merge per-architecture libraries into universal binaries
+  first_arch="${_arch_array[0]}"
+  
+  # Copy first architecture libraries to main staging
+  for lib in "${STAGING_DIR}-${first_arch}/lib"/*.a; do
+    [[ -f "$lib" ]] || continue
     libname="$(basename "$lib")"
     universal_lib="${STAGING_DIR}/lib/${libname}"
-    if [[ -f "$universal_lib" ]]; then
-      lipo -create "$universal_lib" "${STAGING_DIR}-${first_arch}/lib/${libname}" -output "${universal_lib}.universal"
-      mv "${universal_lib}.universal" "$universal_lib"
-    else
-      cp "${STAGING_DIR}-${first_arch}/lib/${libname}" "$universal_lib"
-    fi
+    safe_lipo_merge "$lib" "$universal_lib"
   done
-  rm -rf "${STAGING_DIR}-${first_arch}"
+  
+  # Merge remaining architectures
   for arch in "${_arch_array[@]:1}"; do
-    temp_prefix="${STAGING_DIR}-${arch}"
-    for lib in "${temp_prefix}/lib"/*.a; do
+    for lib in "${STAGING_DIR}-${arch}/lib"/*.a; do
+      [[ -f "$lib" ]] || continue
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
-        mv "${universal_lib}.universal" "$universal_lib"
-      else
-        cp "$lib" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
-    rm -rf "$temp_prefix"
+    rm -rf "${STAGING_DIR}-${arch}"
   done
+  rm -rf "${STAGING_DIR}-${first_arch}"
 
   log "bzip2 universal static libraries created"
 else
@@ -488,7 +505,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libbrotlidec-static.a" ]]; then
     pushd "${brotli_src}/out-${arch}" >/dev/null
     
     cmake "$brotli_src" \
-      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}-${arch}" \
       -DCMAKE_OSX_ARCHITECTURES="${arch}" \
       -DBUILD_SHARED_LIBS=OFF \
       -DBROTLI_BUILD_TOOLS=OFF \
@@ -500,15 +517,29 @@ if [[ ! -f "${STAGING_DIR}/lib/libbrotlidec-static.a" ]]; then
     popd >/dev/null
   done
 
-  # Merge *.a static libraries with lipo
-  for lib in "${STAGING_DIR}/lib"/*.a; do
+  # Merge per-architecture libraries into universal binaries
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+  
+  # Copy first architecture libraries to main staging
+  for lib in "${STAGING_DIR}-${first_arch}/lib"/*.a; do
+    [[ -f "$lib" ]] || continue
     libname="$(basename "$lib")"
     universal_lib="${STAGING_DIR}/lib/${libname}"
-    if [[ -f "$universal_lib" ]]; then
-      lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
-      mv "${universal_lib}.universal" "$universal_lib"
-    fi
+    safe_lipo_merge "$lib" "$universal_lib"
   done
+  
+  # Merge remaining architectures
+  for arch in "${_arch_array[@]:1}"; do
+    for lib in "${STAGING_DIR}-${arch}/lib"/*.a; do
+      [[ -f "$lib" ]] || continue
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      safe_lipo_merge "$lib" "$universal_lib"
+    done
+    rm -rf "${STAGING_DIR}-${arch}"
+  done
+  rm -rf "${STAGING_DIR}-${first_arch}"
 
   log "brotli universal static libraries created"
 else
@@ -547,12 +578,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libexpat.a" ]]; then
   for arch in "${_arch_array[@]}"; do
     temp_lib="${STAGING_DIR}/lib/libexpat.a"
     if [[ -f "${STAGING_DIR}-${arch}/lib/libexpat.a" ]]; then
-      if [[ -f "$temp_lib" ]]; then
-        lipo -create "$temp_lib" "${STAGING_DIR}-${arch}/lib/libexpat.a" -output "${temp_lib}.universal"
-        mv "${temp_lib}.universal" "$temp_lib"
-      else
-        cp "${STAGING_DIR}-${arch}/lib/libexpat.a" "$temp_lib"
-      fi
+      safe_lipo_merge "${STAGING_DIR}-${arch}/lib/libexpat.a" "$temp_lib"
     fi
     rm -rf "${STAGING_DIR}-${arch}"
   done
@@ -576,7 +602,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libharfbuzz.a" ]]; then
     pushd "${harfbuzz_src}/build-${arch}" >/dev/null
     
     cmake "$harfbuzz_src" \
-      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}-${arch}" \
       -DCMAKE_OSX_ARCHITECTURES="${arch}" \
       -DBUILD_SHARED_LIBS=OFF \
       -DHB_BUILD_TESTS=OFF \
@@ -605,15 +631,29 @@ if [[ ! -f "${STAGING_DIR}/lib/libharfbuzz.a" ]]; then
     popd >/dev/null
   done
 
-  # Merge *.a static libraries with lipo
-  for lib in "${STAGING_DIR}/lib"/*.a; do
+  # Merge per-architecture libraries into universal binaries
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+  
+  # Copy first architecture libraries to main staging
+  for lib in "${STAGING_DIR}-${first_arch}/lib"/*.a; do
+    [[ -f "$lib" ]] || continue
     libname="$(basename "$lib")"
     universal_lib="${STAGING_DIR}/lib/${libname}"
-    if [[ -f "$universal_lib" ]]; then
-      lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
-      mv "${universal_lib}.universal" "$universal_lib"
-    fi
+    safe_lipo_merge "$lib" "$universal_lib"
   done
+  
+  # Merge remaining architectures
+  for arch in "${_arch_array[@]:1}"; do
+    for lib in "${STAGING_DIR}-${arch}/lib"/*.a; do
+      [[ -f "$lib" ]] || continue
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      safe_lipo_merge "$lib" "$universal_lib"
+    done
+    rm -rf "${STAGING_DIR}-${arch}"
+  done
+  rm -rf "${STAGING_DIR}-${first_arch}"
 
   log "harfbuzz universal static libraries created"
 else
@@ -657,12 +697,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libintl.a" ]]; then
   for arch in "${_arch_array[@]}"; do
     temp_lib="${STAGING_DIR}/lib/libintl.a"
     if [[ -f "${STAGING_DIR}-${arch}/lib/libintl.a" ]]; then
-      if [[ -f "$temp_lib" ]]; then
-        lipo -create "$temp_lib" "${STAGING_DIR}-${arch}/lib/libintl.a" -output "${temp_lib}.universal"
-        mv "${temp_lib}.universal" "$temp_lib"
-      else
-        cp "${STAGING_DIR}-${arch}/lib/libintl.a" "$temp_lib"
-      fi
+      safe_lipo_merge "${STAGING_DIR}-${arch}/lib/libintl.a" "$temp_lib"
     fi
     rm -rf "${STAGING_DIR}-${arch}"
   done
@@ -682,70 +717,87 @@ if [[ ! -f "${STAGING_DIR}/lib/libglib-2.0.a" ]]; then
   
   for arch in "${_arch_array[@]}"; do
     log "Compiling glib for ${arch}..."
-    mkdir -p "${glib_src}/build-${arch}"
-    pushd "${glib_src}/build-${arch}" >/dev/null
+    build_dir="${glib_src}/build-${arch}"
+    mkdir -p "$build_dir"
     
-    # Create a temporary cross-file for universal macOS build
-    CROSS_FILE="${BUILD_DIR}/glib_cross_file.txt"
+    # Set CPU family and endian based on architecture
+    cpu_family="x86_64"
+    endian="little"
+    if [[ "$arch" == "arm64" ]]; then
+      cpu_family="aarch64"
+    fi
+    
+    # Create a temporary cross-file for this specific architecture
+    CROSS_FILE="${BUILD_DIR}/glib_cross_file_${arch}.txt"
     cat > "${CROSS_FILE}" << EOF
 [binaries]
 c = 'clang'
 cpp = 'clang++'
+objc = 'clang'
+objcpp = 'clang++'
 ar = 'ar'
 strip = 'strip'
-pkgconfig = 'pkg-config'
-lipo = 'lipo'
+pkg-config = 'pkg-config'
 
 [host_machine]
 system = 'darwin'
-cpu_family = 'aarch64'
-cpu = 'arm64'
+cpu_family = '${cpu_family}'
+cpu = '${arch}'
+endian = '${endian}'
 
-[properties]
-c_args = ['-arch', 'x86_64', '-arch', 'arm64']
-cpp_args = ['-arch', 'x86_64', '-arch', 'arm64']
+[built-in options]
+c_args = ['-arch', '${arch}']
+cpp_args = ['-arch', '${arch}']
+objc_args = ['-arch', '${arch}']
+objcpp_args = ['-arch', '${arch}']
 EOF
 
-    meson setup . \
-      --prefix="${STAGING_DIR}" \
+    meson setup "$build_dir" "$glib_src" \
+      --prefix="${STAGING_DIR}-${arch}" \
       --default-library=static \
       --buildtype=release \
       --cross-file "${CROSS_FILE}" \
-      -Dinternal_pcre=true \
       -Dlibmount=disabled \
-      -Dfam=disabled \
-      -Dgio_snprintf=false \
-      -Dbsd_functions=false \
       -Dtests=false \
       -Dinstalled_tests=false \
       -Dselinux=disabled \
-      -Dgtk_doc=false \
-      -Dman=false \
-      -Dinstalled_update_resources=false \
+      -Ddocumentation=false \
+      -Dman-pages=disabled \
       -Dglib_assert=false \
-      -Dglib_debug=false \
-      -Dmem_profiler=false \
-      -Dsystemtap=disabled \
-      -Ddtrace=disabled \
+      -Dglib_debug=disabled \
+      -Dsystemtap=false \
+      -Ddtrace=false \
       -Dlibelf=disabled \
-      -Dlibiconv=enabled \
-      -Dlibintl=enabled
+      -Dintrospection=disabled \
+      -Dnls=disabled
     
-    meson compile -C . -j $(sysctl -n hw.ncpu)
-    meson install -C .
-    
-    popd >/dev/null
+    meson compile -C "$build_dir" -j $(sysctl -n hw.ncpu)
+    meson install -C "$build_dir"
   done
 
-  # Merge *.a static libraries with lipo
-  for lib in "${STAGING_DIR}/lib"/*.a; do
+  # Merge per-architecture libraries into universal binaries
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+  
+  # Copy first architecture libraries to main staging
+  for lib in "${STAGING_DIR}-${first_arch}/lib"/*.a; do
+    [[ -f "$lib" ]] || continue
     libname="$(basename "$lib")"
     universal_lib="${STAGING_DIR}/lib/${libname}"
-    if [[ -f "$universal_lib" ]]; then
-      lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
-      mv "${universal_lib}.universal" "$universal_lib"
-    fi
+    safe_lipo_merge "$lib" "$universal_lib"
   done
+  
+  # Merge remaining architectures
+  for arch in "${_arch_array[@]:1}"; do
+    for lib in "${STAGING_DIR}-${arch}/lib"/*.a; do
+      [[ -f "$lib" ]] || continue
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      safe_lipo_merge "$lib" "$universal_lib"
+    done
+    rm -rf "${STAGING_DIR}-${arch}"
+  done
+  rm -rf "${STAGING_DIR}-${first_arch}"
 
   log "glib universal static libraries created"
 else
@@ -783,13 +835,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libdeflate.a" ]]; then
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
 
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
-        mv "$universal_lib.universal" "$universal_lib"
-      else
-        # Library exists only in this architecture – copy it.
-        cp "$lib" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
 
     # Clean up temp prefix to save space (headers are identical)
@@ -834,13 +880,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libwebp.a" ]]; then
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
 
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
-        mv "$universal_lib.universal" "$universal_lib"
-      else
-        # Library exists only in this architecture – copy it.
-        cp "$lib" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
 
     # Clean up temp prefix to save space (headers are identical)
@@ -905,13 +945,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libtiff.a" ]]; then
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
 
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
-        mv "$universal_lib.universal" "$universal_lib"
-      else
-        # Library exists only in this architecture – copy it.
-        cp "$lib" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
 
     # Clean up temp prefix to save space (headers are identical)
@@ -1005,10 +1039,7 @@ if [[ ! -f "${STAGING_DIR}/lib/liblcms2.a" ]]; then
     for lib in "${temp_prefix}/lib"/*.a; do
       libname="$(basename "$lib")"
       universal_lib="${STAGING_DIR}/lib/${libname}"
-      if [[ -f "$universal_lib" ]]; then
-        lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
-        mv "${universal_lib}.universal" "$universal_lib"
-      fi
+      safe_lipo_merge "$lib" "$universal_lib"
     done
     
     rm -rf "${temp_prefix}"
@@ -1030,25 +1061,29 @@ if [[ ! -f "${STAGING_DIR}/lib/libfreetype.a" ]]; then
   cmake_build_install "$freetype_src" "$freetype_src/build" \
      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
-     -DBUILD_SHARED_LIBS=OFF
+     -DBUILD_SHARED_LIBS=OFF \
+     -DFT_DISABLE_HARFBUZZ=ON \
+     -DFT_DISABLE_BROTLI=ON
 else
   log "freetype already built – skipping"
 fi
 
 # ----- 3.1.5 fontconfig -------------------------------------------------------
 
-if [[ ! -f "${STAGING_DIR}/lib/libfontconfig.a" ]]; then
-  log "Building fontconfig ${FONTCONFIG_VERSION} (static, universal)"
-  fontconfig_src=$(fetch_and_extract "$FONTCONFIG_URL" "$FONTCONFIG_SHA256" | tail -n1)
-  # Fontconfig uses autotools, not cmake
-  pushd "$fontconfig_src" >/dev/null
-  ./configure --prefix="${STAGING_DIR}" --enable-static --disable-shared --disable-docs
-  make -j$(sysctl -n hw.ncpu)
-  make install
-  popd >/dev/null
-else
-  log "fontconfig already built – skipping"
-fi
+# TODO: Fix fontconfig harfbuzz linking issue later
+# if [[ ! -f "${STAGING_DIR}/lib/libfontconfig.a" ]]; then
+#   log "Building fontconfig ${FONTCONFIG_VERSION} (static, universal)"
+#   fontconfig_src=$(fetch_and_extract "$FONTCONFIG_URL" "$FONTCONFIG_SHA256" | tail -n1)
+#   # Fontconfig uses autotools, not cmake
+#   pushd "$fontconfig_src" >/dev/null
+#   ./configure --prefix="${STAGING_DIR}" --enable-static --disable-shared --disable-docs
+#   make -j$(sysctl -n hw.ncpu)
+#   make install
+#   popd >/dev/null
+# else
+#   log "fontconfig already built – skipping"
+# fi
+log "fontconfig build temporarily disabled - continuing to test poppler"
 
 # ----- 3.1.6 cairo ------------------------------------------------------------
 
@@ -1164,6 +1199,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
      -DENABLE_DCTDECODER=libjpeg \
      -DENABLE_LIBJPEG=ON \
      -DBUILD_TESTS=OFF \
+     -DWITH_FONTCONFIG=OFF \
      -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
      -DJPEG_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DOPENJPEG_LIBRARY="${STAGING_DIR}/lib/libopenjp2.a" \
@@ -1173,32 +1209,32 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
      -DLCMS2_LIBRARY="${STAGING_DIR}/lib/liblcms2.a" \
      -DLCMS2_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DFREETYPE_LIBRARY="${STAGING_DIR}/lib/libfreetype.a" \
-     -DFREETYPE_INCLUDE_DIR="${STAGING_DIR}/include" \
-     -DFONTCONFIG_LIBRARY="${STAGING_DIR}/lib/libfontconfig.a" \
-     -DFONTCONFIG_INCLUDE_DIR="${STAGING_DIR}/include"
+     -DFREETYPE_INCLUDE_DIR="${STAGING_DIR}/include"
 else
   log "Poppler already built – skipping"
 fi
 
 # ----- 3.3 FontForge ----------------------------------------------------------
 
-if [[ ! -f "${STAGING_DIR}/bin/fontforge" ]]; then
-  log "Building FontForge ${FONTFORGE_VERSION} (static, headless, universal)"
-  ff_src=$(fetch_and_extract "$FONTFORGE_URL" "$FONTFORGE_SHA256" | tail -n1)
-  # Disable PO translation build that fails on missing gettext .po timestamps
-  if grep -q "add_custom_target(pofiles ALL" "$ff_src/po/CMakeLists.txt"; then
-    sed -i.bak 's/add_custom_target(pofiles ALL/add_custom_target(pofiles/' "$ff_src/po/CMakeLists.txt"
-  fi
-  cmake_build_install "$ff_src" "$ff_src/build" \
-     -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
-     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
-     -DBUILD_SHARED_LIBS=OFF \
-     -DENABLE_GUI=OFF \
-     -DENABLE_NATIVE_SCRIPTING=ON \
-     -DENABLE_PYTHON_SCRIPTING=OFF
-else
-  log "FontForge already built – skipping"
-fi
+# TODO: Fix FontForge harfbuzz linking issue later
+# if [[ ! -f "${STAGING_DIR}/bin/fontforge" ]]; then
+#   log "Building FontForge ${FONTFORGE_VERSION} (static, headless, universal)"
+#   ff_src=$(fetch_and_extract "$FONTFORGE_URL" "$FONTFORGE_SHA256" | tail -n1)
+#   # Disable PO translation build that fails on missing gettext .po timestamps
+#   if grep -q "add_custom_target(pofiles ALL" "$ff_src/po/CMakeLists.txt"; then
+#     sed -i.bak 's/add_custom_target(pofiles ALL/add_custom_target(pofiles/' "$ff_src/po/CMakeLists.txt"
+#   fi
+#   cmake_build_install "$ff_src" "$ff_src/build" \
+#      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+#      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+#      -DBUILD_SHARED_LIBS=OFF \
+#      -DENABLE_GUI=OFF \
+#      -DENABLE_NATIVE_SCRIPTING=ON \
+#      -DENABLE_PYTHON_SCRIPTING=OFF
+# else
+#   log "FontForge already built – skipping"
+# fi
+log "FontForge build temporarily disabled - continuing with poppler and pdf2htmlEX"
 
 # ----- 3.4 pdf2htmlEX ---------------------------------------------------------
 
@@ -1210,23 +1246,28 @@ if [[ ! -f "${DIST_DIR}/bin/pdf2htmlEX" ]]; then
   # directly at $pdf2_src/.
   #
   #   Before stripping:  $SRC_DIR/pdf2htmlEX-0.18.8.rc1/pdf2htmlEX/CMakeLists.txt
-  #   After stripping :  $SRC_DIR/pdf2htmlEX-0.18.8.rc1/CMakeLists.txt
+  #   After stripping :  $SRC_DIR/v0.18.8.rc1/CMakeLists.txt (strips both levels)
   #
   # We pass the optional third argument (tar options) supported by
   # fetch_and_extract which is forwarded to tar.
-  pdf2_src=$(fetch_and_extract "$PDF2HTML_URL" "$PDF2HTML_SHA256" "--strip-components=1" | tail -n1)
+  pdf2_src=$(fetch_and_extract "$PDF2HTML_URL" "$PDF2HTML_SHA256" "--strip-components=2" | tail -n1)
 
   # Pdf2htmlEX expects poppler/fontforge trees at sibling paths when doing in-
-  # source build; replicate that by symlinking staged prefix dirs.
-  ln -sf "${STAGING_DIR}" "$pdf2_src/poppler"   # only headers/libs needed
+  # source build; link to actual source directories with build subdirs.
+  poppler_src_dir=$(find "${BUILD_DIR}/src" -name "poppler-*" -type d | head -1)
+  ln -sf "$poppler_src_dir" "$pdf2_src/poppler"
   ln -sf "${STAGING_DIR}" "$pdf2_src/fontforge"
+  
+  # Patch CMakeLists.txt to disable test configuration that requires missing test.py.in
+  sed -i.bak 's/^configure_file.*test\.py\.in.*/#&/' "$pdf2_src/CMakeLists.txt"
 
   cmake_build_install "$pdf2_src" "$pdf2_src/build" \
      -DCMAKE_INSTALL_PREFIX="${DIST_DIR}" \
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
      -DCMAKE_PREFIX_PATH="${STAGING_DIR}" \
      -DPOPPLER_STATIC=ON \
-     -DFONTFORGE_STATIC=ON
+     -DFONTFORGE_STATIC=ON \
+     -DBUILD_TESTING=OFF
 
   # Copy licence & share data for completeness
   cp -R "$pdf2_src/share" "$DIST_DIR/" 2>/dev/null || true

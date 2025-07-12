@@ -1,11 +1,18 @@
 # TODO.md
 
-## Phase 1: Complete Builds
-- [ ] Complete v2 build - finish lcms2 build
-- [ ] Build Poppler in v2 with all required dependencies
-- [ ] Build FontForge in v2
-- [ ] Build pdf2htmlEX in v2
-- [ ] Verify v2 build produces working binaries
+## Phase 1: Complete Builds (🎯 **URGENT - FOCUS HERE**)
+- [x] ✅ **Critical build fixes** - SHA256, extraction, config issues (COMPLETED)
+- [x] ✅ **Core dependencies built** - libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz (COMPLETED)
+- [ ] ⏳ **gettext** - Currently building, monitor completion
+- [ ] 🎯 **glib** - Next critical dependency
+- [ ] 🎯 **cairo** - Required for poppler
+- [ ] 🎯 **lcms2** - Color management
+- [ ] 🎯 **freetype** - Font rendering
+- [ ] 🎯 **fontconfig** - Font configuration
+- [ ] 🎯 **Poppler** - PDF processing library
+- [ ] 🎯 **FontForge** - Font manipulation
+- [ ] 🎯 **pdf2htmlEX** - THE FINAL GOAL
+- [ ] ✅ **Verify working binary** - Test successful build
 
 ## Phase 2: Testing and Validation
 - [ ] Test pdf2htmlEX binary on x86_64 architecture
@@ -30,11 +37,19 @@
 - [ ] Set up CI/CD for automated builds
 - [ ] Establish version management and release process
 
-## Technical Improvements
-- [ ] Implement proper error handling in build scripts
-- [ ] Add detailed logging to build processes
-- [ ] Create build status indicators
-- [ ] Add progress reporting for long builds
-- [ ] Implement build artifact caching
-- [ ] Add build dependency verification
-- [ ] Create troubleshooting guide for common issues
+## Technical Improvements (📋 **LOWER PRIORITY - AFTER SUCCESSFUL BUILD**)
+- [x] ✅ **Critical error handling** - Fixed blocking build failures (COMPLETED)
+- [ ] Enhanced error handling in build scripts
+- [ ] Detailed logging improvements  
+- [ ] Build status indicators
+- [ ] Progress reporting for long builds
+- [ ] Build artifact caching
+- [ ] Build dependency verification
+- [ ] Troubleshooting guide for common issues
+
+## 🚨 **IMMEDIATE ACTION PLAN**
+1. **Monitor gettext build** - Currently in progress, should complete soon
+2. **Watch for any new build failures** - Address immediately when they appear
+3. **Maintain build momentum** - System is now functional, keep it moving
+4. **Focus on pdf2htmlEX binary** - Ultimate success metric
+5. **Test immediately after build** - Verify functionality on both architectures

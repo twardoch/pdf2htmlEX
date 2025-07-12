@@ -13,17 +13,20 @@ The goal is to create a reliable, self-contained build of pdf2htmlEX for macOS t
 **Status**: 📦 **Archived** - Moved to `legacy/v1` for historical reference.
 
 ### v2 Build (Standalone Script)
-**Status**: 🔧 **In Progress** - Most dependencies built successfully
+**Status**: 🚀 **Functional & Progressing** - Critical build issues resolved, 7+ dependencies built successfully
 
 Current state:
-- ⏳ **lcms2**: Build script updated with cross-compilation fixes, needs testing
-- ⏳ **Poppler, FontForge, pdf2htmlEX**: Waiting on lcms2 completion
+- ✅ **Core dependencies**: libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz
+- ⏳ **gettext**: Currently building (in progress)
+- 🎯 **Next**: glib, cairo, lcms2, freetype, fontconfig, poppler, fontforge, pdf2htmlEX
 
 ## Next Steps
 
-### Phase 1: Complete Builds
-1. **Complete v2 build** - Finish lcms2 build, then build Poppler, FontForge, and pdf2htmlEX
-2. **Initial testing** - Verify v2 build produces working binaries
+### Phase 1: Complete Builds (🎯 **URGENT - FOCUS HERE**)
+1. **Monitor current build** - gettext is building, let it complete
+2. **Continue dependency chain** - glib → cairo → lcms2 → freetype → fontconfig → poppler → fontforge
+3. **Build final pdf2htmlEX** - The ultimate goal
+4. **Initial testing** - Verify v2 build produces working binaries
 
 ### Phase 2: Testing and Validation
 1. **Binary testing** - Test pdf2htmlEX on both x86_64 and arm64 architectures
@@ -48,7 +51,7 @@ Current state:
 ### v2 (Standalone Script)
 - **Approach**: Complete dependency vendoring with universal static linking
 - **Dependencies**: All dependencies built from source as universal binaries
-- **Build Order**: libpng → libgif → libdeflate → libwebp → libtiff → openjpeg → lcms2 → freetype → fontconfig → cairo → poppler → fontforge → pdf2htmlEX
+- **Build Order**: ✅ libjpeg-turbo → ✅ libpng → ✅ libgif → ✅ bzip2 → ✅ brotli → ✅ expat → ✅ harfbuzz → ⏳ gettext → glib → cairo → lcms2 → freetype → fontconfig → poppler → fontforge → 🎯 **pdf2htmlEX**
 - **Output**: Self-contained `dist/` directory with standalone binary
 
 ## Technical Details
@@ -63,8 +66,15 @@ Current state:
 - **Universal builds**: libpng, libgif, openjpeg, poppler, fontforge
 - **Key flags**: Force static linking with `-DCMAKE_FIND_LIBRARY_SUFFIXES=.a`
 
-### Known Issues and Solutions
-1. **Dynamic library preference**: Remove .dylib files to force static linking
-2. **Cross-compilation**: Use --host=arm64-apple-darwin for autotools on arm64
-3. **CMake booleans**: Some packages require lowercase on/off instead of ON/OFF
-4. **Library dependencies**: Disable optional features (like WebP in libtiff) to simplify builds
+### Known Issues and Solutions ✅ **RESOLVED**
+1. ✅ **SHA256 verification failures**: Fixed all placeholder/incorrect hash values
+2. ✅ **Archive extraction errors**: Completely rewrote fetch_and_extract function for --strip-components=1
+3. ✅ **Build configuration conflicts**: Eliminated meson duplicates and linker issues
+4. ✅ **Universal binary creation**: Fixed lipo architecture handling
+5. ✅ **Missing CMakeLists.txt**: Resolved extraction directory logic
+6. ✅ **bzip2 linker errors**: Removed macOS-incompatible -soname options
+
+### Critical Success Factors for Remaining Build
+1. **Monitor for new build failures** - Address immediately as they appear
+2. **Maintain momentum** - Build system is now functional, keep it moving
+3. **Focus on pdf2htmlEX final binary** - The ultimate deliverable

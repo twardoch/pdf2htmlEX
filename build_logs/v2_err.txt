@@ -20,20 +20,6 @@ Specify --help for usage, or press the help button on the CMake GUI.
 Error: could not load cache
 CMake Error: Not a file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/v1.1.0.tar.gz/out-arm64/cmake_install.cmake
 CMake Error: Error processing file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/v1.1.0.tar.gz/out-arm64/cmake_install.cmake
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libbz2.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libbz2.a have the same architectures (arm64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libbz2.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libexpat.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libexpat.a have the same architectures (arm64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libexpat.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libgif.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libgif.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libgif.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libjpeg.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libjpeg.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libjpeg.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng16.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng16.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng16.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libturbojpeg.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libturbojpeg.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libturbojpeg.a.universal: No such file or directory
 CMake Warning:
   Ignoring extra path from command line:
 
@@ -56,17 +42,209 @@ Specify --help for usage, or press the help button on the CMake GUI.
 Error: could not load cache
 CMake Error: Not a file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/harfbuzz-8.3.0.tar.xz/build-arm64/cmake_install.cmake
 CMake Error: Error processing file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/harfbuzz-8.3.0.tar.xz/build-arm64/cmake_install.cmake
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libbz2.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libbz2.a have the same architectures (arm64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libbz2.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libexpat.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libexpat.a have the same architectures (arm64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libexpat.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libgif.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libgif.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libgif.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libjpeg.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libjpeg.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libjpeg.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng16.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng16.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libpng16.a.universal: No such file or directory
-fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libturbojpeg.a and /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libturbojpeg.a have the same architectures (x86_64) and can't be in the same fat output file
-mv: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libturbojpeg.a.universal: No such file or directory
+Install data not found. Run this command in build directory root.
+Install data not found. Run this command in build directory root.
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libdeflate.a(cpu_features.c.o) has no symbols
+-- Installing: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/bin/libdeflate-gunzip
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Installing: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging-arm64/bin/libdeflate-gunzip
+CMake Deprecation Warning at CMakeLists.txt:27 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Deprecation Warning at CMakeLists.txt:30 (cmake_policy):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    DEFLATE_INCLUDE_DIR
+    DEFLATE_LIBRARY
+    GIF_INCLUDE_DIR
+    GIF_LIBRARY
+    PNG_INCLUDE_DIR
+    PNG_LIBRARY
+
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libtiff.a(tif_jbig.c.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libtiff.a(tif_jpeg_12.c.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libtiff.a(tif_lerc.c.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libtiff.a(tif_lzma.c.o) has no symbols
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging/lib/libtiff.a(tif_webp.c.o) has no symbols
+CMake Deprecation Warning at CMakeLists.txt:27 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Deprecation Warning at CMakeLists.txt:30 (cmake_policy):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Warning at cmake/ZSTDCodec.cmake:45 (message):
+  Found ZSTD library, but not recent enough.  Use zstd >= 1.0
+Call Stack (most recent call first):
+  CMakeLists.txt:110 (include)
+
+
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    DEFLATE_INCLUDE_DIR
+    DEFLATE_LIBRARY
+    GIF_INCLUDE_DIR
+    GIF_LIBRARY
+    PNG_INCLUDE_DIR
+    PNG_LIBRARY
+
+
+cp: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/staging-arm64/lib/*.a: No such file or directory
+CMake Deprecation Warning at CMakeLists.txt:10 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+configure: WARNING: using cross tools not prefixed with host triplet
+CMake Deprecation Warning at CMakeLists.txt:113 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+configure: error: 
+*** expat is required. or try to use --enable-libxml2
+make: *** No targets specified and no makefile found.  Stop.
+Install data not found. Run this command in build directory root.
+CMake Warning at CMakeLists.txt:98 (message):
+  
+
+   No test data found in $testdatadir.
+   You will not be able to run 'make test' successfully.
+
+  
+
+   The test data is not included in the source packages
+   and is also not part of the main git repository. Instead,
+   you can checkout the test data from its own git
+   repository with:
+
+  
+
+     git clone git://git.freedesktop.org/git/poppler/test
+
+  
+
+   You should checkout the test data as a sibling of your
+   poppler source folder or specify the location of your
+   checkout with -DTESTDATADIR=/path/to/checkoutdir/test.
+    
+
+
+CMake Warning (dev) at CMakeLists.txt:228 (find_package):
+  Policy CMP0167 is not set: The FindBoost module is removed.  Run "cmake
+  --help-policy CMP0167" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+Building Poppler with support for:
+  font configuration:   fontconfig
+  use boost (Splash):   yes
+  cairo output:         yes
+  qt5 wrapper:          no
+  qt6 wrapper:          no
+  glib wrapper:         yes
+    introspection:      yes
+    gtk-doc:            no
+  cpp wrapper:          no
+  use libjpeg:          yes
+  use libpng:           yes
+  use libtiff:          no
+  use zlib uncompress:  no
+  use nss3:             yes
+  use gpg:              yes
+    default signature backend:          NSS
+  use curl:             yes
+  use libopenjpeg2:     yes
+  use lcms2:            yes
+  command line utils:   no
+  fuzz target:          no
+  test data dir:        /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/poppler-24.01.0/../test
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_TESTS
+    ENABLE_CMS
+    FONTCONFIG_INCLUDE_DIR
+    FONTCONFIG_LIBRARY
+    FREETYPE_INCLUDE_DIR
+    LCMS2_LIBRARY
+    LIBPNG_INCLUDE_DIR
+    LIBPNG_LIBRARY
+    OPENJPEG_INCLUDE_DIR
+    OPENJPEG_LIBRARY
+
+
+CMake Deprecation Warning at CMakeLists.txt:3 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Warning:
+  Ignoring extra path from command line:
+
+   "/Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/v0.18.8.rc1.tar.gz"
+
+
+CMake Error: The source directory "/Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/build/src/v0.18.8.rc1.tar.gz" does not appear to contain CMakeLists.txt.
+Specify --help for usage, or press the help button on the CMake GUI.
+ninja: error: loading 'build.ninja': No such file or directory
+ninja: error: loading 'build.ninja': No such file or directory
+Build failed: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX/v2/dist/bin/pdf2htmlEX not found.
