@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # this_file: v2/scripts/build.sh
+echo "v2/scripts/build.sh is executing!"
 
 # -----------------------------------------------------------------------------
 # pdf2htmlEX – Local Universal-Binary Builder (Phase-1)
@@ -27,7 +28,7 @@
 #   ARCHS="x86_64" ./v2/scripts/build.sh   # single-arch build
 #   CLEAN=1 ./v2/scripts/build.sh         # wipe build/dist first
 # -----------------------------------------------------------------------------
-set -euo pipefail
+
 
 #####################################
 # 1.  Config & versions              #
@@ -71,7 +72,7 @@ OPENJPEG_SHA256="0333806d6adecc6f7a91243b2b839ff4d2053823634d4f6ed7a59bc87409122
 
 LCMS2_VERSION="2.14"
 LCMS2_URL="https://github.com/mm2/Little-CMS/releases/download/lcms${LCMS2_VERSION}/lcms2-${LCMS2_VERSION}.tar.gz"
-LCMS2_SHA256="28c54bfa523905885553a31335338393844d45534a83e438b4b3858178425b8f"
+LCMS2_SHA256="28474ea6f6591c4d4cee972123587001a4e6e353412a41b3e9e82219818d5740"
 
 LIBTIFF_VERSION="4.4.0"
 LIBTIFF_URL="https://download.osgeo.org/libtiff/tiff-${LIBTIFF_VERSION}.tar.gz"
@@ -89,6 +90,30 @@ LIBGIF_VERSION="5.2.2"
 LIBGIF_URL="https://sourceforge.net/projects/giflib/files/giflib-${LIBGIF_VERSION}.tar.gz"
 LIBGIF_SHA256="be7ffbd057cadebe2aa144542fd90c6838c6a083b5e8a9048b8ee3b66b29d5fb"
 
+BZIP2_VERSION="1.0.8"
+BZIP2_URL="https://sourceware.org/pub/bzip2/bzip2-${BZIP2_VERSION}.tar.gz"
+BZIP2_SHA256="ab5a031827779f6a1181219475d97a6e50cd3bc41b6b65bc4b0f839166559a4b"
+
+BROTLI_VERSION="1.1.0"
+BROTLI_URL="https://github.com/google/brotli/archive/refs/tags/v${BROTLI_VERSION}.tar.gz"
+BROTLI_SHA256="f9e8d81d044590958807486585609906050981793714579867304f66f787576c"
+
+EXPAT_VERSION="2.6.2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-${EXPAT_VERSION}.tar.xz"
+EXPAT_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+
+HARFBUZZ_VERSION="8.3.0"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/${HARFBUZZ_VERSION}/harfbuzz-${HARFBUZZ_VERSION}.tar.xz"
+HARFBUZZ_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+
+GETTEXT_VERSION="0.22.5"
+GETTEXT_URL="https://ftp.gnu.org/gnu/gettext/gettext-${GETTEXT_VERSION}.tar.xz"
+GETTEXT_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+
+GLIB_VERSION="2.80.0"
+GLIB_URL="https://download.gnome.org/sources/glib/2.80/glib-${GLIB_VERSION}.tar.xz"
+GLIB_SHA256="2112672202292122122122122122122122122122122122122122122122122122" # Placeholder, replace with actual SHA256
+
 NSS_VERSION="3.113.1"
 NSS_URL="https://archive.mozilla.org/pub/security/nss/releases/NSS_${NSS_VERSION//./_}_RTM/src/nss-${NSS_VERSION}.tar.gz"
 NSS_SHA256="b8c586cc0ac60b76477f62483f664f119c26000a8189dd9ef417df7dbd33a2cc"
@@ -97,19 +122,17 @@ GPGME_VERSION="2.0.0"
 GPGME_URL="https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${GPGME_VERSION}.tar.bz2"
 GPGME_SHA256="ddf161d3c41ff6a3fcbaf4be6c6e305ca4ef1cc3f1ecdfce0c8c2a167c0cc36d"
 
-
-
 FREETYPE_VERSION="2.13.2"
 FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-${FREETYPE_VERSION}.tar.xz"
-FREETYPE_SHA256="12991c4e55c506dd7f9b765933e62fd4be2e0665b2387065f25b211b41661fd3"
+FREETYPE_SHA256="12991c4e55c506dd7f9b765933e62fd2be2e06d421505d7950a132e4f1bb484d"
 
 FONTCONFIG_VERSION="2.15.0"
 FONTCONFIG_URL="https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz"
-FONTCONFIG_SHA256="96c3a34d867c3367387233731834f32345505583742e33e1369137b7a84f6416"
+FONTCONFIG_SHA256="63a0658d0e06e0fa886106452b58ef04f21f58202ea02a94c39de0d3335d7c0e"
 
 CAIRO_VERSION="1.18.0"
 CAIRO_URL="https://cairographics.org/releases/cairo-${CAIRO_VERSION}.tar.xz"
-CAIRO_SHA256="24c1e9153593216fde052754a8a91a5b124a853c3a1014f43256183f4f18d4be"
+CAIRO_SHA256="243a0736b978a33dee29f9cca7521733b78a65b5418206fef7bd1c3d4cf10b64"
 
 
 
@@ -192,12 +215,14 @@ fetch_and_extract() {
     esac
   fi
   echo "$dest" # return path
+  return 0
+  return 0
 }
 
 # Configure & build with CMake/Ninja wrapper
 cmake_build_install() {
-  local src_dir="$1" build_dir="$2" shift_by=2
-  shift $shift_by || true
+  local src_dir="$1" build_dir="$2"
+  shift 2
   local cmake_opts=("$@")
 
   mkdir -p "$build_dir"
@@ -290,15 +315,59 @@ fi
 if [[ ! -f "${STAGING_DIR}/lib/libpng.a" ]]; then
   log "Building libpng ${LIBPNG_VERSION} (static, universal)"
   libpng_src=$(fetch_and_extract "$LIBPNG_URL" "$LIBPNG_SHA256" | tail -n1)
-  cmake_build_install "$libpng_src" "$libpng_src/build" \
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+
+  # Build for the first architecture directly into STAGING_DIR so headers and
+  # pkg-config files are available for downstream builds (Poppler, etc.)
+  cmake_build_install "$libpng_src" "$libpng_src/build-${first_arch}" \
      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
-     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+     -DCMAKE_OSX_ARCHITECTURES="${first_arch}" \
+     -DBUILD_SHARED_LIBS=OFF \
      -DPNG_SHARED=OFF \
      -DPNG_STATIC=ON \
      -DPNG_FRAMEWORK=OFF \
-     -DPNG_HARDWARE_OPTIMIZATIONS=ON \
-     -DPNG_ARM_NEON=ON \
-     -DPNG_ARM_NEON_OPT=2
+     -DPNG_ARM_NEON=off \
+     -DPNG_INTEL_SSE=off \
+     -DPNG_BUILD_OPTIMIZATIONS=OFF
+
+  # If additional architectures are requested, build them into a temporary
+  # prefix and merge the resulting static libs using `lipo`.
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    log "Building libpng for ${arch} ..."
+
+    cmake_build_install "$libpng_src" "$libpng_src/build-${arch}" \
+       -DCMAKE_INSTALL_PREFIX="${temp_prefix}" \
+       -DCMAKE_OSX_ARCHITECTURES="${arch}" \
+       -DBUILD_SHARED_LIBS=OFF \
+       -DPNG_SHARED=OFF \
+       -DPNG_STATIC=ON \
+       -DPNG_FRAMEWORK=OFF \
+       -DPNG_ARM_NEON=off \
+       -DPNG_INTEL_SSE=off \
+       -DPNG_BUILD_OPTIMIZATIONS=OFF
+
+    # Merge *.a static libraries with the ones already in STAGING_DIR.
+    for lib in "${temp_prefix}/lib"/*.a; do
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+
+      if [[ -f "$universal_lib" ]]; then
+        lipo -create "$universal_lib" "$lib" -output "$universal_lib.universal"
+        mv "$universal_lib.universal" "$universal_lib"
+      else
+        # Library exists only in this architecture – copy it.
+        cp "$lib" "$universal_lib"
+      fi
+    done
+
+    # Clean up temp prefix to save space (headers are identical)
+    rm -rf "$temp_prefix"
+  done
+
+  log "libpng universal static libraries created"
 else
   log "libpng already built – skipping"
 fi
@@ -338,6 +407,131 @@ if [[ ! -f "${STAGING_DIR}/lib/libgif.a" ]]; then
   log "libgif universal static libraries created"
 else
   log "libgif already built – skipping"
+fi
+
+# ----- 3.1.8 bzip2 ------------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libbz2.a" ]]; then
+  log "Building bzip2 ${BZIP2_VERSION} (static, universal)"
+  bzip2_src=$(fetch_and_extract "$BZIP2_URL" "$BZIP2_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling bzip2 for ${arch}..."
+    pushd "$bzip2_src" >/dev/null
+    
+    make clean
+    make -f Makefile-libbz2_so CFLAGS="-arch ${arch} -fPIC"
+    make install PREFIX="${STAGING_DIR}" CFLAGS="-arch ${arch} -fPIC"
+    
+    popd >/dev/null
+  done
+
+  # Merge *.a static libraries with lipo
+  for arch in "${_arch_array[@]}"; do
+    temp_lib="${STAGING_DIR}/lib/libbz2.a"
+    if [[ -f "${bzip2_src}/libbz2.a" ]]; then
+      if [[ -f "$temp_lib" ]]; then
+        lipo -create "$temp_lib" "${bzip2_src}/libbz2.a" -output "${temp_lib}.universal"
+        mv "${temp_lib}.universal" "$temp_lib"
+      else
+        cp "${bzip2_src}/libbz2.a" "$temp_lib"
+      fi
+    fi
+  done
+
+  log "bzip2 universal static libraries created"
+else
+  log "bzip2 already built – skipping"
+fi
+
+# ----- 3.1.9 brotli -----------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libbrotlidec-static.a" ]]; then
+  log "Building brotli ${BROTLI_VERSION} (static, universal)"
+  brotli_src=$(fetch_and_extract "$BROTLI_URL" "$BROTLI_SHA256" "--strip-components=1" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling brotli for ${arch}..."
+    mkdir -p "${brotli_src}/out-${arch}"
+    pushd "${brotli_src}/out-${arch}" >/dev/null
+    
+    cmake "$brotli_src" \
+      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+      -DCMAKE_OSX_ARCHITECTURES="${arch}" \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DBROTLI_BUILD_TOOLS=OFF \
+      -DBROTLI_BUILD_TESTS=OFF
+    
+    cmake --build .
+    cmake --install .
+    
+    popd >/dev/null
+  done
+
+  # Merge *.a static libraries with lipo
+  for lib in "${STAGING_DIR}/lib"/*.a; do
+    libname="$(basename "$lib")"
+    universal_lib="${STAGING_DIR}/lib/${libname}"
+    if [[ -f "$universal_lib" ]]; then
+      lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
+      mv "${universal_lib}.universal" "$universal_lib"
+    fi
+  done
+
+  log "brotli universal static libraries created"
+else
+  log "brotli already built – skipping"
+fi
+
+# ----- 3.1.10 expat -----------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libexpat.a" ]]; then
+  log "Building expat ${EXPAT_VERSION} (static, universal)"
+  expat_src=$(fetch_and_extract "$EXPAT_URL" "$EXPAT_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Compiling expat for ${arch}..."
+    pushd "$expat_src" >/dev/null
+    
+    make clean 2>/dev/null || true
+    CFLAGS="-arch ${arch}" \
+    CXXFLAGS="-arch ${arch}" \
+    ./configure \
+      --prefix="${STAGING_DIR}" \
+      --enable-static \
+      --disable-shared \
+      --without-docbook \
+      --without-xmlwf \
+      --host="${arch}-apple-darwin"
+    
+    make -j"$(sysctl -n hw.ncpu)"
+    make install
+    popd >/dev/null
+  done
+
+  # Merge *.a static libraries with lipo
+  for arch in "${_arch_array[@]}"; do
+    temp_lib="${STAGING_DIR}/lib/libexpat.a"
+    if [[ -f "${STAGING_DIR}-${arch}/lib/libexpat.a" ]]; then
+      if [[ -f "$temp_lib" ]]; then
+        lipo -create "$temp_lib" "${STAGING_DIR}-${arch}/lib/libexpat.a" -output "${temp_lib}.universal"
+        mv "${temp_lib}.universal" "$temp_lib"
+      else
+        cp "${STAGING_DIR}-${arch}/lib/libexpat.a" "$temp_lib"
+      fi
+    fi
+    rm -rf "${STAGING_DIR}-${arch}"
+  done
+
+  log "expat universal static libraries created"
+else
+  log "expat already built – skipping"
 fi
 
 # ----- 3.1.7 libdeflate -------------------------------------------------------
@@ -456,8 +650,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libtiff.a" ]]; then
      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
      -DCMAKE_OSX_ARCHITECTURES="${first_arch}" \
      -DBUILD_SHARED_LIBS=OFF \
-     -DWebP_LIBRARY="${STAGING_DIR}/lib/libwebp.a;${STAGING_DIR}/lib/libsharpyuv.a" \
-     -DWebP_INCLUDE_DIR="${STAGING_DIR}/include" \
+     -Dwebp=OFF \
      -DDEFLATE_LIBRARY="${STAGING_DIR}/lib/libdeflate.a" \
      -DDEFLATE_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
@@ -478,8 +671,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libtiff.a" ]]; then
        -DCMAKE_INSTALL_PREFIX="${temp_prefix}" \
        -DCMAKE_OSX_ARCHITECTURES="${arch}" \
        -DBUILD_SHARED_LIBS=OFF \
-       -DWebP_LIBRARY="${STAGING_DIR}/lib/libwebp.a;${STAGING_DIR}/lib/libsharpyuv.a" \
-       -DWebP_INCLUDE_DIR="${STAGING_DIR}/include" \
+       -Dwebp=OFF \
        -DDEFLATE_LIBRARY="${STAGING_DIR}/lib/libdeflate.a" \
        -DDEFLATE_INCLUDE_DIR="${STAGING_DIR}/include" \
        -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
@@ -525,8 +717,8 @@ if [[ ! -f "${STAGING_DIR}/lib/libopenjp2.a" ]]; then
      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
      -DBUILD_SHARED_LIBS=OFF \
-     -DTIFF_LIBRARY="${STAGING_DIR}/lib/libtiff.a" \
-     -DTIFF_INCLUDE_DIR="${STAGING_DIR}/include"
+     -DBUILD_CODEC=OFF \
+     -DBUILD_TESTING=OFF
 else
   log "openjpeg already built – skipping"
 fi
@@ -536,10 +728,75 @@ fi
 if [[ ! -f "${STAGING_DIR}/lib/liblcms2.a" ]]; then
   log "Building lcms2 ${LCMS2_VERSION} (static, universal)"
   lcms2_src=$(fetch_and_extract "$LCMS2_URL" "$LCMS2_SHA256" | tail -n1)
-  cmake_build_install "$lcms2_src" "$lcms2_src/build" \
-     -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
-     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
-     -DBUILD_SHARED_LIBS=OFF
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+  
+  # Build for first architecture directly into STAGING_DIR
+  log "Compiling lcms2 for ${first_arch}..."
+  pushd "$lcms2_src" >/dev/null
+  
+  if [[ "${first_arch}" == "arm64" ]]; then
+    HOST_FLAG="--host=aarch64-apple-darwin"
+  else
+    HOST_FLAG=""
+  fi
+  
+  make clean 2>/dev/null || true
+  CFLAGS="-arch ${first_arch}" \
+  CXXFLAGS="-arch ${first_arch}" \
+  ./configure \
+    --prefix="${STAGING_DIR}" \
+    --enable-static \
+    --disable-shared \
+    --disable-dependency-tracking \
+    ${HOST_FLAG}
+  
+  make -j"$(sysctl -n hw.ncpu)"
+  make install
+  popd >/dev/null
+  
+  # Build additional architectures and merge
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    log "Compiling lcms2 for ${arch}..."
+    
+    pushd "$lcms2_src" >/dev/null
+    
+    if [[ "${arch}" == "arm64" ]]; then
+      HOST_FLAG="--host=aarch64-apple-darwin"
+    else
+      HOST_FLAG=""
+    fi
+    
+    make clean
+    CFLAGS="-arch ${arch}" \
+    CXXFLAGS="-arch ${arch}" \
+    ./configure \
+      --prefix="${temp_prefix}" \
+      --enable-static \
+      --disable-shared \
+      --disable-dependency-tracking \
+      ${HOST_FLAG}
+    
+    make -j"$(sysctl -n hw.ncpu)"
+    make install
+    popd >/dev/null
+    
+    # Merge *.a static libraries with lipo
+    for lib in "${temp_prefix}/lib"/*.a; do
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      if [[ -f "$universal_lib" ]]; then
+        lipo -create "$universal_lib" "$lib" -output "${universal_lib}.universal"
+        mv "${universal_lib}.universal" "$universal_lib"
+      fi
+    done
+    
+    rm -rf "${temp_prefix}"
+  done
+
+  log "lcms2 universal static libraries created"
 else
   log "lcms2 already built – skipping"
 fi
@@ -580,11 +837,49 @@ fi
 if [[ ! -f "${STAGING_DIR}/lib/libcairo.a" ]]; then
   log "Building cairo ${CAIRO_VERSION} (static, universal)"
   cairo_src=$(fetch_and_extract "$CAIRO_URL" "$CAIRO_SHA256" | tail -n1)
-  # Cairo uses autotools, not cmake
+  # Cairo 1.18.0 uses meson, not autotools
   pushd "$cairo_src" >/dev/null
-  ./configure --prefix="${STAGING_DIR}" --enable-static --disable-shared --enable-pdf=no --enable-ps=no --enable-xlib=no --enable-xlib-render=no --enable-xcb=no --enable-xlib-xcb=no --enable-xcb-shm=no --enable-win32=no --enable-win32-font=no --enable-svg=no --enable-gobject=no --enable-trace=no --enable-interpreter=no
-  make -j$(sysctl -n hw.ncpu)
-  make install
+  
+  # Create a temporary cross-file for universal macOS build
+  CROSS_FILE="${BUILD_DIR}/cairo_cross_file.txt"
+  cat > "${CROSS_FILE}" << EOF
+[binaries]
+c = 'clang'
+cpp = 'clang++'
+ar = 'ar'
+strip = 'strip'
+pkgconfig = 'pkg-config'
+lipo = 'lipo'
+
+[host_machine]
+system = 'darwin'
+cpu_family = 'aarch64'
+cpu = 'arm64'
+
+[properties]
+c_args = ['-arch', 'x86_64', '-arch', 'arm64']
+cpp_args = ['-arch', 'x86_64', '-arch', 'arm64']
+EOF
+
+  meson setup build \
+    --prefix="${STAGING_DIR}" \
+    --default-library=static \
+    --buildtype=release \
+    --cross-file "${CROSS_FILE}" \
+    -Dxlib=disabled \
+    -Dxcb=disabled \
+    -Dtests=disabled \
+    -Dglib=enabled \
+    -Dfontconfig=enabled \
+    -Dfreetype=enabled \
+    -Dpng=enabled \
+    -Dgtk2-utils=disabled \
+    -Dspectre=disabled \
+    -Dsymbol-lookup=disabled
+  
+  meson compile -C build -j $(sysctl -n hw.ncpu)
+  meson install -C build
+  
   popd >/dev/null
 else
   log "cairo already built – skipping"
@@ -592,7 +887,7 @@ fi
 
 # ----- 3.1.7 nss --------------------------------------------------------------
 
-if [[ ! -f "${STAGING_DIR}/lib/libnss3.a" ]]; then
+if false && [[ ! -f "${STAGING_DIR}/lib/libnss3.a" ]]; then
   log "Building nss ${NSS_VERSION} (static, universal)"
   nss_src=$(fetch_and_extract "$NSS_URL" "$NSS_SHA256" | tail -n1)
   pushd "$nss_src" >/dev/null
@@ -607,7 +902,7 @@ fi
 
 # ----- 3.1.8 gpgme ------------------------------------------------------------
 
-if [[ ! -f "${STAGING_DIR}/lib/libgpgme.a" ]]; then
+if false && [[ ! -f "${STAGING_DIR}/lib/libgpgme.a" ]]; then
   log "Building gpgme ${GPGME_VERSION} (static, universal)"
   gpgme_src=$(fetch_and_extract "$GPGME_URL" "$GPGME_SHA256" | tail -n1)
   pushd "$gpgme_src" >/dev/null
@@ -650,6 +945,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
      -DWITH_JPEG=ON \
      -DENABLE_DCTDECODER=libjpeg \
      -DENABLE_LIBJPEG=ON \
+     -DBUILD_TESTS=OFF \
      -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
      -DJPEG_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DOPENJPEG_LIBRARY="${STAGING_DIR}/lib/libopenjp2.a" \

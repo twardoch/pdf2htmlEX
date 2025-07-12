@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# see:https://stackoverflow.com/a/7448828
-
-find . -type f -print0 |		\
-  xargs -0 stat --format '%Y :%y %n' |	\
-  sort -nr |				\
-  grep -v build |			\
-  cut -d: -f2-

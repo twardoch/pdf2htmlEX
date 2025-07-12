@@ -55,11 +55,11 @@ build_failure=0
 # -----------------------------------------------------------------------------
 # Build V1 (Homebrew Formula approach)
 # -----------------------------------------------------------------------------
-if [[ -f "${ROOT_DIR}/v1/build.sh" ]]; then
-  run_build "v1" "${ROOT_DIR}/v1/build.sh" || build_failure=1
-else
-  echo "[skip] v1/build.sh not found – skipping v1 build" >&2
-fi
+# if [[ -f "${ROOT_DIR}/v1/build.sh" ]]; then
+#   run_build "v1" "${ROOT_DIR}/v1/build.sh" || build_failure=1
+# else
+#   echo "[skip] v1/build.sh not found – skipping v1 build" >&2
+# fi
 
 # -----------------------------------------------------------------------------
 # Build V2 (stand-alone universal binary script)
