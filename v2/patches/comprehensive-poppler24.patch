@@ -72,11 +72,11 @@
 --- a/src/HTMLRenderer/font.cc
 +++ b/src/HTMLRenderer/font.cc
 @@ -201,7 +201,7 @@
- 
-     //TODO: this function is called when a gfx font is first used
-     // try to consolidate with embed_font to avoid redundant computation
+
+    //TODO: this function is called when a gfx font is first used
+    // try to consolidate with embed_font to avoid redundant computation
 -    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
-+    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
++    auto * cur_font = font_engine.getFont(std::shared_ptr<GfxFont>(font, [](GfxFont*){}), cur_doc, true, xref);
  
      if(cur_font == nullptr)
      {
@@ -104,7 +104,7 @@
          f_css.fs << "\">";
 -            << (font->getName() ? font->getName()->toStr() : "")
 +            auto font_name = font->getName();
-+            << (font_name ? (*font_name) : "")
++            << (font_name ? font_name->c_str() : "")
              << "</style>";
  
          if(param.debug)
@@ -124,7 +124,7 @@
  
 -    string fontname(font->getName()->toStr());
 +    auto font_name = font->getName();
-+    string fontname(font_name ? (*font_name) : "");
++    string fontname(font_name ? font_name->c_str() : "");
  
      if(param.debug)
      {
@@ -153,21 +153,19 @@
 -        embed_font(string(localfontloc->path->toStr()), font, info, true);
 +        embed_font(localfontloc.path, font, info, true);
  
-         if(localfontloc != nullptr)
+     }
 
 --- a/src/pdf2htmlEX.cc
 +++ b/src/pdf2htmlEX.cc
-@@ -421,7 +421,12 @@
+@@ -421,7 +421,10 @@
              GooString fileName(argv[argIdx]);
              GooString * ownerPW, * userPW;
              getPopplerPassword(&ownerPW, &userPW);
 -            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW);
 +            
-+            std::optional<GooString> ownerPW_opt = ownerPW ? std::optional<GooString>(*ownerPW) : std::nullopt;
-+            std::optional<GooString> userPW_opt = userPW ? std::optional<GooString>(*userPW) : std::nullopt;
-+            
-+            auto doc_ptr = PDFDocFactory().createPDFDoc(fileName, ownerPW_opt, userPW_opt);
-+            doc = doc_ptr.release();
++            std::optional<GooString> ownerPW_opt = ownerPW ? std::make_optional(*ownerPW) : std::nullopt;
++            std::optional<GooString> userPW_opt = userPW ? std::make_optional(*userPW) : std::nullopt;
++            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW_opt, userPW_opt).release();
          }
          else
          {

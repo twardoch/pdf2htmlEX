@@ -1,0 +1,16 @@
+╭─────────────────────────── CodeToPrompt (Local) ────────────────────────────╮
+│ Configuration for this run:                                                 │
+│ Root Directory: /Users/adam/Developer/vcs/github.twardoch/pub/pdf2htmlEX    │
+│ Include Patterns: ['*']                                                     │
+│ Exclude Patterns: ['*.svg', '.specstory', 'ref', 'testdata', '*.lock',      │
+│ 'Unicode*.h', 'NameTo*.h', '*.', '*.html', 'Changelog*', 'ChangeLog*',      │
+│ '*.c', '*.cc', '*.cpp', '*.devhelp2', '*.gperf', 'NEWS*', '*.1']            │
+│ Respect .gitignore: True                                                    │
+│ Show Line Numbers: False                                                    │
+│ Count Tokens: True                                                          │
+│ Compress Code: True                                                         │
+│ Max Tokens: Unlimited                                                       │
+│ Tree Depth: 5                                                               │
+│ Output Format: cxml                                                         │
+│ Interactive Mode: False                                                     │
+╰─────────────────────────────────────────────────────────────────────────────╯
