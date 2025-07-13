@@ -1,1 +1,1 @@
-Installed 56 packages in 1.20s
+[error] Build 'v2' failed with status 1. See logs above.

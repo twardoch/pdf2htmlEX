@@ -1,0 +1,43 @@
+```
+./build.sh
+```
+
+Output of ./build.log.txt & ./build.err.txt : 
+
+I can see the build process has started. Let me check both the error log and output log to understand what happened during the build.
+Let me check the end of the build log to see where it stopped:
+Based on the build logs, I can see several critical issues that caused the build to fail:
+Build Analysis Summary
+🔴 Critical Issues Found:
+Linker Framework Error (Most Critical):
+Apply to build.err.tx...
+'
+The linker command has malformed framework arguments
+Should be -framework ApplicationServices not bare ApplicationServices
+Architecture Mismatch Issues:
+Apply to build.err.tx...
+'
+Universal binary build is failing because some Homebrew dependencies are x86_64 only
+FontConfig and glib symbols are missing for arm64
+Patch Application Problems:
+Apply to build.err.tx...
+ 
+Build stopped waiting for user input on patch application
+🟡 Warnings (Non-Critical):
+Missing Poppler test data files (expected, won't affect build)
+CMake policy warnings about FindBoost module
+CMake deprecation warnings
+Some compiler warnings in FontForge code
+📋 Build Progress Before Failure:
+✅ libjpeg-turbo, libpng, libgif, bzip2 already built
+✅ brotli built successfully for both architectures
+✅ Most dependencies already staged
+❌ Poppler build failed due to linker issues
+❌ FontForge build failed due to architecture issues
+❌ pdf2htmlEX build failed due to patch application issues
+🔧 Root Causes:
+Malformed linker flags in the Poppler build configuration
+Inconsistent architecture handling between vendored and system dependencies
+Patch management issues - patches may be applied multiple times
+
+The build process is sophisticated with universal binary support, but there are linking configuration issues that need to be resolved before it can complete successfully.

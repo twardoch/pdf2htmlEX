@@ -30,5 +30,5 @@ echo "Build complete. Log files written to:"
 echo "  stdout:   ${LOG_FILE}"
 echo "  stderr:   ${ERR_FILE}"
 echo "-------------------------------------------------------------"
-
+ding
 exit ${build_exit_code}

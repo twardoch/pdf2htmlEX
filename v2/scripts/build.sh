@@ -1235,20 +1235,89 @@ fi
 
 # ----- 3.1.5 fontconfig -------------------------------------------------------
 
-# TODO: Fix fontconfig harfbuzz linking issue later
-# if [[ ! -f "${STAGING_DIR}/lib/libfontconfig.a" ]]; then
-#   log "Building fontconfig ${FONTCONFIG_VERSION} (static, universal)"
-#   fontconfig_src=$(fetch_and_extract "$FONTCONFIG_URL" "$FONTCONFIG_SHA256" | tail -n1)
-#   # Fontconfig uses autotools, not cmake
-#   pushd "$fontconfig_src" >/dev/null
-#   ./configure --prefix="${STAGING_DIR}" --enable-static --disable-shared --disable-docs
-#   make -j$(sysctl -n hw.ncpu)
-#   make install
-#   popd >/dev/null
-# else
-#   log "fontconfig already built – skipping"
-# fi
-log "fontconfig build temporarily disabled - continuing to test poppler"
+if [[ ! -f "${STAGING_DIR}/lib/libfontconfig.a" ]]; then
+  log "Building fontconfig ${FONTCONFIG_VERSION} (static, universal)"
+  fontconfig_src=$(fetch_and_extract "$FONTCONFIG_URL" "$FONTCONFIG_SHA256" | tail -n1)
+  
+  # Build for each architecture separately and merge
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  
+  for arch in "${_arch_array[@]}"; do
+    log "Building fontconfig for ${arch}..."
+    build_dir="${fontconfig_src}/build-${arch}"
+    mkdir -p "$build_dir"
+    
+    pushd "$build_dir" >/dev/null
+    
+    # Update config.sub to recognize arm64
+    if [[ ! -f ../config.sub.backup ]]; then
+      cp ../config.sub ../config.sub.backup
+      curl -fsSL https://git.savannah.gnu.org/cgit/config.git/plain/config.sub -o ../config.sub || echo "Failed to update config.sub"
+      chmod +x ../config.sub
+    fi
+    
+    # Set architecture-specific flags
+    export CFLAGS="-arch ${arch} -I${STAGING_DIR}/include"
+    export CXXFLAGS="-arch ${arch} -I${STAGING_DIR}/include"
+    export LDFLAGS="-arch ${arch} -L${STAGING_DIR}/lib"
+    
+    # Configure for this architecture
+    ../configure \
+      --prefix="${STAGING_DIR}-${arch}" \
+      --enable-static \
+      --disable-shared \
+      --disable-docs \
+      --with-expat-includes="${STAGING_DIR}/include" \
+      --with-expat-lib="${STAGING_DIR}/lib" \
+      --host="${arch}-apple-darwin"
+    
+    make -j$(sysctl -n hw.ncpu)
+    make install
+    
+    popd >/dev/null
+  done
+  
+  # Merge libraries for all architectures
+  log "Creating universal fontconfig libraries..."
+  first_arch="${_arch_array[0]}"
+  
+  # Copy headers and pkg-config from first architecture
+  if [[ "${first_arch}" != "${_arch_array[0]}" ]]; then
+    cp -R "${STAGING_DIR}-${first_arch}/include/"* "${STAGING_DIR}/include/" 2>/dev/null || true
+    cp -R "${STAGING_DIR}-${first_arch}/lib/pkgconfig/"* "${STAGING_DIR}/lib/pkgconfig/" 2>/dev/null || true
+  else
+    # First build goes directly to staging
+    cp -R "${STAGING_DIR}-${first_arch}/"* "${STAGING_DIR}/" 2>/dev/null || true
+  fi
+  
+  # Merge static libraries
+  for lib in "${STAGING_DIR}-${first_arch}/lib"/*.a; do
+    if [[ -f "$lib" ]]; then
+      libname=$(basename "$lib")
+      if [[ ${#_arch_array[@]} -gt 1 ]]; then
+        # Create universal binary from all architectures
+        lipo_cmd="lipo -create"
+        for arch in "${_arch_array[@]}"; do
+          lipo_cmd="$lipo_cmd ${STAGING_DIR}-${arch}/lib/${libname}"
+        done
+        lipo_cmd="$lipo_cmd -output ${STAGING_DIR}/lib/${libname}"
+        eval "$lipo_cmd"
+      else
+        # Single architecture - just copy
+        cp "$lib" "${STAGING_DIR}/lib/"
+      fi
+    fi
+  done
+  
+  # Clean up per-architecture installations
+  for arch in "${_arch_array[@]}"; do
+    rm -rf "${STAGING_DIR}-${arch}"
+  done
+  
+  log "fontconfig universal static libraries created"
+else
+  log "fontconfig already built – skipping"
+fi
 
 # ----- 3.1.6 cairo ------------------------------------------------------------
 
@@ -1275,7 +1344,7 @@ if [[ ! -f "${STAGING_DIR}/lib/libcairo.a" ]]; then
     -Dxcb=disabled \
     -Dtests=disabled \
     -Dglib=enabled \
-    -Dfontconfig=disabled \
+    -Dfontconfig=enabled \
     -Dfreetype=enabled \
     -Dpng=enabled \
     -Dgtk2-utils=disabled \
@@ -1284,6 +1353,15 @@ if [[ ! -f "${STAGING_DIR}/lib/libcairo.a" ]]; then
   
   meson compile -C build -j $(sysctl -n hw.ncpu)
   meson install -C build
+  
+  # Fix pkg-config files to use proper framework syntax
+  log "Fixing cairo pkg-config files for proper framework linking"
+  for pc_file in "${STAGING_DIR}/lib/pkgconfig"/cairo*.pc; do
+    if [[ -f "$pc_file" ]]; then
+      sed -i.bak 's/-framework CoreFoundation -framework ApplicationServices/-Wl,-framework,CoreFoundation -Wl,-framework,ApplicationServices/g' "$pc_file"
+      rm -f "$pc_file.bak"
+    fi
+  done
   
   popd >/dev/null
 else
@@ -1336,12 +1414,14 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
   # Poppler expects a writable test directory; create dummy to silence cmake.
   mkdir -p "$poppler_src/test"
   
-  # Set PKG_CONFIG_PATH to use our staged dependencies
-  export PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+  # Set PKG_CONFIG_PATH to use our staged dependencies ONLY
+  export PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig"
   
   # Force use of our staged glib by setting environment variables
   export GLIB_CFLAGS="-I${STAGING_DIR}/include/glib-2.0 -I${STAGING_DIR}/lib/glib-2.0/include"
   export GLIB_LIBS="-L${STAGING_DIR}/lib -lglib-2.0 -lgobject-2.0 -lgio-2.0"
+  export FONTCONFIG_CFLAGS="-I${STAGING_DIR}/include"
+  export FONTCONFIG_LIBS="-L${STAGING_DIR}/lib -lfontconfig"
   export CFLAGS="-I${STAGING_DIR}/include -I${STAGING_DIR}/include/glib-2.0 -I${STAGING_DIR}/lib/glib-2.0/include"
   export CXXFLAGS="-I${STAGING_DIR}/include -I${STAGING_DIR}/include/glib-2.0 -I${STAGING_DIR}/lib/glib-2.0/include"
   export LDFLAGS="-L${STAGING_DIR}/lib"
@@ -1363,7 +1443,9 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
      -DENABLE_DCTDECODER=libjpeg \
      -DENABLE_LIBJPEG=ON \
      -DBUILD_TESTS=OFF \
-     -DWITH_FONTCONFIGURATION_FONTCONFIG=OFF \
+     -DWITH_FONTCONFIGURATION_FONTCONFIG=ON \
+     -DFONTCONFIG_LIBRARY="${STAGING_DIR}/lib/libfontconfig.a" \
+     -DFONTCONFIG_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DENABLE_NSS3=OFF \
      -DENABLE_GPGME=OFF \
      -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
