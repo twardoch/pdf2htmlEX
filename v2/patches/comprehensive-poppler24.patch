@@ -1,0 +1,186 @@
+--- a/src/HTMLRenderer/text.cc
++++ b/src/HTMLRenderer/text.cc
+@@ -95,9 +95,9 @@
+             char buf[2];
+             buf[0] = (code >> 8) & 0xff;
+             buf[1] = (code & 0xff);
+-            width = ((GfxCIDFont *)font)->getWidth(buf, 2);
++            width = ((GfxCIDFont *)font.get())->getWidth(buf, 2);
+         } else {
+-            width = ((Gfx8BitFont *)font)->getWidth(code);
++            width = ((Gfx8BitFont *)font.get())->getWidth(code);
+         }
+ 
+         // Check for vertical coordinate
+@@ -151,7 +151,7 @@
+                 if(uu == 0)
+                 {
+-                    uu = check_unicode(u, uLen, code, font);
++                    uu = check_unicode(u, uLen, code, font.get());
+                 }
+                 if(uu == 0)
+                 {
+-                    uu = unicode_from_font(code, font);
++                    uu = unicode_from_font(code, font.get());
+                 }
+
+--- a/src/HTMLRenderer/outline.cc
++++ b/src/HTMLRenderer/outline.cc
+@@ -52,7 +52,6 @@
+         if(item->hasKids())
+         {
+             process_outline_items(item->getKids());
+         }
+-        item->close();
+         f_outline.fs << "</li>";
+     }
+
+--- a/src/HTMLRenderer/form.cc
++++ b/src/HTMLRenderer/form.cc
+@@ -22,7 +22,7 @@
+ 
+     for(int pageNum = 1; pageNum <= page_count; ++pageNum) 
+     {
+-        FormPageWidgets * widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
++        auto widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
+         if(widgets != nullptr)
+         {
+             int formfieldNum = widgets->getNumWidgets();
+
+--- a/src/HTMLRenderer/link.cc
++++ b/src/HTMLRenderer/link.cc
+@@ -148,7 +148,7 @@
+                     std::unique_ptr<LinkDest> dest = nullptr;
+                     if(auto _ = real_action->getDest())
+-                        dest = std::unique_ptr<LinkDest>( _->copy() );
++                        dest = std::unique_ptr<LinkDest>( _->clone() );
+                     else if (auto _ = real_action->getNamedDest())
+                         dest = cur_catalog->findDest(_);
+
+--- a/src/HTMLRenderer/state.cc
++++ b/src/HTMLRenderer/state.cc
+@@ -207,7 +207,7 @@
+         }
+         else
+         {
+-            const FontInfo * new_font_info = install_font(state->getFont());
++            const FontInfo * new_font_info = install_font(state->getFont().get());
+             if(new_font_info)
+             {
+                 new_font_id = new_font_info->id;
+
+--- a/src/HTMLRenderer/font.cc
++++ b/src/HTMLRenderer/font.cc
+@@ -201,7 +201,7 @@
+ 
+     //TODO: this function is called when a gfx font is first used
+     // try to consolidate with embed_font to avoid redundant computation
+-    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
++    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
+ 
+     if(cur_font == nullptr)
+     {
+@@ -486,7 +486,8 @@
+                 // try to find the TTF font first
+                 {
+-                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
++                auto fftt_ptr = FoFiTrueType::load((char*)filepath.c_str());
++                if(FoFiTrueType * fftt = fftt_ptr.get())
+                 {
+                     if(char * _font_loc = fftt->getEmbeddedFontName())
+                     {
+@@ -553,7 +554,8 @@
+                 // try to find the TTF font first
+                 {
+-                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
++                auto fftt_ptr = FoFiTrueType::load((char*)filepath.c_str());
++                if(FoFiTrueType * fftt = fftt_ptr.get())
+                 {
+                     if(char * _font_loc = fftt->getEmbeddedFontName())
+                     {
+@@ -878,7 +880,8 @@
+         f_css.fs << " font-family:" << (param.embed_css_font ? "f" : "ff") << (font_id == 0 ? new_fn_id : font_id) << ";";
+         export_remote_default_font(new_fn_id);
+         f_css.fs << "\">";
+-            << (font->getName() ? font->getName()->toStr() : "")
++            auto font_name = font->getName();
++            << (font_name ? (*font_name) : "")
+             << "</style>";
+ 
+         if(param.debug)
+@@ -910,7 +913,8 @@
+         return new_fn_id;
+     }
+ 
+-    if(auto * font_loc = font->locateFont(xref, nullptr))
++    auto font_loc_opt = font->locateFont(xref, nullptr);
++    if(font_loc_opt.has_value())
+     {
+         if(param.debug)
+         {
+@@ -955,7 +959,8 @@
+         }
+     }
+ 
+-    string fontname(font->getName()->toStr());
++    auto font_name = font->getName();
++    string fontname(font_name ? (*font_name) : "");
+ 
+     if(param.debug)
+     {
+@@ -965,18 +968,21 @@
+         f_css.fs << " /* " << fontname << " */";
+     }
+ 
+-    GfxFontLoc * localfontloc = font->locateFont(xref, nullptr);
+-    if(localfontloc != nullptr) 
++    auto font_loc_opt = font->locateFont(xref, nullptr);
++    if(font_loc_opt.has_value()) 
+     {
++        auto& localfontloc = font_loc_opt.value();
++
+         switch(localfontloc.locType)
+         {
+             case gfxFontLocEmbedded:
+-            embed_font(string(localfontloc->path->toStr()), font, info);
++            embed_font(localfontloc.path, font, info);
+             break;
+ 
+             case gfxFontLocExternal:
+-        export_remote_font(info, string(localfontloc->path->toStr()), font);
++        export_remote_font(info, localfontloc.path, font);
+         }
+-        embed_font(string(localfontloc->path->toStr()), font, info, true);
++        embed_font(localfontloc.path, font, info, true);
+ 
+         if(localfontloc != nullptr)
+
+--- a/src/pdf2htmlEX.cc
++++ b/src/pdf2htmlEX.cc
+@@ -421,7 +421,12 @@
+             GooString fileName(argv[argIdx]);
+             GooString * ownerPW, * userPW;
+             getPopplerPassword(&ownerPW, &userPW);
+-            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW);
++            
++            std::optional<GooString> ownerPW_opt = ownerPW ? std::optional<GooString>(*ownerPW) : std::nullopt;
++            std::optional<GooString> userPW_opt = userPW ? std::optional<GooString>(*userPW) : std::nullopt;
++            
++            auto doc_ptr = PDFDocFactory().createPDFDoc(fileName, ownerPW_opt, userPW_opt);
++            doc = doc_ptr.release();
+         }
+         else
+         {
+
+--- a/src/util/ffw.c
++++ b/src/util/ffw.c
+@@ -14,7 +14,9 @@
+ #include <locale.h>
+ #include <libintl.h>
+ 
++#ifndef _NO_FFGLIB
+ #include <fontforge/baseviews.h>
++#endif
+ #include <fontforge/fontforgevw.h>
+ #include <fontforge/splinefont.h>
+ #include <fontforge/scripting.h> 

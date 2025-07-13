@@ -29,6 +29,8 @@ echo "v2/scripts/build.sh is executing!"
 #   CLEAN=1 ./v2/scripts/build.sh         # wipe build/dist first
 # -----------------------------------------------------------------------------
 
+# Get the absolute path to this script's directory
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 #####################################
 # 1.  Config & versions              #
@@ -70,9 +72,9 @@ OPENJPEG_VERSION="2.5.0"
 OPENJPEG_URL="https://github.com/uclouvain/openjpeg/archive/refs/tags/v${OPENJPEG_VERSION}.tar.gz"
 OPENJPEG_SHA256="0333806d6adecc6f7a91243b2b839ff4d2053823634d4f6ed7a59bc87409122a"
 
-LCMS2_VERSION="2.14"
+LCMS2_VERSION="2.16"
 LCMS2_URL="https://github.com/mm2/Little-CMS/releases/download/lcms${LCMS2_VERSION}/lcms2-${LCMS2_VERSION}.tar.gz"
-LCMS2_SHA256="28474ea6f6591c4d4cee972123587001a4e6e353412a41b3e9e82219818d5740"
+LCMS2_SHA256="d873d34ad8b9b4cea010631f1a6228d2087475e4dc5e763eb81acc23d9d45a51"
 
 LIBTIFF_VERSION="4.4.0"
 LIBTIFF_URL="https://download.osgeo.org/libtiff/tiff-${LIBTIFF_VERSION}.tar.gz"
@@ -133,6 +135,18 @@ FONTCONFIG_SHA256="63a0658d0e06e0fa886106452b58ef04f21f58202ea02a94c39de0d3335d7
 CAIRO_VERSION="1.18.0"
 CAIRO_URL="https://cairographics.org/releases/cairo-${CAIRO_VERSION}.tar.xz"
 CAIRO_SHA256="243a0736b978a33dee29f9cca7521733b78a65b5418206fef7bd1c3d4cf10b64"
+
+LIBFFI_VERSION="3.4.6"
+LIBFFI_URL="https://github.com/libffi/libffi/releases/download/v${LIBFFI_VERSION}/libffi-${LIBFFI_VERSION}.tar.gz"
+LIBFFI_SHA256="b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e"
+
+PIXMAN_VERSION="0.43.4"
+PIXMAN_URL="https://cairographics.org/releases/pixman-${PIXMAN_VERSION}.tar.gz"
+PIXMAN_SHA256="a0624db90180c7ddb79fc7a9151093dc37c646d8c38d3f232f767cf64b85a226"
+
+PCRE2_VERSION="10.44"
+PCRE2_URL="https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE2_VERSION}/pcre2-${PCRE2_VERSION}.tar.gz"
+PCRE2_SHA256="86b9cb0aa3bcb7994faa88018292bc704cdbb708e785f7c74352ff6ea7d3175b"
 
 
 
@@ -707,6 +721,150 @@ else
   log "gettext already built – skipping"
 fi
 
+# ----- 3.1.12.1 libffi -------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libffi.a" ]]; then
+  log "Building libffi ${LIBFFI_VERSION} (static, universal)"
+  libffi_src=$(fetch_and_extract "$LIBFFI_URL" "$LIBFFI_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+
+  # Build for the first architecture directly into STAGING_DIR
+  pushd "$libffi_src" >/dev/null
+  make clean 2>/dev/null || true
+  CFLAGS="-arch ${first_arch}" \
+  CXXFLAGS="-arch ${first_arch}" \
+  ./configure \
+    --prefix="${STAGING_DIR}" \
+    --enable-static \
+    --disable-shared \
+    --host="${first_arch}-apple-darwin"
+  
+  make -j"$(sysctl -n hw.ncpu)"
+  make install
+  popd >/dev/null
+
+  # If additional architectures are requested, build them into a temporary
+  # prefix and merge the resulting static libs using `lipo`.
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    log "Building libffi for ${arch} ..."
+    
+    pushd "$libffi_src" >/dev/null
+    make clean 2>/dev/null || true
+    CFLAGS="-arch ${arch}" \
+    CXXFLAGS="-arch ${arch}" \
+    ./configure \
+      --prefix="${temp_prefix}" \
+      --enable-static \
+      --disable-shared \
+      --host="${arch}-apple-darwin"
+    
+    make -j"$(sysctl -n hw.ncpu)"
+    make install
+    popd >/dev/null
+
+    # Merge *.a static libraries with the ones already in STAGING_DIR.
+    for lib in "${temp_prefix}/lib"/*.a; do
+      [[ -f "$lib" ]] || continue
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      safe_lipo_merge "$lib" "$universal_lib"
+    done
+
+    # Clean up temp prefix to save space (headers are identical)
+    rm -rf "$temp_prefix"
+  done
+
+  log "libffi universal static libraries created"
+else
+  log "libffi already built – skipping"
+fi
+
+# ----- 3.1.12.2 pcre2 ---------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libpcre2-8.a" ]]; then
+  log "Building pcre2 ${PCRE2_VERSION} (static, universal)"
+  pcre2_src=$(fetch_and_extract "$PCRE2_URL" "$PCRE2_SHA256" | tail -n1)
+
+  cmake_build_install "$pcre2_src" "$pcre2_src/build" \
+     -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+     -DBUILD_SHARED_LIBS=OFF \
+     -DPCRE2_BUILD_TESTS=OFF \
+     -DPCRE2_BUILD_PCRE2GREP=OFF
+
+  log "pcre2 universal static libraries created"
+else
+  log "pcre2 already built – skipping"
+fi
+
+# ----- 3.1.12.3 pixman --------------------------------------------------------
+
+if [[ ! -f "${STAGING_DIR}/lib/libpixman-1.a" ]]; then
+  log "Building pixman ${PIXMAN_VERSION} (static, universal)"
+  pixman_src=$(fetch_and_extract "$PIXMAN_URL" "$PIXMAN_SHA256" | tail -n1)
+
+  IFS=';' read -r -a _arch_array <<< "$ARCHS"
+  first_arch="${_arch_array[0]}"
+
+  # Build for the first architecture directly into STAGING_DIR
+  pushd "$pixman_src" >/dev/null
+  rm -rf build 2>/dev/null || true
+  CFLAGS="-arch ${first_arch}" \
+  CXXFLAGS="-arch ${first_arch}" \
+  meson setup build \
+    --prefix="${STAGING_DIR}" \
+    --default-library=static \
+    --buildtype=release \
+    -Dgtk=disabled \
+    -Dtests=disabled \
+    -Ddemos=disabled
+  
+  meson compile -C build
+  meson install -C build
+  popd >/dev/null
+
+  # If additional architectures are requested, build them into a temporary
+  # prefix and merge the resulting static libs using `lipo`.
+  for arch in "${_arch_array[@]:1}"; do
+    temp_prefix="${STAGING_DIR}-${arch}"
+    log "Building pixman for ${arch} ..."
+    
+    pushd "$pixman_src" >/dev/null
+    rm -rf build-${arch} 2>/dev/null || true
+    CFLAGS="-arch ${arch}" \
+    CXXFLAGS="-arch ${arch}" \
+    meson setup build-${arch} \
+      --prefix="${temp_prefix}" \
+      --default-library=static \
+      --buildtype=release \
+      -Dgtk=disabled \
+      -Dtests=disabled \
+      -Ddemos=disabled
+    
+    meson compile -C build-${arch}
+    meson install -C build-${arch}
+    popd >/dev/null
+
+    # Merge *.a static libraries with the ones already in STAGING_DIR.
+    for lib in "${temp_prefix}/lib"/*.a; do
+      [[ -f "$lib" ]] || continue
+      libname="$(basename "$lib")"
+      universal_lib="${STAGING_DIR}/lib/${libname}"
+      safe_lipo_merge "$lib" "$universal_lib"
+    done
+
+    # Clean up temp prefix to save space (headers are identical)
+    rm -rf "$temp_prefix"
+  done
+
+  log "pixman universal static libraries created"
+else
+  log "pixman already built – skipping"
+fi
+
 # ----- 3.1.13 glib ------------------------------------------------------------
 
 if [[ ! -f "${STAGING_DIR}/lib/libglib-2.0.a" ]]; then
@@ -752,6 +910,7 @@ objc_args = ['-arch', '${arch}']
 objcpp_args = ['-arch', '${arch}']
 EOF
 
+    PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig" \
     meson setup "$build_dir" "$glib_src" \
       --prefix="${STAGING_DIR}-${arch}" \
       --default-library=static \
@@ -786,6 +945,11 @@ EOF
     universal_lib="${STAGING_DIR}/lib/${libname}"
     safe_lipo_merge "$lib" "$universal_lib"
   done
+  
+  # Copy headers from first architecture to main staging
+  if [[ -d "${STAGING_DIR}-${first_arch}/include" ]]; then
+    cp -r "${STAGING_DIR}-${first_arch}/include/"* "${STAGING_DIR}/include/"
+  fi
   
   # Merge remaining architectures
   for arch in "${_arch_array[@]:1}"; do
@@ -1063,7 +1227,8 @@ if [[ ! -f "${STAGING_DIR}/lib/libfreetype.a" ]]; then
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
      -DBUILD_SHARED_LIBS=OFF \
      -DFT_DISABLE_HARFBUZZ=ON \
-     -DFT_DISABLE_BROTLI=ON
+     -DFT_DISABLE_BROTLI=ON \
+     -DFT_DISABLE_BZIP2=ON
 else
   log "freetype already built – skipping"
 fi
@@ -1093,37 +1258,24 @@ if [[ ! -f "${STAGING_DIR}/lib/libcairo.a" ]]; then
   # Cairo 1.18.0 uses meson, not autotools
   pushd "$cairo_src" >/dev/null
   
-  # Create a temporary cross-file for universal macOS build
-  CROSS_FILE="${BUILD_DIR}/cairo_cross_file.txt"
-  cat > "${CROSS_FILE}" << EOF
-[binaries]
-c = 'clang'
-cpp = 'clang++'
-ar = 'ar'
-strip = 'strip'
-pkgconfig = 'pkg-config'
-lipo = 'lipo'
-
-[host_machine]
-system = 'darwin'
-cpu_family = 'aarch64'
-cpu = 'arm64'
-
-[properties]
-c_args = ['-arch', 'x86_64', '-arch', 'arm64']
-cpp_args = ['-arch', 'x86_64', '-arch', 'arm64']
-EOF
-
+  # Set PKG_CONFIG_PATH to use our staged dependencies
+  export PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+  
+  # Add our staged dependencies to the build environment
+  export CFLAGS="-I${STAGING_DIR}/include"
+  export CPPFLAGS="-I${STAGING_DIR}/include"
+  export LDFLAGS="-L${STAGING_DIR}/lib"
+  
+  # Use native build for Cairo since meson cross-compilation is complex
   meson setup build \
     --prefix="${STAGING_DIR}" \
     --default-library=static \
     --buildtype=release \
-    --cross-file "${CROSS_FILE}" \
     -Dxlib=disabled \
     -Dxcb=disabled \
     -Dtests=disabled \
     -Dglib=enabled \
-    -Dfontconfig=enabled \
+    -Dfontconfig=disabled \
     -Dfreetype=enabled \
     -Dpng=enabled \
     -Dgtk2-utils=disabled \
@@ -1183,9 +1335,21 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
   poppler_src=$(fetch_and_extract "$POPPLER_URL" "$POPPLER_SHA256" | tail -n1)
   # Poppler expects a writable test directory; create dummy to silence cmake.
   mkdir -p "$poppler_src/test"
+  
+  # Set PKG_CONFIG_PATH to use our staged dependencies
+  export PKG_CONFIG_PATH="${STAGING_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+  
+  # Force use of our staged glib by setting environment variables
+  export GLIB_CFLAGS="-I${STAGING_DIR}/include/glib-2.0 -I${STAGING_DIR}/lib/glib-2.0/include"
+  export GLIB_LIBS="-L${STAGING_DIR}/lib -lglib-2.0 -lgobject-2.0 -lgio-2.0"
+  export CFLAGS="-I${STAGING_DIR}/include -I${STAGING_DIR}/include/glib-2.0 -I${STAGING_DIR}/lib/glib-2.0/include"
+  export CXXFLAGS="-I${STAGING_DIR}/include -I${STAGING_DIR}/include/glib-2.0 -I${STAGING_DIR}/lib/glib-2.0/include"
+  export LDFLAGS="-L${STAGING_DIR}/lib"
+  
   cmake_build_install "$poppler_src" "$poppler_src/build" \
      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+     -DCMAKE_PREFIX_PATH="${STAGING_DIR}" \
      -DBUILD_SHARED_LIBS=OFF \
      -DENABLE_GLIB=ON \
      -DENABLE_UTILS=OFF \
@@ -1199,7 +1363,9 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
      -DENABLE_DCTDECODER=libjpeg \
      -DENABLE_LIBJPEG=ON \
      -DBUILD_TESTS=OFF \
-     -DWITH_FONTCONFIG=OFF \
+     -DWITH_FONTCONFIGURATION_FONTCONFIG=OFF \
+     -DENABLE_NSS3=OFF \
+     -DENABLE_GPGME=OFF \
      -DJPEG_LIBRARY="${STAGING_DIR}/lib/libjpeg.a" \
      -DJPEG_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DOPENJPEG_LIBRARY="${STAGING_DIR}/lib/libopenjp2.a" \
@@ -1216,25 +1382,28 @@ fi
 
 # ----- 3.3 FontForge ----------------------------------------------------------
 
-# TODO: Fix FontForge harfbuzz linking issue later
-# if [[ ! -f "${STAGING_DIR}/bin/fontforge" ]]; then
-#   log "Building FontForge ${FONTFORGE_VERSION} (static, headless, universal)"
-#   ff_src=$(fetch_and_extract "$FONTFORGE_URL" "$FONTFORGE_SHA256" | tail -n1)
-#   # Disable PO translation build that fails on missing gettext .po timestamps
-#   if grep -q "add_custom_target(pofiles ALL" "$ff_src/po/CMakeLists.txt"; then
-#     sed -i.bak 's/add_custom_target(pofiles ALL/add_custom_target(pofiles/' "$ff_src/po/CMakeLists.txt"
-#   fi
-#   cmake_build_install "$ff_src" "$ff_src/build" \
-#      -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
-#      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
-#      -DBUILD_SHARED_LIBS=OFF \
-#      -DENABLE_GUI=OFF \
-#      -DENABLE_NATIVE_SCRIPTING=ON \
-#      -DENABLE_PYTHON_SCRIPTING=OFF
-# else
-#   log "FontForge already built – skipping"
-# fi
-log "FontForge build temporarily disabled - continuing with poppler and pdf2htmlEX"
+if [[ ! -f "${STAGING_DIR}/bin/fontforge" ]]; then
+  log "Building FontForge ${FONTFORGE_VERSION} (static, headless, universal)"
+  ff_src=$(fetch_and_extract "$FONTFORGE_URL" "$FONTFORGE_SHA256" | tail -n1)
+  # Disable PO translation build that fails on missing gettext .po timestamps
+  if grep -q "add_custom_target(pofiles ALL" "$ff_src/po/CMakeLists.txt"; then
+    sed -i.bak 's/add_custom_target(pofiles ALL/add_custom_target(pofiles/' "$ff_src/po/CMakeLists.txt"
+  fi
+  cmake_build_install "$ff_src" "$ff_src/build" \
+     -DCMAKE_INSTALL_PREFIX="${STAGING_DIR}" \
+     -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
+     -DBUILD_SHARED_LIBS=OFF \
+     -DENABLE_GUI=OFF \
+     -DENABLE_NATIVE_SCRIPTING=ON \
+     -DENABLE_PYTHON_SCRIPTING=OFF \
+     -DCMAKE_PREFIX_PATH="${STAGING_DIR}" \
+     -DFREETYPE_LIBRARY="${STAGING_DIR}/lib/libfreetype.a" \
+     -DFREETYPE_INCLUDE_DIR="${STAGING_DIR}/include/freetype2" \
+     -DHarfBuzz_LIBRARY="${STAGING_DIR}/lib/libharfbuzz.a" \
+     -DHarfBuzz_INCLUDE_DIR="${STAGING_DIR}/include/harfbuzz"
+else
+  log "FontForge already built – skipping"
+fi
 
 # ----- 3.4 pdf2htmlEX ---------------------------------------------------------
 
@@ -1258,13 +1427,30 @@ if [[ ! -f "${DIST_DIR}/bin/pdf2htmlEX" ]]; then
   ln -sf "$poppler_src_dir" "$pdf2_src/poppler"
   ln -sf "${STAGING_DIR}" "$pdf2_src/fontforge"
   
+  # Apply Poppler 24.01.0 compatibility patch
+  log "Applying comprehensive Poppler 24.01.0 compatibility patch"
+  patch -p1 -d "$pdf2_src/.." < "${SCRIPT_DIR}/../patches/comprehensive-poppler24.patch"
+  
   # Patch CMakeLists.txt to disable test configuration that requires missing test.py.in
   sed -i.bak 's/^configure_file.*test\.py\.in.*/#&/' "$pdf2_src/CMakeLists.txt"
+  
+  # Fix CMake version and project() order issues - do this cleanly
+  cp "$pdf2_src/CMakeLists.txt" "$pdf2_src/CMakeLists.txt.orig"
+  awk '
+    /^project\(pdf2htmlEX\)/ { next }
+    /^cmake_minimum_required\(VERSION 2\.6\.0 FATAL_ERROR\)/ { 
+      print "cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)"
+      print "project(pdf2htmlEX)"
+      next 
+    }
+    { print }
+  ' "$pdf2_src/CMakeLists.txt.orig" > "$pdf2_src/CMakeLists.txt"
 
   cmake_build_install "$pdf2_src" "$pdf2_src/build" \
      -DCMAKE_INSTALL_PREFIX="${DIST_DIR}" \
      -DCMAKE_OSX_ARCHITECTURES="$ARCHS" \
      -DCMAKE_PREFIX_PATH="${STAGING_DIR}" \
+     -DCMAKE_CXX_STANDARD=17 \
      -DPOPPLER_STATIC=ON \
      -DFONTFORGE_STATIC=ON \
      -DBUILD_TESTING=OFF
