@@ -1,1 +1,0 @@
-[error] Build 'v2' failed with status 1. See logs above.

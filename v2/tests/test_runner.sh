@@ -44,6 +44,8 @@ declare -A TEST_SUITES=(
     ["edge_cases"]="$SCRIPT_DIR/test_edge_cases.sh"
     ["formula"]="$SCRIPT_DIR/test_formula.sh"
     ["api_fixes"]="$SCRIPT_DIR/test_api_fixes.sh"
+    ["version"]="$SCRIPT_DIR/test_version.sh"
+    ["release"]="$SCRIPT_DIR/test_release.sh"
 )
 
 # Test results tracking
@@ -82,6 +84,8 @@ TEST_SUITES:
     edge_cases         Edge cases and error handling
     formula            Homebrew formula validation
     api_fixes          API compatibility fix scripts
+    version            Version management and semver tests
+    release            Release process and CI/CD tests
     all                Run all test suites (default)
 
 Examples:
