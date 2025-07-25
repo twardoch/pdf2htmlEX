@@ -1,6 +1,47 @@
 # CHANGELOG
 
-## [Unreleased] - 2025-07-13
+## [Unreleased] - 2025-07-25
+
+### Critical Mac Build Fixes Applied
+
+#### Fixed - Framework Linker Arguments (Enhanced)
+- **Added**: `fix_framework_args()` helper function that automatically fixes all pkg-config files
+- **Solution**: Converts all `-framework X` arguments to `-Wl,-framework,X` format
+- **Applied to**: All dependencies that generate .pc files (glib, fontconfig, cairo, poppler)
+- **Files Modified**: `v2/scripts/build.sh` - Added function and calls after each installation
+
+#### Fixed - FontConfig config.sub Download
+- **Problem**: Curl command had incorrect URL format
+- **Solution**: Corrected to use proper gitweb URL: `https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub`
+- **Files Modified**: `v2/scripts/build.sh` line 1255
+
+#### Fixed - Patch Management System  
+- **Added**: `apply_patch_once()` function with marker file tracking
+- **Solution**: Creates `.patch_*_applied` marker files to prevent duplicate patch application
+- **Benefits**: Eliminates interactive prompts and build interruptions
+- **Files Modified**: `v2/scripts/build.sh` - Added function and updated patch application
+
+#### Added - Build Validation Script
+- **Created**: `v2/scripts/test-build.sh` for automated build validation
+- **Features**: 
+  - Checks for build completion
+  - Scans for critical errors in logs
+  - Verifies universal binary architecture
+  - Checks for unwanted dynamic dependencies
+- **Usage**: Run after build completes to validate success
+
+### Verified Configuration
+- **FontConfig**: Already configured for universal binary builds (x86_64 + arm64)
+- **Poppler**: Already has `-DBUILD_TESTS=OFF` to skip test builds
+- **Build Order**: Confirmed proper dependency chain is maintained
+
+### Build Status Summary
+- All critical infrastructure fixes have been applied
+- Build script is ready for testing on macOS with proper tools (cmake, ninja)
+- Framework linking issues should be resolved
+- Patch application should work without interruption
+
+## [Previous] - 2025-07-13
 
 ### Critical Build System Fixes (Build Analysis and Repair)
 

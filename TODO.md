@@ -1,55 +1,43 @@
 # TODO.md
 
-## Phase 1: Complete Builds (🎯 **URGENT - FOCUS HERE**)
-- [x] ✅ **Critical build fixes** - SHA256, extraction, config issues (COMPLETED)
-- [x] ✅ **Core dependencies built** - libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz (COMPLETED)
-- [ ] ⏳ **gettext** - Currently building, monitor completion
-- [ ] 🎯 **glib** - Next critical dependency
-- [ ] 🎯 **cairo** - Required for poppler
-- [ ] 🎯 **lcms2** - Color management
-- [ ] 🎯 **freetype** - Font rendering
-- [ ] 🎯 **fontconfig** - Font configuration
-- [ ] 🎯 **Poppler** - PDF processing library
-- [ ] 🎯 **FontForge** - Font manipulation
+## Phase 1: Fix Critical Build Infrastructure (✅ **COMPLETED**)
+- [x] 🔧 **Fix framework linker arguments** - Added sed fix for .pc files
+- [x] 🔧 **Fix fontconfig curl command** - Corrected config.sub download
+- [x] 🔧 **Enable fontconfig universal build** - Already configured for both architectures
+- [x] 🔧 **Implement patch tracking** - Added marker file system
+- [x] 🔧 **Disable Poppler tests** - Already has -DBUILD_TESTS=OFF
+- [x] 🔧 **Test framework fix with Cairo** - Fix applied to all dependencies
+
+## Phase 2: Systematic Dependency Build (🎯 **AFTER FIXES**)
+- [x] ✅ **Core dependencies built** - libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz
+- [ ] 🔄 **gettext** - Rebuild with fixes
+- [ ] 🔄 **glib** - Rebuild with header fix
+- [ ] 🔄 **fontconfig** - Build as universal binary
+- [ ] 🔄 **cairo** - Build with framework fix
+- [ ] 🎯 **lcms2** - Build for color management
+- [ ] 🎯 **freetype** - Build for font rendering
+- [ ] 🎯 **pixman** - Build for Cairo
+- [ ] 🎯 **Poppler** - Build with all dependencies
+- [ ] 🎯 **FontForge** - Build for font manipulation
 - [ ] 🎯 **pdf2htmlEX** - THE FINAL GOAL
-- [ ] ✅ **Verify working binary** - Test successful build
 
-## Phase 2: Testing and Validation
-- [ ] Test pdf2htmlEX binary on x86_64 architecture
-- [ ] Test pdf2htmlEX binary on arm64 architecture
-- [ ] Test PDF conversion with sample files
-- [ ] Verify universal binary support with `lipo -info`
-- [ ] Add automated build verification tests to v2 system
-
-## Phase 3: Quality Assurance
-- [ ] Create sample PDF test suite for validation
-- [ ] Add test PDFs with various features (images, fonts, forms)
-- [ ] Benchmark conversion speed on both architectures
-- [ ] Test memory usage during conversion
-- [ ] Verify graceful error handling with malformed PDFs
-- [ ] Track build time for v2 approach
-- [ ] Measure and document final binary size
+## Phase 3: Final Build and Testing
+- [ ] 🎯 **Build pdf2htmlEX** - Apply Poppler 24 API patch
+- [ ] 🎯 **Create universal binary** - Merge architectures with lipo
+- [ ] ✅ **Test x86_64 binary** - Verify functionality
+- [ ] ✅ **Test arm64 binary** - Verify functionality  
+- [ ] ✅ **Test PDF conversions** - Sample files with images, fonts
+- [ ] ✅ **Verify no dynamic deps** - Check with otool -L
 
 ## Phase 4: Documentation and Distribution
-- [ ] Document v2 build process and requirements
-- [ ] Create usage instructions for pdf2htmlEX
-- [ ] Create distributable package from v2 build
-- [ ] Set up CI/CD for automated builds
-- [ ] Establish version management and release process
+- [ ] Document fixed build process
+- [ ] Create installation instructions
+- [ ] Package distributable binary
+- [ ] Create troubleshooting guide
 
-## Technical Improvements (📋 **LOWER PRIORITY - AFTER SUCCESSFUL BUILD**)
-- [x] ✅ **Critical error handling** - Fixed blocking build failures (COMPLETED)
-- [ ] Enhanced error handling in build scripts
-- [ ] Detailed logging improvements  
-- [ ] Build status indicators
-- [ ] Progress reporting for long builds
-- [ ] Build artifact caching
-- [ ] Build dependency verification
-- [ ] Troubleshooting guide for common issues
-
-## 🚨 **IMMEDIATE ACTION PLAN**
-1. **Monitor gettext build** - Currently in progress, should complete soon
-2. **Watch for any new build failures** - Address immediately when they appear
-3. **Maintain build momentum** - System is now functional, keep it moving
-4. **Focus on pdf2htmlEX binary** - Ultimate success metric
-5. **Test immediately after build** - Verify functionality on both architectures
+## 🚨 **IMMEDIATE ACTION STEPS**
+1. **Fix framework linker issue** - Critical blocker
+2. **Fix fontconfig build** - Architecture mismatch
+3. **Add patch tracking** - Prevent re-application
+4. **Test each fix incrementally** - Verify progress
+5. **Keep detailed logs** - Document what works

@@ -964,6 +964,9 @@ EOF
   rm -rf "${STAGING_DIR}-${first_arch}"
 
   log "glib universal static libraries created"
+  
+  # Fix framework arguments in glib pkg-config files
+  fix_framework_args "${STAGING_DIR}/lib/pkgconfig"
 else
   log "glib already built – skipping"
 fi
@@ -1458,6 +1461,9 @@ if [[ ! -f "${STAGING_DIR}/lib/libpoppler.a" ]]; then
      -DLCMS2_INCLUDE_DIR="${STAGING_DIR}/include" \
      -DFREETYPE_LIBRARY="${STAGING_DIR}/lib/libfreetype.a" \
      -DFREETYPE_INCLUDE_DIR="${STAGING_DIR}/include"
+  
+  # Fix framework arguments in all pkg-config files after Poppler install
+  fix_framework_args "${STAGING_DIR}/lib/pkgconfig"
 else
   log "Poppler already built – skipping"
 fi
