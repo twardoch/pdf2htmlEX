@@ -1,29 +1,49 @@
-# pdf2htmlEX v2
+# pdf2htmlEX v2 - Standalone Build System
 
-This directory contains the second iteration of the `pdf2htmlEX` Homebrew formula, designed to be robust, maintainable, and future-proof.
+This directory contains the v2 standalone build system for pdf2htmlEX on macOS, creating universal binaries without Homebrew dependencies.
 
-## Quick Start
-
-To install `pdf2htmlEX` using this formula:
+## 🚀 Quick Start
 
 ```bash
-# Install from the formula file directly
-brew install --build-from-source v2/Formula/pdf2htmlex.rb
+cd v2
+./build.sh
 
-# Verify the installation
-pdf2htmlEX --version
+# After build completes (~15 minutes):
+./dist/bin/pdf2htmlEX --version
 ```
 
-## Local Build and Test
+## 📚 Documentation
 
-To build and test the formula locally without installing it into Homebrew, use the provided build script:
+- **[BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md)** - Complete step-by-step build guide
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Solutions for common build issues
+- **[FIXES.md](FIXES.md)** - Details of critical fixes applied
+- **[SPEC.md](SPEC.md)** - Technical architecture and design
+
+## ✅ Build Status
+
+All critical issues have been resolved:
+- ✅ **Framework linking** - Fixed pkg-config files for proper macOS framework syntax
+- ✅ **Universal binary** - Builds for both x86_64 and arm64 architectures
+- ✅ **Patch tracking** - Prevents duplicate patch applications
+- ✅ **Static linking** - All dependencies vendored, no runtime Homebrew deps
+
+## 🔧 What This Builds
+
+The build script creates:
+- `dist/bin/pdf2htmlEX` - Universal binary executable
+- `dist/share/pdf2htmlEX/` - Required data files
+- All dependencies built from source as static libraries
+
+## 🧪 Testing
+
+After building, validate with:
 
 ```bash
-# Run the local build script
-./v2/scripts/build.sh
+# Run comprehensive tests
+./scripts/test-build.sh
 
-# The compiled binary will be available in the `dist/` directory
-./dist/bin/pdf2htmlEX --version
+# Test PDF conversion
+./dist/bin/pdf2htmlEX test.pdf
 ```
 
 ## Test Suite

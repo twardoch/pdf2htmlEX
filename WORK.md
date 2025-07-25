@@ -1,6 +1,86 @@
 # WORK.md
 
-## 2025-07-13 – Build System Critical Fixes 🔧
+## 2025-07-25 – Critical Build Fixes for Mac 🚨
+
+### Current Build Failures Identified
+
+**Major blockers preventing successful build:**
+
+1. **Framework Linker Error** (HIGHEST PRIORITY)
+   - Problem: `-framework ApplicationServices` in .pc files needs to be `-Wl,-framework,ApplicationServices`
+   - Files affected: All pkg-config .pc files from Cairo, GLib, etc.
+   - Fix: Add sed command after each dependency install
+
+2. **FontConfig Architecture Issues**
+   - Problem: Not building for arm64, causing missing symbols
+   - Also: config.sub download has syntax error in curl command
+   - Fix: Enable universal build and fix curl command
+
+3. **Patch Management**
+   - Problem: Patches being applied multiple times, causing interactive prompts
+   - Fix: Add patch tracking with marker files
+
+### Immediate Tasks
+
+- [x] Fix framework linker arguments in build.sh
+- [x] Fix fontconfig config.sub curl command  
+- [x] Enable fontconfig universal binary build (already was)
+- [x] Add patch tracking mechanism
+- [x] Disable Poppler test builds (already was)
+- [ ] Test fixes incrementally
+
+### Work Progress
+
+**Fixes Applied:**
+
+1. **Framework Linker Fix** ✅
+   - Added `fix_framework_args()` helper function
+   - Applies sed fix to all .pc files: `-framework X` → `-Wl,-framework,X`
+   - Called after glib, fontconfig, cairo, and poppler installations
+
+2. **FontConfig curl fix** ✅
+   - Fixed URL format for config.sub download
+   - Changed to proper gitweb URL format
+
+3. **Patch Tracking** ✅
+   - Added `apply_patch_once()` function
+   - Creates marker files in build dir to prevent re-application
+   - Handles patch failures gracefully
+
+4. **Verified Settings** ✅
+   - FontConfig already builds universal binaries
+   - Poppler already has `-DBUILD_TESTS=OFF`
+
+**Testing Results:**
+
+⚠️ Cannot test in current environment (missing cmake/ninja), but all fixes have been successfully applied:
+
+1. ✅ Framework linker fix implemented
+2. ✅ FontConfig curl command corrected  
+3. ✅ Patch tracking system added
+4. ✅ All pkg-config files will be fixed after installation
+5. ✅ Test script created for validation
+
+**Summary of Changes:**
+
+The build script now includes:
+- `fix_framework_args()` - Automatically fixes all .pc files
+- `apply_patch_once()` - Prevents duplicate patch application
+- Framework fixes applied after: glib, fontconfig, cairo, poppler
+- Corrected fontconfig config.sub download URL
+
+**Ready for Testing:**
+
+The build should now work on a Mac with proper tools installed. Run:
+```bash
+cd v2
+./build.sh
+./scripts/test-build.sh
+```
+
+## Previous Work Log
+
+### 2025-07-13 – Build System Critical Fixes 🔧
 
 ### 🚨 CRITICAL FIXES APPLIED (from issues/102.txt analysis)
 

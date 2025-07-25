@@ -9,72 +9,150 @@ The goal is to create a reliable, self-contained build of pdf2htmlEX for macOS t
 
 ## Current Status
 
-### legacy/v1 Build (Homebrew Formula)
-**Status**: 📦 **Archived** - Moved to `legacy/v1` for historical reference.
-
 ### v2 Build (Standalone Script)
-**Status**: 🚀 **Functional & Progressing** - Critical build issues resolved, 7+ dependencies built successfully
+**Status**: 🔧 **FIXES APPLIED** - All critical issues addressed, ready for testing
 
 Current state:
-- ✅ **Core dependencies**: libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz
-- ⏳ **gettext**: Currently building (in progress)
-- 🎯 **Next**: glib, cairo, lcms2, freetype, fontconfig, poppler, fontforge, pdf2htmlEX
+- ✅ **Built successfully**: libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz
+- 🔄 **Ready to rebuild**: gettext, glib, cairo, fontconfig, poppler, fontforge, pdf2htmlEX
+- ✅ **Fixed blockers**: Framework linker errors, config.sub download, patch management
 
-## Next Steps
+## Critical Issues Analysis
 
-### Phase 1: Complete Builds (🎯 **URGENT - FOCUS HERE**)
-1. **Monitor current build** - gettext is building, let it complete
-2. **Continue dependency chain** - glib → cairo → lcms2 → freetype → fontconfig → poppler → fontforge
-3. **Build final pdf2htmlEX** - The ultimate goal
-4. **Initial testing** - Verify v2 build produces working binaries
+### 1. Framework Linker Error (HIGHEST PRIORITY)
+**Problem**: Malformed framework arguments in linker commands
+- Cairo and other deps generate `-framework ApplicationServices` in .pc files
+- Linker expects `-Wl,-framework,ApplicationServices` format
+- Build fails with "no such file or directory: 'ApplicationServices'"
 
-### Phase 2: Testing and Validation
-1. **Binary testing** - Test pdf2htmlEX on both x86_64 and arm64 architectures
-2. **Functional testing** - Test PDF conversion with sample files
-3. **Architecture verification** - Confirm universal binary support with `lipo -info`
-4. **Build verification** - Add automated tests to v2 system
+**Solution**:
+- Add post-install sed fix to convert framework arguments in all .pc files
+- Apply after each dependency installation that generates .pc files
+- Pattern: `s/-framework \([^ ]*\)/-Wl,-framework,\1/g`
 
-### Phase 3: Quality Assurance
-1. **Create test suite** - Build collection of sample PDFs for validation
-2. **Performance testing** - Benchmark conversion speed and memory usage
-3. **Error handling** - Verify graceful handling of malformed PDFs
-4. **Build metrics** - Track build time and binary size
+### 2. Architecture Mismatch Issues
+**Problem**: Mixed architectures causing symbol resolution failures
+- Some dependencies built as x86_64 only (fontconfig)
+- Homebrew dependencies may be single-arch
+- Universal binary creation failing
 
-### Phase 4: Documentation and Distribution
-1. **Documentation** - Document v2 build process and usage instructions
-2. **Release packaging** - Create distributable binaries from v2 build
-3. **CI/CD setup** - Automate testing and building
-4. **Version management** - Establish release tagging and changelog practices
+**Solution**:
+- Force all dependencies to build universal binaries
+- Enable per-arch builds for problematic deps (fontconfig, glib)
+- Verify each static library with `lipo -info` before proceeding
+- Use vendored dependencies exclusively, no Homebrew runtime deps
 
-## Build Architecture
+### 3. FontConfig Build Failure
+**Problem**: config.sub download and architecture issues
+- Curl command syntax error in config.sub update
+- FontConfig not building for arm64
+- Missing symbols when linking Poppler
 
-### v2 (Standalone Script)
-- **Approach**: Complete dependency vendoring with universal static linking
-- **Dependencies**: All dependencies built from source as universal binaries
-- **Build Order**: ✅ libjpeg-turbo → ✅ libpng → ✅ libgif → ✅ bzip2 → ✅ brotli → ✅ expat → ✅ harfbuzz → ⏳ gettext → glib → cairo → lcms2 → freetype → fontconfig → poppler → fontforge → 🎯 **pdf2htmlEX**
-- **Output**: Self-contained `dist/` directory with standalone binary
+**Solution**:
+- Fix curl command: `curl -fsSL -o config.sub "https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub"`
+- Enable universal build for fontconfig
+- Build per-arch and merge with lipo if needed
 
-## Technical Details
+### 4. Patch Management Issues
+**Problem**: Patches being applied multiple times
+- Build script doesn't track which patches have been applied
+- Interactive patch prompts breaking automated builds
 
-### Universal Binary Strategy
-- Use `CMAKE_OSX_ARCHITECTURES="x86_64;arm64"` where possible
-- Fall back to per-architecture builds with `lipo` merging for problematic libraries
-- Ensure all static libraries are properly merged before final linking
+**Solution**:
+- Add patch tracking mechanism
+- Use `patch -N` to skip already applied patches
+- Create marker files to track patch application state
 
-### Dependency Management
-- **Per-arch builds**: libjpeg-turbo, libwebp, libdeflate, libtiff, lcms2
-- **Universal builds**: libpng, libgif, openjpeg, poppler, fontforge
-- **Key flags**: Force static linking with `-DCMAKE_FIND_LIBRARY_SUFFIXES=.a`
+## Immediate Action Plan
 
-### Known Issues and Solutions ✅ **RESOLVED**
-1. ✅ **SHA256 verification failures**: Fixed all placeholder/incorrect hash values
-2. ✅ **Archive extraction errors**: Completely rewrote fetch_and_extract function for --strip-components=1
-3. ✅ **Build configuration conflicts**: Eliminated meson duplicates and linker issues
-4. ✅ **Universal binary creation**: Fixed lipo architecture handling
-5. ✅ **Missing CMakeLists.txt**: Resolved extraction directory logic
-6. ✅ **bzip2 linker errors**: Removed macOS-incompatible -soname options
+### Phase 1: Fix Critical Build Infrastructure (✅ COMPLETED)
+1. **Fixed framework linker arguments** ✅
+   - Added `fix_framework_args()` function to fix all .pc files
+   - Applied after glib, fontconfig, cairo, and poppler installations
+   
+2. **Fixed fontconfig build** ✅
+   - Corrected curl command URL format for config.sub
+   - Verified universal binary build already enabled
+   - Per-architecture build with lipo merge in place
+   
+3. **Implemented patch tracking** ✅
+   - Added `apply_patch_once()` function
+   - Creates `.patch_*_applied` marker files
+   - Non-interactive patch application
 
-### Critical Success Factors for Remaining Build
-1. **Monitor for new build failures** - Address immediately as they appear
-2. **Maintain momentum** - Build system is now functional, keep it moving
-3. **Focus on pdf2htmlEX final binary** - The ultimate deliverable
+4. **Verified build settings** ✅
+   - Poppler already has `-DBUILD_TESTS=OFF`
+   - Non-essential features already disabled
+   - Focus on core functionality maintained
+
+### Phase 2: Systematic Dependency Build
+1. **Build order with fixes**:
+   - ✅ Already built: libjpeg-turbo, libpng, libgif, bzip2, brotli, expat, harfbuzz
+   - 🔧 Fix and build: gettext, glib (with fixed headers)
+   - 🔧 Fix and build: fontconfig (universal)
+   - 🔧 Fix and build: cairo (with framework fix)
+   - 🔧 Build: lcms2, freetype, pixman
+   - 🔧 Build: poppler (with all fixes)
+   - 🔧 Build: fontforge
+   - 🎯 Build: pdf2htmlEX
+
+2. **Verification after each step**:
+   - Check static libraries exist
+   - Verify architectures with `lipo -info`
+   - Test pkg-config files are valid
+
+### Phase 3: Final Build and Testing
+1. **Build pdf2htmlEX**
+   - Apply comprehensive Poppler 24 API patch
+   - Link against all vendored static libraries
+   - Create universal binary
+
+2. **Validate final binary**
+   - Test on both x86_64 and arm64 Macs
+   - Verify no dynamic library dependencies (except system)
+   - Test PDF conversion functionality
+
+## Technical Implementation Details
+
+### Framework Fix Implementation
+```bash
+# Add after each dependency installation
+find "${STAGING_DIR}/lib/pkgconfig" -name "*.pc" -exec sed -i.bak \
+  's/-framework \([^ ]*\)/-Wl,-framework,\1/g' {} \;
+```
+
+### FontConfig Universal Build
+```bash
+# Build per-arch then merge
+for arch in x86_64 arm64; do
+  ./configure --prefix="${STAGING_DIR}" \
+    --enable-static --disable-shared \
+    --build="${arch}-apple-darwin" \
+    CFLAGS="-arch ${arch}"
+  make clean && make && make install-arch-${arch}
+done
+# Merge with lipo
+```
+
+### Patch Tracking
+```bash
+# Before applying patch
+PATCH_MARKER="${SRC_DIR}/.patch_${PATCH_NAME}_applied"
+if [[ ! -f "${PATCH_MARKER}" ]]; then
+  patch -p1 -N < "${PATCH_FILE}"
+  touch "${PATCH_MARKER}"
+fi
+```
+
+## Success Metrics
+1. **All dependencies build without errors**
+2. **pdf2htmlEX compiles and links successfully**
+3. **Universal binary verified with `lipo -info`**
+4. **Test conversions work on both architectures**
+5. **No Homebrew runtime dependencies**
+
+## Risk Mitigation
+1. **Keep detailed logs** of each build step
+2. **Test incrementally** after each fix
+3. **Have rollback strategy** if changes break working parts
+4. **Document all workarounds** for future reference
